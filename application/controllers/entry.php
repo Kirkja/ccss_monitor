@@ -3,7 +3,50 @@
 class Entry extends CI_Controller {
 
     public function index() {
-        $this->load->view('welcome_message');
+        
+        $data = array();
+        $data['page_title'] = "Login";
+
+        // Include the required CSS
+        $data['css_includes'] = array(
+           'css/style_basic.css'
+        );
+        
+        // Include the required JS
+        $data['js_includes'] = array(
+           
+        );         
+
+        // Data structures for each subview call if needed
+        $headData = array(); 
+        $bodyData = array();
+        $footData = array();
+        
+        // Load the subviews into the page         
+        $data['header_zone']    = $this->GetView('entry/bodyView', $bodyData); 
+        $data['body_zone']      = $this->GetView('entry/bodyView', $bodyData);
+        $data['footer_zone']    = $this->GetView('entry/footerView', $footData);
+        
+        // render the constructed page
+        $this->load->view('pagestub', $data);                
+    }
+    
+    /**
+     * Fecthes a view without causing an error is the file does not exists.
+     * 
+     * @param type $filename
+     * @param type $data
+     * @return null
+     */
+    private function GetView($filename, $data)
+    {
+        if (file_exists(APPPATH."views/{$filename}.php")) {
+            return $this->load->view($filename, $data, true);
+        }
+        else {
+            return null;
+        }
     }
 
 }
+?>
