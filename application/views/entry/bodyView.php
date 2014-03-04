@@ -1,9 +1,16 @@
 <?php
+// views/login/bodyView
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+// Is the user already logged into the system
+if (!GSAuth::IsActive())
+{
+    $entry_form = $this->load->view('entry/login_form', null, true); 
+    
+    echo "<div>{$entry_form}</div>";
+}
+else {
+    echo "<div class=\"padded\"><h3>Log in body</h3><br /></div>";
+}
+
+
 ?>
-

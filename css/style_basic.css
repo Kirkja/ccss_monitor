@@ -1,0 +1,320 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+
+/* 
+    Created on : Nov 15, 2013, 11:29:06 AM
+    Author     : User1
+*/
+
+
+::selection{ background-color: #E13300; color: white; }
+::moz-selection{ background-color: #E13300; color: white; }
+::webkit-selection{ background-color: #E13300; color: white; }
+
+* {
+margin: 0;
+padding: 0;
+}
+
+#bodyBag { min-width:640px; }
+
+
+body {
+    background-color: #fff;
+    margin: 1.5em;
+    font: 13px/20px normal Helvetica, Arial, sans-serif;
+    color: #4F5155;
+}
+
+a {
+    color: #003399;
+    background-color: transparent;
+    font-weight: normal;
+}
+
+h1 {
+    color: #444;
+    background-color: transparent;
+    font-size: 19px;
+    font-weight: normal;
+    margin: 0.5em;
+    padding: 0em;    
+}
+
+
+#header_zone h1 {
+    color: #444;
+    background-color: transparent;
+    font-size: 19px;
+    font-weight: normal;
+    margin: 0.5em;
+    padding: 0em;
+}
+
+
+
+
+
+.bordered { border:1px solid grey; }
+.padded { padding:0.5em 1em; }
+
+.btn { padding:0.5em 1em; margin:0.25m 0.5em; }
+
+.left { float:left; }
+.right { float:right; }
+
+.right_column { width:45%; float:right; }
+.left_column { width:45%; float:left; }
+
+.colLeft  { max-width:30%; min-width:200px; width:30%; }
+.colRight { max-width:65%; min-width:350px; width:65%; float:right; }
+
+#body{
+    clear:both;
+    margin: 0 1em 1em 1em;
+    min-height:35px;    
+}
+
+#header_zone {
+    clear:both;
+    margin: 1em;
+    border: 1px solid #D0D0D0; 
+    min-height:20px;
+    /* -webkit-box-shadow: 0 0 8px #D0D0D0; */    
+}
+
+
+#footer_zone {
+    clear:both;
+    margin: 1em;
+    border: 1px solid #D0D0D0;
+    /* -webkit-box-shadow: 0 0 8px #D0D0D0; */
+}
+
+#body_zone{
+    margin: 1em;
+    border: 1px solid #D0D0D0;
+   /*  -webkit-box-shadow: 0 0 8px #D0D0D0; */
+}
+
+
+div.menu_zone { 
+    clear:both;    
+    min-height: 25px;
+    padding:0em 1em;
+    margin:0em;
+    
+}
+
+div.menu_zone ul {
+    list-style-type: none; 
+    margin: auto;
+}
+
+
+div.menu_zone ul li { 
+    float: left;      
+}
+
+div.menu_zone ul li a {
+    padding-right:1.5em;
+}
+
+.login_input { width:150px; }
+.login_label { width:100px; }
+
+
+#login {
+    background-color: #fff;  
+    height: 200px;
+    width: 200px;
+    margin-left:-150px;
+    padding: 15px;
+    position: relative;
+    left: 50%;
+    z-index: 0;
+}
+
+
+
+fieldset
+{
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+
+#inputs input
+{
+    background: #f1f1f1 url(/css/images/login-sprite.png) no-repeat;
+    padding: 10px 15px 10px 30px;
+    margin: 0 0 10px 0;
+    width: 150px; /* 353 + 2 + 45 = 400 */
+    border: 1px solid #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+}
+
+
+#inputs input:focus
+{
+    background-color: #fff;
+    border-color: #e8c291;
+    outline: none;
+    -moz-box-shadow: 0 0 0 1px #e8c291 inset;
+    -webkit-box-shadow: 0 0 0 1px #e8c291 inset;
+    box-shadow: 0 0 0 1px #e8c291 inset;
+}
+
+#account
+{
+    background-position: 5px -102px !important;
+}
+
+#username
+{
+    background-position: 5px 0px !important;
+}
+
+#password
+{
+    background-position: 5px -50px !important;
+}
+
+#actions
+{
+    margin: 10px 0 0 0;
+}
+
+
+.fix001 { position:relative; top:-0.50em; }
+
+
+
+.simple_list {
+    list-style-type: none; 
+    margin: 0em;
+}
+
+.simple_list li {
+    font-size: 1.00em;
+}
+
+.clickable {
+    border-bottom:1px solid rgb(220,220,220);
+    padding:0.5em;
+}
+
+.clickable:hover {
+    cursor:pointer;
+}
+
+.clickable:active {
+    background-color:yellow;
+}
+#client_pane {
+    height:inherit;
+    overflow:auto;
+    border:1px solid rgb(220,220,220);
+    background-color:rgb(240,240,240);
+}
+
+
+
+fieldset { border:0px solid red; }
+legend { padding:0em 0.5em; }
+
+#client_list {
+    width:265px;
+    height:150px;
+    overflow:auto;
+}
+
+.pane { 
+    border:1px solid rgb(220,220,220); 
+}
+
+.pane h3 {
+   padding:0.24em;
+   color:white;
+   background-color:rgb(180,180,180);
+}
+
+.listWidget
+{
+   width:100%;
+   height:15em;
+}
+
+
+
+.listPane {
+    height:12.5em;
+    overflow:auto;
+    background-color:rgb(240,240,240);
+}
+
+.paneBody { padding:0.25em; }
+
+.form_field { width:100%; }
+
+.form_input {width: 100%; max-width: 200px; }
+
+.form_input_short {width: 100%; max-width: 100px; }
+
+.short { width:50px; }
+.medium { width:75px; }
+.long { width:100px; }
+.extralong { width:200px; }
+.full { width:100%; }
+
+.fullz { width:99%; }
+
+.icon { 
+    
+    font-weight:normal; 
+    border:1px solid white; 
+    text-align:center; 
+    font-size:120%; 
+    padding:0em 0.25em;
+    margin:0em 0.25em;
+}
+
+.icon:hover {cursor:pointer;}
+
+.add { color:rgb(0,255,0); }
+.delete {color:red; }
+
+
+
+#tpl_box table { width:100%; }
+
+#tpl_box table td { vertical-align: top; padding:5px; }
+
+.nsl_right { width:25%; }
+.nsl_left { width:25%; }
+.nsl_center { width:49%; }
+
+.divider { height:0.5em; }
+#tpl_box dl { }
+#tpl_box dt { width:7em; float: left; }
+#tpl_box dd { width:20em; float: left; }
+
+.section-select { }
+
+.subscriberBtn { padding:0.25em 1em; }
+
+.emailInput { width: 170px; }
+
+#subscribersList { text-align:left; width:100%;}
+
+.flipper { cursor:pointer; }
+

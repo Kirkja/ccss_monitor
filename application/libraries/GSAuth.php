@@ -79,7 +79,7 @@ class GSAuth {
             $uc = trim(substr(trim($uc), 0, 32));
 
             // is not already logged in and the login info is valid
-            if (!GSAuth::IsActiveUser($un) && Lib_Auth::IsValidUser($un, $uc)) {
+            if (!GSAuth::IsActiveUser($un) && GSAuth::IsValidUser($un, $uc)) {
                 GSAuth::$CI->session->set_userdata('userID', GSAuth::$userID);
                 GSAuth::$CI->session->set_userdata('userName', $un);
                 GSAuth::$CI->session->set_userdata('userCode', $uc);

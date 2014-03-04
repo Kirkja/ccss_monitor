@@ -4,8 +4,28 @@ class Entry extends CI_Controller {
 
     public function index() {
         
+        
+        /* --------------------------------
+         * This controller is open to all
+         * --------------------------------
+         */
+        
+        // Handle a login form posting
+        // if not already logged into the system
+        if (!GSAuth::IsActive()) {            
+            if ($this->input->post('user_name') 
+                && $this->input->post('user_password')) {
+                    GSAuth::Validate(
+                        $this->input->post('user_name'), 
+                        $this->input->post('user_password')
+                    );
+            }
+        } 
+        
+        
+        
         $data = array();
-        $data['page_title'] = "Login";
+        $data['page_title'] = "Entry";
 
         // Include the required CSS
         $data['css_includes'] = array(
