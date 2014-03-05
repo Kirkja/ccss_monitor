@@ -29,7 +29,7 @@ class Entry extends CI_Controller {
 
         // Include the required CSS
         $data['css_includes'] = array(
-           'css/style_basic.css'
+           base_url().'css/style_basic.css'
         );
         
         // Include the required JS
@@ -43,7 +43,7 @@ class Entry extends CI_Controller {
         $footData = array();
         
         // Load the subviews into the page         
-        $data['header_zone']    = $this->GetView('entry/bodyView', $bodyData); 
+        $data['header_zone']    = $this->GetView('entry/headerView', $bodyData); 
         $data['body_zone']      = $this->GetView('entry/bodyView', $bodyData);
         $data['footer_zone']    = $this->GetView('entry/footerView', $footData);
         
@@ -68,5 +68,13 @@ class Entry extends CI_Controller {
         }
     }
 
+    
+    
+    public function out() {
+        redirect(GSAuth::leave());        
+    }    
+        
+    
+    
 }
 ?>

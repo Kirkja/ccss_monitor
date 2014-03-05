@@ -10,9 +10,7 @@
 // CSS, Local or external JS
 
 // CSS Includes - assumes local to server
-$css_stub = '<link rel="stylesheet" type="text/css" media="all" href="'
-        . base_url() 
-        .'CSS_PATH" />';
+$css_stub = '<link rel="stylesheet" type="text/css" media="all" href="CSS_PATH" />';
 
 // Javascript Includes - needs full pathing becuase it could be 
 // local or remote

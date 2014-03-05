@@ -1,0 +1,47 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 25, 2014, 12:29:12 PM
+    Author     : User1
+*/
+.bordered-red { 
+    border:1px dotted red;
+}
+
+
+dl.form_element {
+    margin:0px;
+    clear: both;
+    padding:1em;
+}
+
+dl.form_element dt {
+    float:left;
+    width:100px;
+    margin:0px;
+}
+dl.form_element dd {
+    float:left;
+    position:relative;
+    top:-0.25em;
+    margin-left:0em;
+}
+
+#branded_as {
+    font-size:120%;
+}
+
+
+#btn_logout {
+    padding:0.25em 0.5em;
+    float:right;
+}
+
+
+.padding_container {
+    padding:1em;
+    
+}

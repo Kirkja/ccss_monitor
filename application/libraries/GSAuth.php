@@ -55,14 +55,30 @@ class GSAuth {
     public function GetActiveUser() {
         $user = null;
 
-        if (GSAuth::ActiveUser()) {
+        if (GSAuth::IsActive()) {
             $user = GSAuth::$CI->session->userdata;
         }
 
         return $user;        
     } 
     
-    
+/**
+ * 
+ * @return type
+ */
+    public function GetUserObject() {
+        $user = new stdClass();
+
+        if (GSAuth::IsActive()) {
+            $array = GSAuth::$CI->session->userdata;
+            foreach ($array as $key => $value)
+            {
+                $user->$key = $value;
+            }            
+        }
+
+        return $user;        
+    }     
     
     
     /**
@@ -92,6 +108,21 @@ class GSAuth {
         
         return false;
     }    
+    
+    
+    
+    /**
+     * 
+     * @return type
+     */
+    public function leave() {
+        GSAuth::$CI->session->sess_destroy();
+        return base_url();
+    }     
+    
+    
+    
+    
     
     
     //=========================================================================
