@@ -10,5 +10,4 @@ if (!GSAuth::IsActive())
 }
 
 
-
 ?>

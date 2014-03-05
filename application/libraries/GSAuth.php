@@ -16,6 +16,7 @@ class GSAuth {
         GSAuth::$CI = & get_instance();
     }
 
+   
     
     /**
      * 

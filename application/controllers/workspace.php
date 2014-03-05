@@ -11,6 +11,7 @@ class Workspace extends CI_Controller {
         $data = array();
         $data['page_title'] = "Workspace";
 
+        
         // Include the required CSS
         $data['css_includes'] = array(
             base_url() .'lib/js/jquery/jquery-ui-1.10.4/themes/base/jquery.ui.all.css',            
