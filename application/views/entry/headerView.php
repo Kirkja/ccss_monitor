@@ -10,10 +10,6 @@ if (GSAuth::IsActive())
 {
     redirect(base_url()."workspace");
 }
-else
-{
-     redirect(base_url());   
-}
 
 
 ?>

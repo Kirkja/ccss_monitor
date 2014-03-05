@@ -5,14 +5,7 @@ class Entry extends CI_Controller {
 
     public function index() {
         
-        
-        /* --------------------------------
-         * This controller is open to all
-         * --------------------------------
-         */
-        
-        // Handle a login form posting
-        // if not already logged into the system
+        //-- Test for inactive user to handle login
         if (!GSAuth::IsActive()) {            
             if ($this->input->post('user_name') 
                 && $this->input->post('user_password')) {
@@ -22,8 +15,6 @@ class Entry extends CI_Controller {
                     );
             }
         } 
-        
-        
         
         $data = array();
         $data['page_title'] = "Entry";
@@ -44,7 +35,7 @@ class Entry extends CI_Controller {
         $footData = array();
         
         // Load the subviews into the page         
-        $data['header_zone']    = $this->GetView('entry/headerView', $bodyData); 
+        $data['header_zone']    = $this->GetView('entry/headerView', $headData); 
         $data['body_zone']      = $this->GetView('entry/bodyView', $bodyData);
         $data['footer_zone']    = $this->GetView('entry/footerView', $footData);
         
@@ -71,6 +62,9 @@ class Entry extends CI_Controller {
 
     
     
+    /**
+     * 
+     */
     public function out() {
         redirect(GSAuth::leave());        
     }    

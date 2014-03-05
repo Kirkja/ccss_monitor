@@ -4,9 +4,8 @@ class Workspace extends CI_Controller {
 
     public function index() {
         
-        if (!GSAuth::IsActive()) { 
-            GSAuth:leave();
-        }
+        //-- fence controller to active users only
+        GSAuth::Gate();
         
         $data = array();
         $data['page_title'] = "Workspace";
@@ -41,7 +40,7 @@ class Workspace extends CI_Controller {
         $footData = array();
         
         // Load the subviews into the page         
-        $data['header_zone']    = $this->GetView('workspace/headerView', $bodyData); 
+        $data['header_zone']    = $this->GetView('workspace/headerView', $headData); 
         $data['body_zone']      = $this->GetView('workspace/bodyView', $bodyData);
         $data['footer_zone']    = $this->GetView('workspace/footerView', $footData);
         

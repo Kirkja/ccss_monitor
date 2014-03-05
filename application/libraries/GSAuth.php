@@ -12,6 +12,7 @@ class GSAuth {
     private static $userString  = null;
     private static $userID      = null;
 
+    
     public function __construct() {
         GSAuth::$CI = & get_instance();
     }
@@ -62,6 +63,8 @@ class GSAuth {
 
         return $user;        
     } 
+  
+    
     
 /**
  * 
@@ -81,6 +84,7 @@ class GSAuth {
         return $user;        
     }     
     
+
     
     /**
      * 
@@ -123,7 +127,12 @@ class GSAuth {
     
     
     
-    
+    public function Gate() {
+        if (!GSAuth::$CI->session->userdata('isActive')) {
+            GSAuth::$CI->session->sess_destroy();
+            redirect(base_url() . "entry");
+        }
+    }
     
     
     //=========================================================================
