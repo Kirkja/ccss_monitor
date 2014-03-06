@@ -7,7 +7,7 @@
 ?>
 <div id="outer-north">
     <span id="branded_as">Granted Solutions</span>
-    <span>(<?php echo GSAuth::GetUserObject()->userString; ?>)</span>
+    <span>(<?php echo GSAuth::GetUserObject()->screenName; ?>)</span>
     <button id="btn_logout">Log Out</button>
 </div>
 
@@ -48,7 +48,7 @@
                 <div class="ui-layout-north">
                     <div class="ui-widget-header ui-corner-top">West-North</div>
                     <div class="ui-widget-content">
-
+                        
                     </div>
 
                 </div>
@@ -153,20 +153,20 @@
                                 <legend>Login Details</legend>
                                 <dl class="form_element">
                                     <dt><label for="screenname">Screen name</label></dt>
-                                    <dd><input id="screenname" type="text" placeholder="Screen Name"  name="screen_name" value="{{settingsLogin[0].ScreenName}}"/></dd>
+                                    <dd><input id="screenname" type="text" ng-model="user.screenName" /></dd>
                                 </dl>                                 
 
                                 <dl class="form_element">
                                     <dt><label for="username">User name</label></dt>
-                                    <dd><input id="username" type="text" placeholder="User Name"  name="user_name" value="{{settingsLogin[0].UserName}}"/></dd>
+                                    <dd><input type="text" ng-model="user.userName"/></dd>
                                 </dl> 
 
                                 <dl class="form_element">
                                     <dt><label for="usercode">Password</label></dt>
-                                    <dd><input id="usercode" type="password" placeholder="Password"  name="user_code" value="{{settingsLogin[0].UserCode}}"/></dd>
+                                    <dd><input type="password" placeholder="Use Password to Save" ng-model="user.userCode"/></dd>
                                 </dl> 
                                 <dl class="form_element">
-                                    <dt><input type="button" ng-click="updateSettingsLogin()" value="Save"/></dt>
+                                    <dt><input type="button" ng-click="userUpdate()" value="Save"/></dt>
                                     <dd></dd>
                             </fieldset>
 

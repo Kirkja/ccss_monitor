@@ -6,6 +6,12 @@
  * and open the template in the editor.
  */
 
+class UserObject {
+    public $ScreenName;
+    
+    
+}
+
 class GSAuth {
 
     private static $CI          = null;
@@ -13,8 +19,12 @@ class GSAuth {
     private static $userID      = null;
 
     
+    public static $user    = null;
+    
     public function __construct() {
         GSAuth::$CI = & get_instance();
+        
+        GSAuth::$user = new UserObject();
     }
 
    
@@ -103,9 +113,12 @@ class GSAuth {
             if (!GSAuth::IsActiveUser($un) && GSAuth::IsValidUser($un, $uc)) {
                 GSAuth::$CI->session->set_userdata('userID', GSAuth::$userID);
                 GSAuth::$CI->session->set_userdata('userName', $un);
-                GSAuth::$CI->session->set_userdata('userCode', $uc);
-                GSAuth::$CI->session->set_userdata('userString', GSAuth::$userString);
+                GSAuth::$CI->session->set_userdata('userCode', $uc);               
+                GSAuth::$CI->session->set_userdata('screenName', GSAuth::$userString);
                 GSAuth::$CI->session->set_userdata('isActive', true);
+                
+                GSAuth::$user->screenName = "test only";
+                
                 
                 return true;
             }
