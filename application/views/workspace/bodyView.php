@@ -8,7 +8,10 @@
 <div id="outer-north">
     <span id="branded_as">Granted Solutions</span>
     <span>(<?php echo GSAuth::GetUserObject()->screenName; ?>)</span>
+    
     <button id="btn_logout">Log Out</button>
+    <br/>
+    <span>Analyst</span>
 </div>
 
 <div id="page-loading">Loading...</div>
@@ -104,9 +107,17 @@
             </div>
 
             <div class="ui-layout-west">
-                <div class="ui-widget-header ui-corner-top">West-Center</div>
-                <div class="ui-widget-content">
-                    West Stuff
+                <div class="ui-layout-north">
+                    <div class="ui-widget-header ui-corner-top">West-North</div>
+                    <div class="ui-widget-content">
+                        west north stuff here
+                    </div>
+                </div>
+                <div class="ui-layout-center">
+                    <div class="ui-widget-header ui-corner-top">West-Center</div>
+                    <div class="ui-widget-content">
+                        West center stuff here
+                    </div>
                 </div>
             </div>
 
@@ -123,7 +134,6 @@
                     <div class="ui-widget-content">
                         stuff here
                     </div>
-
                 </div>
             </div>
         </div>

@@ -59,7 +59,7 @@ class Settings extends CI_Controller {
                 $data['errors'] = $errors;
             } else {
                 $data['success'] = true;
-                $data['message'] = "Done";
+                $data['message'] = print_r($x, true);
             }
 
             echo json_encode($data);
