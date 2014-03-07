@@ -12,6 +12,7 @@
     <button id="btn_logout">Log Out</button>
     <br/>
     <span>Analyst</span>
+    
 </div>
 
 <div id="page-loading">Loading...</div>
@@ -43,7 +44,10 @@
             <div class="ui-layout-center">
                 <div class="ui-widget-header ui-corner-top">Center-Center</div>
                 <div class="ui-widget-content">
-                    center-center content here
+                        <div>
+                            Based on callback (on-selection): {{selected}}</br>
+                            Based on binding (selected-node): {{node1.label}}, {{node2.label}}, {{node3.label}}
+                        </div>
                 </div>
 
             </div>
@@ -51,14 +55,24 @@
                 <div class="ui-layout-north">
                     <div class="ui-widget-header ui-corner-top">West-North</div>
                     <div class="ui-widget-content">
-                        
+                        <button ng-click="getOpenWork(user)">Click</button>
+                        <div ng-repeat="block in blocks">
+                            {{block.label}}
+                        </div>
                     </div>
 
                 </div>
-                <div class="ui-layout-center">
+                <div class="ui-layout-center" >
                     <div class="ui-widget-header ui-corner-top">West-Center</div>
                     <div class="ui-widget-content">
-                        stuff
+                        <treecontrol class="tree-classic" 
+                            tree-model="treedata" 
+                            node-children="children" 
+                            on-selection="showSelected(node)" 
+                            selected-node="node1">
+                                label: {{node.label}} ({{node.id}})
+                        </treecontrol>
+                      
                     </div>
 
                 </div>
@@ -110,7 +124,9 @@
                 <div class="ui-layout-north">
                     <div class="ui-widget-header ui-corner-top">West-North</div>
                     <div class="ui-widget-content">
-                        west north stuff here
+                        <div ng-repeat="block in blocks">
+                            {{block.label}}
+                        </div>
                     </div>
                 </div>
                 <div class="ui-layout-center">

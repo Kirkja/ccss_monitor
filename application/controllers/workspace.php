@@ -15,7 +15,8 @@ class Workspace extends CI_Controller {
         $data['css_includes'] = array(
             base_url() .'lib/js/jquery/jquery-ui-1.10.4/themes/base/jquery.ui.all.css',            
             base_url() .'css/layout.css',
-            base_url() .'css/ws2.css'
+            base_url() .'css/ws2.css',
+            base_url() .'css/tree.css'
         );
         
         
@@ -30,8 +31,10 @@ class Workspace extends CI_Controller {
             base_url() .'lib/js/actions/ws2_actions.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js',
+            
             base_url() .'lib/js/angular/ws/app.js',
-            base_url() .'lib/js/angular/ws/SettingsController.js'            
+            base_url() .'lib/js/angular/ws/SettingsController.js',
+            //base_url() .'lib/js/angular/ws/TreeController.js'
         );         
 
         // Data structures for each subview call if needed

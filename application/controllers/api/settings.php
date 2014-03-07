@@ -36,10 +36,18 @@ class Settings extends CI_Controller {
 
             $tmp['screenName']  = GSAuth::GetUserObject()->screenName;
             $tmp['userName']    = GSAuth::GetUserObject()->userName;
+            $tmp['activeID']    = GSAuth::GetUserObject()->activeID;;
             $tmp['userCode']    = '';
 
             echo json_encode($tmp);
         }
+    }
+    
+    
+    public function id() {
+         if (GSAuth::IsActive()) {
+             echo GSAuth::GetUserObject()->activeID;
+         }
     }
 
     public function userupdate() {
