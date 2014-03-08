@@ -45,9 +45,11 @@
                 <div class="ui-widget-header ui-corner-top">Center-Center</div>
                 <div class="ui-widget-content">
                         <div>
-                            Based on callback (on-selection): {{selected}}</br>
-                            Based on binding (selected-node): {{node1.label}}, {{node2.label}}, {{node3.label}}
+                            Based on callback (on-selection): {{selected}}<p/>
+                            Based on binding (selected-node): {{node1.label}}, [{{node1.id}}] ${{node1.cashValue}}
                         </div>
+                    
+                    <img src="/Sample_Storage/sample-test.jpg" width="100%"/>
                 </div>
 
             </div>
@@ -70,7 +72,7 @@
                             node-children="children" 
                             on-selection="showSelected(node)" 
                             selected-node="node1">
-                                label: {{node.label}} ({{node.id}})
+                                {{node.label}}
                         </treecontrol>
                       
                     </div>
@@ -79,7 +81,13 @@
                 <div class="ui-layout-south">
                     <div class="ui-widget-header ui-corner-top">West-South</div>
                     <div class="ui-widget-content">
-                        stuff
+                        <treecontrol class="tree-classic" 
+                            tree-model="treedata2" 
+                            node-children="children" 
+                            on-selection="showSelected(node)" 
+                            selected-node="node2">
+                                {{node.label}}
+                        </treecontrol>
                     </div>
 
                 </div>
