@@ -9,12 +9,18 @@ class Entry extends CI_Controller {
         if (!GSAuth::IsActive()) {            
             if ($this->input->post('user_name') 
                 && $this->input->post('user_password')) {
-                    GSAuth::Validate(
+                    if (GSAuth::Validate(
                         $this->input->post('user_name'), 
                         $this->input->post('user_password')
-                    );
+                    ))
+                    {
+                        redirect(base_url()."workspace");                    
+                    }
             }
         } 
+        else {
+            redirect(base_url()."workspace");
+        }
         
         $data = array();
         $data['page_title'] = "Entry";
@@ -26,7 +32,11 @@ class Entry extends CI_Controller {
         
         // Include the required JS
         $data['js_includes'] = array(
-           
+            //'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',
+           // 'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js',
+           // 'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js',            
+           //  base_url(). 'lib/js/angular/root.js',
+           //  base_url(). 'lib/js/angular/entry/entryController.js'
         );         
 
         // Data structures for each subview call if needed

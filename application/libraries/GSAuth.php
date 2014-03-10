@@ -8,15 +8,14 @@
 
 class UserObject {
     public $ScreenName;
-    
-    
+    public $activeID;    
 }
 
 class GSAuth {
 
     private static $CI          = null;
     private static $userString  = null;
-    private static $userID      = null;
+    private static $activeID    = null;
 
     
     public static $user    = null;
@@ -111,15 +110,15 @@ class GSAuth {
 
             // is not already logged in and the login info is valid
             if (!GSAuth::IsActiveUser($un) && GSAuth::IsValidUser($un, $uc)) {
-                GSAuth::$CI->session->set_userdata('userID', GSAuth::$userID);
+                GSAuth::$CI->session->set_userdata('activeID', GSAuth::$activeID);
                 GSAuth::$CI->session->set_userdata('userName', $un);
                 GSAuth::$CI->session->set_userdata('userCode', $uc);               
                 GSAuth::$CI->session->set_userdata('screenName', GSAuth::$userString);
                 GSAuth::$CI->session->set_userdata('isActive', true);
                 
                 GSAuth::$user->screenName = "test only";
-                
-                
+                GSAuth::$user->activeID = GSAuth::$activeID;
+                                
                 return true;
             }
         }        
@@ -160,16 +159,18 @@ class GSAuth {
      * @return boolean
      */
     private function IsValidUser($userName, $userCode) {
-        
-        // Stage One: check if allowable at the system level
-        $sql = "SELECT 
-            id as userID,
-            CONCAT(nameFirst, \" \", nameLast) as userString 
-            FROM login
-            WHERE loginName COLLATE latin1_general_cs = '{$userName}'
-            AND loginCode COLLATE latin1_general_cs = '{$userCode}'
-            AND userStatus = 'a' LIMIT 1";
-
+          
+        $sql ="SELECT
+            LI.id as activeID,
+            LI.loginName, LI.loginCode,
+            CONCAT(U.nameFirst, \" \", U.nameLast) AS userString 
+            FROM login AS LI
+            LEFT JOIN USER AS U ON U.id = LI.userID
+            WHERE LI.loginName COLLATE latin1_general_cs = '{$userName}'
+            AND LI.loginCode COLLATE latin1_general_cs = '{$userCode}'
+            AND userStatus = 'a' 
+            LIMIT 1";
+                    
         $query = GSAuth::$CI->db->query($sql);
 
         if ($query->num_rows() > 0) {
@@ -177,7 +178,7 @@ class GSAuth {
             // Set current user Info
             $row                  = $query->row();
             GSAuth::$userString   = $row->userString;
-            GSAuth::$userID       = $row->userID;
+            GSAuth::$activeID     = $row->activeID;
 
             return true;
         }  

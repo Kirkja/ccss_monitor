@@ -8,7 +8,11 @@
 <div id="outer-north">
     <span id="branded_as">Granted Solutions</span>
     <span>(<?php echo GSAuth::GetUserObject()->screenName; ?>)</span>
+    
     <button id="btn_logout">Log Out</button>
+    <br/>
+    <span>Analyst</span>
+    
 </div>
 
 <div id="page-loading">Loading...</div>
@@ -40,7 +44,14 @@
             <div class="ui-layout-center">
                 <div class="ui-widget-header ui-corner-top">Center-Center</div>
                 <div class="ui-widget-content">
-                    center-center content here
+                        <div>
+                            Based on callback (on-selection): {{selected}}<p/>
+                            Based on binding (selected-node): {{node1.label}}, [{{node1.id}}] ${{node1.cashValue}}                            
+                        </div>
+                    
+                    <div>
+                        status: {{status}}
+                    </div>
                 </div>
 
             </div>
@@ -48,21 +59,37 @@
                 <div class="ui-layout-north">
                     <div class="ui-widget-header ui-corner-top">West-North</div>
                     <div class="ui-widget-content">
-                        
+                        <button ng-click="getOpenWork(user)">Click</button>
+                        <div ng-repeat="block in blocks">
+                            {{block.label}}
+                        </div>
                     </div>
 
                 </div>
-                <div class="ui-layout-center">
+                <div class="ui-layout-center" >
                     <div class="ui-widget-header ui-corner-top">West-Center</div>
                     <div class="ui-widget-content">
-                        stuff
+                        <treecontrol class="tree-classic" 
+                            tree-model="treedata" 
+                            node-children="children" 
+                            on-selection="showSelected(node)" 
+                            selected-node="node1">
+                                {{node.label}}
+                        </treecontrol>
+                      
                     </div>
 
                 </div>
                 <div class="ui-layout-south">
                     <div class="ui-widget-header ui-corner-top">West-South</div>
                     <div class="ui-widget-content">
-                        stuff
+                        <treecontrol class="tree-classic" 
+                            tree-model="treedata2" 
+                            node-children="children" 
+                            on-selection="showSelected(node)" 
+                            selected-node="node2">
+                                {{node.label}}
+                        </treecontrol>
                     </div>
 
                 </div>
@@ -104,9 +131,19 @@
             </div>
 
             <div class="ui-layout-west">
-                <div class="ui-widget-header ui-corner-top">West-Center</div>
-                <div class="ui-widget-content">
-                    West Stuff
+                <div class="ui-layout-north">
+                    <div class="ui-widget-header ui-corner-top">West-North</div>
+                    <div class="ui-widget-content">
+                        <div ng-repeat="block in blocks">
+                            {{block.label}}
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-layout-center">
+                    <div class="ui-widget-header ui-corner-top">West-Center</div>
+                    <div class="ui-widget-content">
+                        West center stuff here
+                    </div>
                 </div>
             </div>
 
@@ -123,7 +160,6 @@
                     <div class="ui-widget-content">
                         stuff here
                     </div>
-
                 </div>
             </div>
         </div>
