@@ -46,10 +46,12 @@
                 <div class="ui-widget-content">
                         <div>
                             Based on callback (on-selection): {{selected}}<p/>
-                            Based on binding (selected-node): {{node1.label}}, [{{node1.id}}] ${{node1.cashValue}}
+                            Based on binding (selected-node): {{node1.label}}, [{{node1.id}}] ${{node1.cashValue}}                            
                         </div>
                     
-                    <img src="/Sample_Storage/sample-test.jpg" width="100%"/>
+                    <div>
+                        status: {{status}}
+                    </div>
                 </div>
 
             </div>

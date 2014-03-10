@@ -59,31 +59,6 @@ class Work extends CI_Controller {
     }
 
     public function getwork2() {
-        /*
-          $sql = "SELECT
-          samples.id AS sampleID,
-          BA.blockID,
-          BB.label AS blockLabel,
-          BA.dueON AS blockDueON,
-          samples.sampleName, samples.sampleImage, samples.samplePath, samples.payRate,
-          BB.payBase,
-          CASE samples.payRate
-          WHEN 'A' THEN  BB.payBase * 2.5
-          WHEN 'B' THEN  BB.payBase * 1.5
-          WHEN 'C' THEN  BB.payBase * 1.0
-          WHEN 'D' THEN  BB.payBase * 0.75
-          WHEN 'E' THEN  BB.payBase * 0.50
-          WHEN 'F' THEN  BB.payBase * 0.25
-          ELSE BB.payBase
-          END AS cashValue
-          FROM `block_assignment` AS BA
-          JOIN `block_bank` AS BB ON BB.id = BA.blockID
-          JOIN `block_samples` AS BS ON BS.blockID = BA.blockID
-          JOIN `sample_bank` AS samples ON samples.id = BS.sampleID
-          LEFT JOIN login AS LI ON LI.userID = BA.assignedTO
-          WHERE LI.id = '802387cc-a583-11e3-aa5d-0014d16a86e4'
-          ORDER BY BB.label, BA.dueON";
-         */
 
         $sql = "SELECT
                 BA.blockID, BA.assignedTO, BA.dueON,
@@ -105,11 +80,12 @@ class Work extends CI_Controller {
 
             foreach ($query->result() as $block) {
 
-                $data['label'] = $block->label;
-                $data['id'] = $block->blockID;
-                $data['cashValue'] = 0.00;
-                $data['children'] = array();
+                $item['label'] = $block->label;
+                $item['id'] = $block->blockID;
+                $item['cashValue'] = 0.00;
+                $item['children'] = array();
 
+                /*
                 $sqlB = "SELECT 
                         samples.id AS sampleID,
                         samples.sampleName,
@@ -137,12 +113,19 @@ class Work extends CI_Controller {
                         
                     }
                 }
-                $out = array();
-                $out[] = $data;
-                echo json_encode($out);
+                */
+                
+                $data[] = $item;
+                
+                
 
-                //echo "<pre>" . print_r($data, true) . "</pre>";
+
+                
             }
+           header('Content-Type: application/json');
+           echo json_encode(array('data'=>$data));          
+           
+           //echo "<pre>" . print_r($data, true) . "</pre>";
         }
     }
 
