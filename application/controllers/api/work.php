@@ -84,11 +84,10 @@ class Work extends CI_Controller {
                 $item['id'] = $block->blockID;
                 $item['cashValue'] = 0.00;
                 $item['children'] = array();
-
-                /*
+               
                 $sqlB = "SELECT 
-                        samples.id AS sampleID,
-                        samples.sampleName,
+                        samples.id AS id,
+                        samples.sampleName as label,
                         samples.sampleImage,
                         samples.samplePath,
                         CASE samples.payRate
@@ -108,19 +107,19 @@ class Work extends CI_Controller {
                 $queryB = $this->db->query($sqlB);
 
                 if ($queryB->num_rows() > 0) {
-
-                    foreach ($queryB->result() as $sample) {
-                        
+                   
+                   foreach ($queryB->result() as $blockB) {
+                        $c = array();
+                        $c['label'] = $blockB->label;
+                        $c['id'] = $blockB->id;
+                        $c['children'] = array();
+                        $item['children'][] = $c;
                     }
                 }
-                */
+             
                 
                 $data[] = $item;
-                
-                
-
-
-                
+                                
             }
            header('Content-Type: application/json');
            echo json_encode(array('data'=>$data));          
