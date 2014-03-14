@@ -44,16 +44,6 @@
             <div class="ui-layout-center">
                 <div class="ui-widget-header ui-corner-top">Center-Center</div>
                 <div class="ui-widget-content">
-                    <!--   
-                    <div>
-                            Based on callback (on-selection): {{selected}}<p/>
-                            Based on binding (selected-node): {{node1.label}}, [{{node1.id}}] ${{node1.cashValue}}                            
-                        </div>
-                    
-                    <div>
-                        status: {{status}}
-                    </div>
-                    -->
                     <div>
                         path = {{selected.imagePath}} <br/>
                         name = {{selected.imageName}}
@@ -63,20 +53,13 @@
                         <img src="{{selected.imagePath}}{{selected.imageName}}" width="99%"/>
                     </div>
                 </div>
-
             </div>
+            
             <div class="ui-layout-west">
                 <div class="ui-layout-north">
                     <div class="ui-widget-header ui-corner-top">West-North</div>
                     <div class="ui-widget-content">
-                        <button ng-click="getOpenWork(user)">Refresh</button>
-                        <treecontrol class="tree-classic" 
-                            tree-model="treedata2" 
-                            node-children="children" 
-                            on-selection="showSelected(node)" 
-                            selected-node="node1">
-                                {{node.label}}
-                        </treecontrol>
+                        stuff WN
                     </div>
 
                 </div>
