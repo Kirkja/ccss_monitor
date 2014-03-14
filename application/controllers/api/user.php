@@ -17,12 +17,10 @@ class User extends CI_Controller {
                  
         // read in the POST, and parse into into an object 
         $raw = file_get_contents("php://input"); 
-        $tmp = json_decode($raw);
-        
+        $tmp = json_decode($raw);       
 
         $data['stuff'] = print_r($tmp, true);
-        
-        
+                
         if (empty($tmp->userName)) {
             $errors['user'] = 'Name is required.';
         }

@@ -11,9 +11,9 @@
     
     <button id="btn_logout">Log Out</button>
     <br/>
-    <span>Analyst</span>
-    
+    <span>Analyst</span>    
 </div>
+
 
 <div id="page-loading">Loading...</div>
 
@@ -135,13 +135,18 @@
                 <div class="ui-widget-header ui-corner-top">Center-Center</div>
                 <div class="ui-widget-content container">
                     {{user.activeID}}
+                    <div style="text-align:center" ng-show="selected.imagePath">
+                        <img src="{{selected.imagePath}}{{selected.imageName}}" width="99%"/>
+                    </div>                    
                 </div>                
             </div>
 
             <div class="ui-layout-west">
                 <div class="ui-layout-center">
                     <div class="ui-widget-header ui-corner-top">Open Work                        
-                        <span class="btn right" ng-click="getOpenWork(user)"><img src="<?php echo base_url();?>css/images/refresh_btn_b.png"/></span>                                          
+                        <span class="btn right" ng-click="getOpenWork(user)">
+                            <img src="<?php echo base_url();?>css/images/refresh_btn_b.png" alt="Refresh Assignments" title="Refresh Assignments"/>
+                        </span>                                          
                     </div>
                     <div class="ui-widget-content">
                         <treecontrol class="tree-classic" 
@@ -244,3 +249,4 @@
 
 </div>
 <!-- /#outer-center ........................................................ -->
+

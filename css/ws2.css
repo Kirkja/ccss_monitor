@@ -13,7 +13,12 @@ and open the template in the editor.
 
 .right { float:right;}
 
-.btn { border:0px dotted grey; padding:0px; margin:0px; }
+.btn { 
+    border:0px dotted grey; 
+    padding:0px; 
+    margin:0px; 
+    cursor:pointer; 
+}
 
 img { border:0px; margin:0px; border:0px dotted grey;}
 

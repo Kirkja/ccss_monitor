@@ -80,10 +80,11 @@ class Work extends CI_Controller {
 
             foreach ($query->result() as $block) {
 
-                $item['label'] = $block->label;
-                $item['id'] = $block->blockID;
-                $item['cashValue'] = 0.00;
-                $item['children'] = array();
+                $item['label']      = $block->label;
+                $item['id']         = $block->blockID;
+                $item['cashValue']  = 0.00;
+                $item['dueON']      = $block->dueON;
+                $item['children']   = array();
                
                 $sqlB = "SELECT 
                         samples.id AS id,
