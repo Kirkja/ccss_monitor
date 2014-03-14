@@ -44,13 +44,23 @@
             <div class="ui-layout-center">
                 <div class="ui-widget-header ui-corner-top">Center-Center</div>
                 <div class="ui-widget-content">
-                        <div>
+                    <!--   
+                    <div>
                             Based on callback (on-selection): {{selected}}<p/>
                             Based on binding (selected-node): {{node1.label}}, [{{node1.id}}] ${{node1.cashValue}}                            
                         </div>
                     
                     <div>
                         status: {{status}}
+                    </div>
+                    -->
+                    <div>
+                        path = {{selected.imagePath}} <br/>
+                        name = {{selected.imageName}}
+                    </div>
+                    
+                    <div style="text-align:center" ng-show="selected.imagePath">
+                        <img src="{{selected.imagePath}}{{selected.imageName}}" width="99%"/>
                     </div>
                 </div>
 
@@ -59,10 +69,14 @@
                 <div class="ui-layout-north">
                     <div class="ui-widget-header ui-corner-top">West-North</div>
                     <div class="ui-widget-content">
-                        <button ng-click="getOpenWork(user)">Click</button>
-                        <div ng-repeat="block in blocks">
-                            {{block.label}}
-                        </div>
+                        <button ng-click="getOpenWork(user)">Refresh</button>
+                        <treecontrol class="tree-classic" 
+                            tree-model="treedata2" 
+                            node-children="children" 
+                            on-selection="showSelected(node)" 
+                            selected-node="node1">
+                                {{node.label}}
+                        </treecontrol>
                     </div>
 
                 </div>
@@ -83,13 +97,7 @@
                 <div class="ui-layout-south">
                     <div class="ui-widget-header ui-corner-top">West-South</div>
                     <div class="ui-widget-content">
-                        <treecontrol class="tree-classic" 
-                            tree-model="treedata2" 
-                            node-children="children" 
-                            on-selection="showSelected(node)" 
-                            selected-node="node2">
-                                {{node.label}}
-                        </treecontrol>
+
                     </div>
 
                 </div>
@@ -126,21 +134,27 @@
             <div class="ui-layout-center">
                 <div class="ui-widget-header ui-corner-top">Center-Center</div>
                 <div class="ui-widget-content container">
-                    stuff
+                    {{user.activeID}}
                 </div>                
             </div>
 
             <div class="ui-layout-west">
-                <div class="ui-layout-north">
-                    <div class="ui-widget-header ui-corner-top">West-North</div>
+                <div class="ui-layout-center">
+                    <div class="ui-widget-header ui-corner-top">Open Work                        
+                        <span class="btn right" ng-click="getOpenWork(user)"><img src="<?php echo base_url();?>css/images/refresh_btn_b.png"/></span>                                          
+                    </div>
                     <div class="ui-widget-content">
-                        <div ng-repeat="block in blocks">
-                            {{block.label}}
-                        </div>
+                        <treecontrol class="tree-classic" 
+                            tree-model="treedata2" 
+                            node-children="children" 
+                            on-selection="showSelected(node)" 
+                            selected-node="node1">
+                                {{node.label}}
+                        </treecontrol>
                     </div>
                 </div>
-                <div class="ui-layout-center">
-                    <div class="ui-widget-header ui-corner-top">West-Center</div>
+                <div class="ui-layout-south">
+                    <div class="ui-widget-header ui-corner-top">Completed Work</div>
                     <div class="ui-widget-content">
                         West center stuff here
                     </div>

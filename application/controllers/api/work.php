@@ -112,19 +112,29 @@ class Work extends CI_Controller {
                         $c = array();
                         $c['label'] = $blockB->label;
                         $c['id'] = $blockB->id;
+                        $c['imageName'] = $blockB->sampleImage;
+                        $c['imagePath'] = $blockB->samplePath;
+                        $c['cashValue'] = $blockB->cashValue;                        
                         $c['children'] = array();
+                                          
                         $item['children'][] = $c;
+                        
+                        $item['cashValue'] += $blockB->cashValue;
                     }
                 }
-             
-                
-                $data[] = $item;
-                                
+                             
+                $data[] = $item;                                
             }
+            
+            // Create the correct JSON payloads
+            $out = array('data'=>$data);
+            
+            // Set the correct JSON response header
            header('Content-Type: application/json');
-           echo json_encode(array('data'=>$data));          
+           echo json_encode($out);          
            
-           //echo "<pre>" . print_r($data, true) . "</pre>";
+           //  DEBUG ONLY
+           //echo "<pre>" . print_r($out, true) . "</pre>";
         }
     }
 

@@ -11,6 +11,11 @@ and open the template in the editor.
     border:1px dotted red;
 }
 
+.right { float:right;}
+
+.btn { border:0px dotted grey; padding:0px; margin:0px; }
+
+img { border:0px; margin:0px; border:0px dotted grey;}
 
 dl.form_element {
     margin:0px;
