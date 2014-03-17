@@ -39,7 +39,12 @@ class Workspace extends CI_Controller {
 
         // Data structures for each subview call if needed
         $headData = array(); 
+        
         $bodyData = array();
+        $bodyData['tab_admin']      = $this->GetView('workspace/tab_admin', null, true);
+        $bodyData['tab_analysis']   = $this->GetView('workspace/tab_analysis', null, true);
+        $bodyData['tab_account']    = $this->GetView('workspace/tab_account', null, true);
+        
         $footData = array();
         
         // Load the subviews into the page         
@@ -47,10 +52,14 @@ class Workspace extends CI_Controller {
         $data['body_zone']      = $this->GetView('workspace/bodyView', $bodyData);
         $data['footer_zone']    = $this->GetView('workspace/footerView', $footData);
         
+        
+        
+        
+        
+        
+        
         // render the constructed page
-        $this->load->view('pagestub', $data);         
-        
-        
+        $this->load->view('pagestub', $data);        
     }
     
     

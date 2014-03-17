@@ -99,9 +99,11 @@ class Work extends CI_Controller {
                                 WHEN 'E' THEN  0.50 * 0.50
                                 WHEN 'F' THEN  0.50 * 0.25
                                 ELSE 0.50
-                        END AS cashValue
+                        END AS cashValue,
+                        SR.reviewedON
                         FROM `block_samples` AS BS
                         LEFT JOIN `sample_bank` AS samples ON samples.id = BS.sampleID
+                        LEFT JOIN sample_review SR ON (SR.blockID = BS.blockID AND SR.sampleID = BS.sampleID)
                         WHERE BS.blockID = '{$block->blockID}'
                         AND BS.active = 'y'";
 
@@ -111,11 +113,18 @@ class Work extends CI_Controller {
                    
                    foreach ($queryB->result() as $blockB) {
                         $c = array();
-                        $c['label'] = $blockB->label;
+                        $c['label'] = trim($blockB->label);
                         $c['id'] = $blockB->id;
                         $c['imageName'] = $blockB->sampleImage;
                         $c['imagePath'] = $blockB->samplePath;
-                        $c['cashValue'] = $blockB->cashValue;                        
+                        $c['cashValue'] = $blockB->cashValue;  
+                        if ($blockB->reviewedON) {
+                            $c['completed']  = 'y';
+                        }
+                        else {
+                            $c['completed']  = 'n';
+                        }
+                        
                         $c['children'] = array();
                                           
                         $item['children'][] = $c;
