@@ -13,6 +13,9 @@ and open the template in the editor.
 
 .right { float:right;}
 
+.blockSummary { display:block; padding:0.25em; font-size:10px; height:1.75em;}
+
+
 .btn { 
     border:0px dotted grey; 
     padding:0px; 
