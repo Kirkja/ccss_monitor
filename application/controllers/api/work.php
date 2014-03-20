@@ -3,7 +3,6 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-
 class Work extends CI_Controller {
 
     /**
@@ -59,9 +58,8 @@ class Work extends CI_Controller {
         }
     }
 
-    
     public function getwork2() {
-        
+
         $id = "802387cc-a583-11e3-aa5d-0014d16a86e4";
 
         $sql = "SELECT
@@ -84,12 +82,12 @@ class Work extends CI_Controller {
 
             foreach ($query->result() as $block) {
 
-                $item['label']      = $block->label;
-                $item['id']         = $block->blockID;
-                $item['cashValue']  = 0.00;
-                $item['dueON']      = $block->dueON;
-                $item['children']   = array();
-               
+                $item['label'] = $block->label;
+                $item['id'] = $block->blockID;
+                $item['cashValue'] = 0.00;
+                $item['dueON'] = $block->dueON;
+                $item['children'] = array();
+
                 $sqlB = "SELECT 
                         samples.id AS id,
                         samples.sampleName as label,
@@ -114,48 +112,47 @@ class Work extends CI_Controller {
                 $queryB = $this->db->query($sqlB);
 
                 if ($queryB->num_rows() > 0) {
-                   
-                   foreach ($queryB->result() as $blockB) {
+
+                    foreach ($queryB->result() as $blockB) {
                         $c = array();
                         $c['label'] = trim($blockB->label);
                         $c['id'] = $blockB->id;
                         $c['imageName'] = $blockB->sampleImage;
                         $c['imagePath'] = $blockB->samplePath;
-                        $c['cashValue'] = $blockB->cashValue;  
+                        $c['cashValue'] = $blockB->cashValue;
+                        $c['blockID'] = $block->blockID;
+
                         if ($blockB->reviewedON) {
-                            $c['completed']  = 'completed';
+                            $c['completed'] = 'completed';
+                        } else {
+                            $c['completed'] = '';
                         }
-                        else {
-                            $c['completed']  = '';
-                        }
-                        
+
                         $c['children'] = array();
-                                          
+
                         $item['children'][] = $c;
-                        
+
                         $item['cashValue'] += $blockB->cashValue;
                     }
                 }
-                             
-                $data[] = $item;                                
+
+                $data[] = $item;
             }
-            
+
             // Create the correct JSON payloads
-            $out = array('data'=>$data);
-            
+            $out = array('data' => $data);
+
             // Set the correct JSON response header
-           header('Content-Type: application/json');
-           echo json_encode($out);          
-           
-           //  DEBUG ONLY
-           //echo "<pre>" . print_r($out, true) . "</pre>";
+            header('Content-Type: application/json');
+            echo json_encode($out);
+
+            //  DEBUG ONLY
+            //echo "<pre>" . print_r($out, true) . "</pre>";
         }
     }
 
-    
-    
     public function getwork3() {
-        
+
         $id = "802387cc-a583-11e3-aa5d-0014d16a86e4";
         $sql = "SELECT
                 BA.blockID, BA.assignedTO, DATE_FORMAT(BA.dueON, '%M %e, %Y') as dueON,
@@ -177,12 +174,12 @@ class Work extends CI_Controller {
 
             foreach ($query->result() as $block) {
 
-                $item['label']      = $block->label;
-                $item['id']         = $block->blockID;
-                $item['cashValue']  = 0.00;
-                $item['dueON']      = $block->dueON;
-                $item['children']   = array();
-               
+                $item['label'] = $block->label;
+                $item['id'] = $block->blockID;
+                $item['cashValue'] = 0.00;
+                $item['dueON'] = $block->dueON;
+                $item['children'] = array();
+
                 $sqlB = "SELECT 
                         samples.id AS id,
                         samples.sampleName as label,
@@ -207,46 +204,92 @@ class Work extends CI_Controller {
                 $queryB = $this->db->query($sqlB);
 
                 if ($queryB->num_rows() > 0) {
-                   
-                   foreach ($queryB->result() as $blockB) {
+
+                    foreach ($queryB->result() as $blockB) {
                         $c = array();
                         $c['label'] = trim($blockB->label);
                         $c['id'] = $blockB->id;
                         $c['imageName'] = $blockB->sampleImage;
                         $c['imagePath'] = $blockB->samplePath;
-                        $c['cashValue'] = $blockB->cashValue;  
+                        $c['cashValue'] = $blockB->cashValue;
+                        $c['blockID'] = $block->blockID;
+
                         if ($blockB->reviewedON) {
-                            $c['completed']  = 'completed';
+                            $c['completed'] = 'completed';
+                        } else {
+                            $c['completed'] = '';
                         }
-                        else {
-                            $c['completed']  = '';
-                        }
-                        
+
                         $c['children'] = array();
-                                          
+
                         $item['children'][] = $c;
-                        
+
                         $item['cashValue'] += $blockB->cashValue;
                     }
                 }
-                             
-                $data[] = $item;                                
+
+                $data[] = $item;
             }
-            
+
             // Create the correct JSON payloads
-            $out = array('data'=>$data);
-            
+            $out = array('data' => $data);
+
             // Set the correct JSON response header
-           header('Content-Type: application/json');
-           echo json_encode($out);          
-           
-           //  DEBUG ONLY
-           //echo "<pre>" . print_r($out, true) . "</pre>";
+            header('Content-Type: application/json');
+            echo json_encode($out);
+
+            //  DEBUG ONLY
+            //echo "<pre>" . print_r($out, true) . "</pre>";
         }
+    }
+
+    public function getReview() {
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);
+        
+        $data = array();
+        
+        
+        $data[] = array("name" => "last", "type" => "text", "label" => "Last Name", "value" => "Jones");
+        $data[] = array("name" => "first", "type" => "text", "label" => "First Name", "value" => "Ben");
+        $data[] = array("name" => "address", "type" => "text", "label" => "Address", "value" => "321 Misery Lane");
+        $data[] = array("name" => "checker", "type" => "checkbox", "label" => "Checker", "value" => "checked");
+        
+        $data[] = array("name" => "DOK", "type" => "radio", "label" => "DOK", "value" => array(
+                array("label"=>"DOK-1","value"=>"DOK-1", "checked"=>""),
+                array("label"=>"DOK-2","value"=>"DOK-2", "checked"=>"checked"),
+                array("label"=>"DOK-3","value"=>"DOK-3", "checked"=>""),
+                array("label"=>"DOK-4","value"=>"DOK-4", "checked"=>"")
+            ));
+        $data[] = array("name" => "Blooms[]", "type" => "select", "label" => "Blooms", "value" => array(
+                array("label"=>"BLM-1","value"=>"BLM-1", "selected"=>""),
+                array("label"=>"BLM-2","value"=>"BLM-2", "selected"=>"selected"),
+                array("label"=>"BLM-3","value"=>"BLM-3", "selected"=>""),
+                array("label"=>"BLM-4","value"=>"BLM-4", "selected"=>""),
+                array("label"=>"BLM-5","value"=>"BLM-5", "selected"=>""),
+                array("label"=>"BLM-6","value"=>"BLM-6", "selected"=>""),            
+            
+            ));                
+        $data[] = array("name" => "DOKB[]", "type" => "select", "label" => "DOK", "value" => array(
+                array("label"=>"DOK-1","value"=>"DOK-1", "selected"=>""),
+                array("label"=>"DOK-2","value"=>"DOK-2", "selected"=>""),
+                array("label"=>"DOK-3","value"=>"DOK-3", "selected"=>"selected"),
+                array("label"=>"DOK-4","value"=>"DOK-4", "selected"=>"")
+            ));        
+        
+        // Create the correct JSON payloads
+        $out = array('data' => $data);
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);        
     }
     
     
     
+    
+    //========================================================================
+
     private function loadFolder($row) {
         $record = array();
         foreach ($row as $key => $value) {

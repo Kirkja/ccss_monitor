@@ -16,8 +16,8 @@
 
     </div>
 
-    
-    
+
+
     <div class="ui-layout-center">
         <div class="ui-widget-header ui-corner-top">Center-Center</div>
         <div class="ui-widget-content container">
@@ -47,8 +47,8 @@
             </div>
             <div class="ui-state-default blockSummary">
                 <div ng-show="node1.dueON">
-                <span class="right">Due On {{node1.dueON}}</span>
-                ${{node1.cashValue}}
+                    <span class="right">Due On {{node1.dueON}}</span>
+                    ${{node1.cashValue}}
                 </div>
             </div>
         </div>
@@ -69,8 +69,8 @@
             </div>
             <div class="ui-state-default blockSummary">
                 <div ng-show="node2.dueON">
-                <span class="right">Due On {{node2.dueON}}</span>
-                ${{node2.cashValue}}
+                    <span class="right">Due On {{node2.dueON}}</span>
+                    ${{node2.cashValue}}
                 </div>
             </div>            
         </div>
@@ -80,7 +80,49 @@
         <div class="ui-layout-center">
             <div class="ui-widget-header ui-corner-top">East-Center</div>
             <div class="ui-widget-content">
-                stuff here
+                <p>AID: {{user.activeID}}</p>
+                <p>BID: {{currentBlockID}}</p>
+                <p>SID: {{currentSampleID}}</p>
+                <br/>
+                <form name="reviewForm">
+                    <hidden name="aid" value="{{user.activeID}}"/>
+                    <hidden name="bid" value="{{currentBlockID}}"/>
+                    <hidden name="sid" value="{{currentSampleID}}"/>
+
+                    <div ng-repeat="field in fields">
+                        <div ng-switch="field.type">
+                            <div ng-switch-when="text">
+                                {{field.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{field.value}}"/>
+                            </div>
+                            <div ng-switch-when="checkbox">
+                                {{field.label}} <input name="{{field.label}}"  type="{{field.type}}" checked="{{field.value}}"/>
+                            </div>  
+                            <div ng-switch-when="radio"> 
+                                <span ng-repeat="radio in field.value">
+                                    {{radio.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{radio.value}}" checked="{{radio.checked}}"/>
+                                </span>
+                            </div>
+                            
+                            <!--
+                            <div ng-switch-when="select"> 
+                                <select name="{{field.name}}" >
+                                    <option ng-repeat="opt in field.value" value="{{opt.value}}" opt.selected>{{opt.label}}</option>
+                                </select>
+                            </div>
+                            -->
+                            
+                            
+                            <div ng-switch-when="select"> 
+                                <select name="{{field.name}}">
+                                    <option ng-repeat="opt in field.value">{{opt.label}}</option>
+                                </select>
+                            </div>                              
+                            
+                            
+                        </div>
+                    </div>
+                    <button ng-click="saveForm()">Save</button>
+                </form>
             </div>
 
         </div>
