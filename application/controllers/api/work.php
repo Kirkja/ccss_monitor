@@ -247,6 +247,42 @@ class Work extends CI_Controller {
     
     
     
+    public function getreview() {
+        
+        // read in the POST, and parse into into an object 
+        $raw = file_get_contents("php://input"); 
+        $tmp = json_decode($raw);           
+        
+        
+        $form = array();
+        $form['first']  = array('type' => 'text', 'label' => 'First Name', 'val' => 'Ben');
+        $form['last']   = array('type' => 'text', 'label' => 'Last Name', 'val' => 'Jones');
+        $form['block']  = array('type' => 'text', 'label' => 'Block', 'val' => $tmp->blockID);
+        $form['submit'] = array('type' => 'submit');
+        
+        $stub = array();
+        $stub[] = array('name' =>'first', 'type' => 'text', 'label' => 'First Name', 'val' => 'Ben');
+        $stub[] = array('name' =>'last','type' => 'text', 'label' => 'Last Name', 'val' => 'Jones');
+        $stub[] = array('name' =>'blockID','type' => 'text', 'label' => 'Block ID', 'val' => $tmp->blockID);
+        $stub[] = array('name' =>'sampleID','type' => 'text', 'label' => 'Sample ID', 'val' => $tmp->sampleID);
+
+        $data = array();
+        
+        $data['message'] = "Recieved userID =  " . $tmp->userID .", blockID = " . $tmp->blockID;
+        $data['template'] = $form;
+        $data['form'] = $stub;
+        
+        
+        $out = array('data'=>$data);
+        
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);            
+    }
+    
+    
+    
+    
     private function loadFolder($row) {
         $record = array();
         foreach ($row as $key => $value) {

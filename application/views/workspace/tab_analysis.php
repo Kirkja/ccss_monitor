@@ -80,14 +80,30 @@
         <div class="ui-layout-center">
             <div class="ui-widget-header ui-corner-top">East-Center</div>
             <div class="ui-widget-content">
-                stuff here
+                
+    <dynamic-form template="{{formTemplate}}"
+        ng-model="formData"
+        ng-submit="processForm()">
+    </dynamic-form>
+                <div>
+                    model: <pre>{{formData|json}}</pre>
+                </div>
+                <div>
+                    template: <pre>{{formTemplate|json}}</pre>
+                </div>  
+                
+                <div>
+                    tmp: <pre>{{xTMP|json}}</pre>
+                </div>                
             </div>
-
         </div>
+        
         <div class="ui-layout-south">
             <div class="ui-widget-header ui-corner-top">East-South</div>
             <div class="ui-widget-content">
-                stuff here
+                <div ng-repeat="field in fields">
+                    {{field.name}} : <input type="{{field.type}}" value="{{field.val}}" />
+                </div>
             </div>
         </div>
     </div>
