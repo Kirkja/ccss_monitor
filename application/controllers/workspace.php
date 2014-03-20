@@ -20,6 +20,7 @@ class Workspace extends CI_Controller {
         );
         
         
+        
         // Include the required JS
         $data['js_includes'] = array(            
             'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',

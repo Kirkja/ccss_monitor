@@ -5,6 +5,7 @@ if (!defined('BASEPATH'))
 
 class Settings extends CI_Controller {
 
+    
     /**
      * 
      */

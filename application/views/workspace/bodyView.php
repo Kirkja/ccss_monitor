@@ -11,7 +11,6 @@
     <span>Analyst</span>    
 </div>
 
-
 <div id="page-loading">Loading...</div>
 
 <div id="outer-south" class="hidden"></div>
