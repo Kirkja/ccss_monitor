@@ -250,6 +250,7 @@ class Work extends CI_Controller {
         $data = array();
         
         
+        
         $data[] = array("name" => "last", "type" => "text", "label" => "Last Name", "value" => "Jones");
         $data[] = array("name" => "first", "type" => "text", "label" => "First Name", "value" => "Ben");
         $data[] = array("name" => "address", "type" => "text", "label" => "Address", "value" => "321 Misery Lane");
