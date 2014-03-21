@@ -94,6 +94,42 @@
                             <div ng-switch-when="text">
                                 {{field.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{field.value}}"/>
                             </div>
+                            <div ng-switch-when="checkbox">
+                                {{field.label}} <input name="{{field.label}}"  type="{{field.type}}" checked="{{field.value}}"/>
+                            </div>  
+                            <div ng-switch-when="radio"> 
+                                <span ng-repeat="radio in field.value">
+                                    {{radio.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{radio.value}}" checked="{{radio.checked}}"/>
+                                </span>
+                            </div>
+                            
+                            <!--
+                            <div ng-switch-when="select"> 
+                                <select name="{{field.name}}" >
+                                    <option ng-repeat="opt in field.value" value="{{opt.value}}" opt.selected>{{opt.label}}</option>
+                                </select>
+                            </div>
+                            -->
+                            
+                            
+                            <div ng-switch-when="select"> 
+                                <select name="{{field.name}}">
+                                    <option ng-repeat="opt in field.value">{{opt.label}}</option>
+                                </select>
+                            </div>                              
+                            
+                            
+                        </div>
+                    </div>
+                    <button ng-click="saveForm()">Save</button>
+                </form>
+            </div>
+
+                    <div ng-repeat="field in fields">
+                        <div ng-switch="field.type">
+                            <div ng-switch-when="text">
+                                {{field.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{field.value}}"/>
+                            </div>
                             
                             <div ng-switch-when="checkbox">
                                 {{field.label}} <input name="{{field.label}}"  type="{{field.type}}" checked="{{field.value}}"/>
