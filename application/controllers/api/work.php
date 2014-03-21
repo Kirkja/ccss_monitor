@@ -285,6 +285,8 @@ class Work extends CI_Controller {
         echo json_encode($out);        
     }
 
+    
+    /*
     public function getReview() {
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);
@@ -328,7 +330,7 @@ class Work extends CI_Controller {
         header('Content-Type: application/json');
         echo json_encode($out);        
     }
-    
+    */
     
     
     
