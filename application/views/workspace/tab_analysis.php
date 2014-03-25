@@ -19,15 +19,17 @@
 
 
     <div class="ui-layout-center">
-        <div class="ui-widget-header ui-corner-top">Center-Center</div>
-        <div class="ui-widget-content container">
-            {{selected.id}}
-            <div style="text-align:center" ng-show="selected.imagePath">
-                <img src="{{selected.imagePath}}{{selected.imageName}}" width="99%"/>
-            </div>                    
-        </div>                
+    
+            <div class="ui-widget-header ui-corner-top">Center-Center</div>
+            <div class="ui-widget-content container">
+                <div style="text-align:center" ng-show="selected.image">
+                    <img src="{{selected.image}}" width="99%"/>
+                </div>                    
+            </div>   
     </div>
 
+    
+    
     <div class="ui-layout-west">
         <div class="ui-layout-center">
             <div class="ui-widget-header ui-corner-top">Open Work                        
@@ -43,7 +45,6 @@
                              selected-node="node1">
                     {{node.label}}
                 </treecontrol>                
-
             </div>
             <div class="ui-state-default blockSummary">
                 <div ng-show="node1.dueON">
@@ -90,42 +91,7 @@
                     <hidden name="sid" value="{{currentSampleID}}"/>
 
                     <div ng-repeat="field in fields">
-                        <div ng-switch="field.type">
-                            <div ng-switch-when="text">
-                                {{field.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{field.value}}"/>
-                            </div>
-                            <div ng-switch-when="checkbox">
-                                {{field.label}} <input name="{{field.label}}"  type="{{field.type}}" checked="{{field.value}}"/>
-                            </div>  
-                            <div ng-switch-when="radio"> 
-                                <span ng-repeat="radio in field.value">
-                                    {{radio.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{radio.value}}" checked="{{radio.checked}}"/>
-                                </span>
-                            </div>
-                            
-                            <!--
-                            <div ng-switch-when="select"> 
-                                <select name="{{field.name}}" >
-                                    <option ng-repeat="opt in field.value" value="{{opt.value}}" opt.selected>{{opt.label}}</option>
-                                </select>
-                            </div>
-                            -->
-                            
-                            
-                            <div ng-switch-when="select"> 
-                                <select name="{{field.name}}">
-                                    <option ng-repeat="opt in field.value">{{opt.label}}</option>
-                                </select>
-                            </div>                              
-                            
-                            
-                        </div>
-                    </div>
-                    <button ng-click="saveForm()">Save</button>
-                </form>
-            </div>
-
-                    <div ng-repeat="field in fields">
+                        
                         <div ng-switch="field.type">
                             <div ng-switch-when="text">
                                 {{field.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{field.value}}"/>
@@ -137,28 +103,24 @@
                             
                             <div ng-switch-when="radio"> 
                                 <span ng-repeat="radio in field.value">
-                                    {{radio.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{radio.value}}" ng-checked="{{radio.selected}}"/><br/>
+                                    {{radio.label}} <input 
+                                        name="{{field.label}}" 
+                                        type="{{field.type}}" 
+                                        value="{{radio.value}}" 
+                                        ng-checked="{{radio.selected}}"/>                                   
                                 </span>
+                                <br/>
                             </div>
-                            
-                            <!--
-                            <div ng-switch-when="select"> 
-                                <select name="{{field.name}}" >
-                                    <option ng-repeat="opt in field.value" value="{{opt.value}}" opt.selected>{{opt.label}}</option>
-                                </select>
-                            </div>
-                            -->
-                            
                             
                             <div ng-switch-when="select"> 
                                 <select name="{{field.name}}">
                                     <option ng-repeat="opt in field.value" ng-selected="{{opt.selected}}">{{opt.label}}</option>
                                 </select>
                             </div>                              
-                            
-                            
+                                                        
                         </div>
                     </div>
+                    
                     <button ng-click="saveForm()">Save</button>
                 </form>
             </div>
@@ -168,6 +130,30 @@
             <div class="ui-widget-header ui-corner-top">East-South</div>
             <div class="ui-widget-content">
 
+                <table class="std-table" width="100%">
+                    <tr>
+                        <td>###</td>
+                        <td>Standard Here</td>
+                        <td>DOK-?</td>
+                        <td>BLM-?</td>
+                        <td>####</td>
+                    </tr>
+                    <tr>
+                        <td>###</td>
+                        <td>Standard Here</td>
+                        <td>DOK-?</td>
+                        <td>BLM-?</td>
+                        <td>####</td>
+                    </tr>
+                    <tr>
+                        <td>###</td>
+                        <td>Standard Here</td>
+                        <td>DOK-?</td>
+                        <td>BLM-?</td>
+                        <td>####</td>
+                    </tr>                    
+                </table>
+                              
             </div>
         </div>
     </div>

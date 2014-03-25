@@ -26,6 +26,19 @@ and open the template in the editor.
 
 .completed { color:green; }
 
+
+.review-item { height:20px; font-size:12px; padding:0em; border:1px dotted grey; }
+
+.pid { width:10%; max-width:50px; float:left; }
+
+.crd { width:20%; max-width:60px; float:right; margin-left:5px; }
+
+.crb { width:20%; max-width:60px; float:right; margin-left:5px; }
+
+.std { width:60%; min-width:100px; float:left; }
+
+.nte { width:10%; max-width:35px; float:left; margin-left:5px; } 
+
 img { border:0px; margin:0px; border:0px dotted grey;}
 
 dl.form_element {
