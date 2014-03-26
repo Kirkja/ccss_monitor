@@ -84,7 +84,9 @@
                 <p>AID: {{user.activeID}}</p>
                 <p>BID: {{currentBlockID}}</p>
                 <p>SID: {{currentSampleID}}</p>
+                <p>IID: {{currentImageID}}</p>
                 <br/>
+                <!--
                 <form name="reviewForm">
                     <hidden name="aid" value="{{user.activeID}}"/>
                     <hidden name="bid" value="{{currentBlockID}}"/>
@@ -123,6 +125,7 @@
                     
                     <button ng-click="saveForm()">Save</button>
                 </form>
+                -->
             </div>
         </div>
         
@@ -130,29 +133,124 @@
             <div class="ui-widget-header ui-corner-top">East-South</div>
             <div class="ui-widget-content">
 
-                <table class="std-table" width="100%">
+                <!--
+                <table class="std-table" width="100%" cellspacing="0">
                     <tr>
-                        <td>###</td>
+                        <td><input type="text" maxlength="4" size="4" value="" placeholder="id"/></td>
                         <td>Standard Here</td>
-                        <td>DOK-?</td>
-                        <td>BLM-?</td>
-                        <td>####</td>
+                        <td>
+                            <select>
+                                <option value="DOK-?">DOK</option>
+                                <option value="DOK-1">DOK-1</option>
+                                <option value="DOK-2">DOK-2</option>
+                                <option value="DOK-3">DOK-3</option>
+                                <option value="DOK-4">DOK-4</option>
+                            </select>
+                        </td>
+                        <td>                            
+                            <select>
+                                <option value="BLM-?">BLM</option>
+                                <option value="BLM-1">BLM-1</option>
+                                <option value="BLM-2">BLM-2</option>
+                                <option value="BLM-3">BLM-3</option>
+                                <option value="BLM-4">BLM-4</option>
+                                <option value="BLM-5">BLM-5</option>
+                                <option value="BLM-6">BLM-6</option>                                
+                            </select>
+                        </td>
+                        <td><input type="text" maxlength="4" size="4" value="" placeholder="count"/></td>
+                        <td>Note</td>
                     </tr>
                     <tr>
-                        <td>###</td>
+                        <td><input type="text" maxlength="4" size="4" value="" placeholder="id"/></td>
                         <td>Standard Here</td>
-                        <td>DOK-?</td>
-                        <td>BLM-?</td>
-                        <td>####</td>
+                        <td>
+                            <select>
+                                <option value="DOK-?">DOK</option>
+                                <option value="DOK-1">DOK-1</option>
+                                <option value="DOK-2">DOK-2</option>
+                                <option value="DOK-3">DOK-3</option>
+                                <option value="DOK-4">DOK-4</option>
+                            </select>
+                        </td>
+                        <td>                            
+                            <select>
+                                <option value="BLM-?">BLM</option>
+                                <option value="BLM-1">BLM-1</option>
+                                <option value="BLM-2">BLM-2</option>
+                                <option value="BLM-3">BLM-3</option>
+                                <option value="BLM-4">BLM-4</option>
+                                <option value="BLM-5">BLM-5</option>
+                                <option value="BLM-6">BLM-6</option>                                
+                            </select>
+                        </td>
+                        <td><input type="text" maxlength="4" size="4" value="" placeholder="count"/></td>
+                        <td>Note</td>
                     </tr>
                     <tr>
-                        <td>###</td>
+                        <td><input type="text" maxlength="4" size="4" value="" placeholder="id"/></td>
                         <td>Standard Here</td>
-                        <td>DOK-?</td>
-                        <td>BLM-?</td>
-                        <td>####</td>
+                        <td>
+                            <select>
+                                <option value="DOK-?">DOK</option>
+                                <option value="DOK-1">DOK-1</option>
+                                <option value="DOK-2">DOK-2</option>
+                                <option value="DOK-3">DOK-3</option>
+                                <option value="DOK-4">DOK-4</option>
+                            </select>
+                        </td>
+                        <td>                            
+                            <select>
+                                <option value="BLM-?">BLM</option>
+                                <option value="BLM-1">BLM-1</option>
+                                <option value="BLM-2">BLM-2</option>
+                                <option value="BLM-3">BLM-3</option>
+                                <option value="BLM-4">BLM-4</option>
+                                <option value="BLM-5">BLM-5</option>
+                                <option value="BLM-6">BLM-6</option>                                
+                            </select>
+                        </td>
+                        <td><input type="text" maxlength="4" size="4" value="" placeholder="count"/></td>
+                        <td>Note</td>
                     </tr>                    
                 </table>
+                -->
+
+                <table width="100%" border="1" ng-repeat="row in rdf">
+                    <tr>
+                        <td ng-repeat="cell in row">
+                            <div ng-switch="cell.dataName">
+                                
+                                    <input ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>                                                             
+                                
+                                    <input ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
+                                                                
+                                    <select ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
+                                        <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
+                                            {{i}}
+                                        </option>
+                                    </select>
+                                                               
+                                    <select ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
+                                        <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue == i}}">
+                                            {{i}}
+                                        </option>
+                                    </select>
+                                   
+                                <button ng-switch-when="standard">
+                                    {{cell.dataValue}}
+                                </button>
+                                
+                                <div ng-switch-default="">
+                                    {{cell.dataName}}, {{cell.dataValue}}
+                                </div>                                
+                            </div>
+
+                        </td>
+                    </tr>
+                       
+                </table>
+                       
                               
             </div>
         </div>

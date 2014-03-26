@@ -8,7 +8,7 @@
     
     <button id="btn_logout">Log Out</button>
     <br/>
-    <span>Analyst</span>    
+    <span>(<?php echo GSAuth::GetUserObject()->activeID; ?>)</span>    
 </div>
 
 <div id="page-loading">Loading...</div>

@@ -31,13 +31,13 @@ and open the template in the editor.
 
 .pid { width:10%; max-width:50px; float:left; }
 
-.crd { width:20%; max-width:60px; float:right; margin-left:5px; }
+.crd { width:20%; max-width:60px; float:right; margin-left:2px; }
 
-.crb { width:20%; max-width:60px; float:right; margin-left:5px; }
+.crb { width:20%; max-width:60px; float:right; margin-left:2px; }
 
-.std { width:60%; min-width:100px; float:left; }
+.std { width:60%; min-width:100px; float:left; margin-left:2px; }
 
-.nte { width:10%; max-width:35px; float:left; margin-left:5px; } 
+.nte { width:10%; max-width:35px; float:left; margin-left:2px; } 
 
 img { border:0px; margin:0px; border:0px dotted grey;}
 
