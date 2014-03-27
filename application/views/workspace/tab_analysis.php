@@ -81,11 +81,58 @@
         <div class="ui-layout-center">
             <div class="ui-widget-header ui-corner-top">East-Center</div>
             <div class="ui-widget-content">
-                <p>AID: {{user.activeID}}</p>
-                <p>BID: {{currentBlockID}}</p>
-                <p>SID: {{currentSampleID}}</p>
-                <p>IID: {{currentImageID}}</p>
-                <br/>
+
+                <div class="reviewPalette">
+                    <button ng-click="addSCR()">Add SCR</button>
+                    <button ng-click="delSCR()">Delete Selected SCR</button>
+                </div>
+                
+                <div id="reviewDataZone">
+                <table class="reviewFormTable" width="100%" ng-repeat="(key, value) in rdf">
+                    <tr>
+                        <td width="30">
+                            <input type="checkbox" name="{{key}}" />
+                        </td>
+                        
+                        <td ng-repeat="cell in value">
+                            <div ng-switch="cell.dataName">
+                                
+                                    <input class="reviewInput" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>                                                             
+                                
+                                    <input class="reviewInput"  ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
+                                                                
+                                    <select class="reviewInput"  ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
+                                        <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
+                                            {{i}}
+                                        </option>
+                                    </select>
+                                                               
+                                    <select class="reviewInput"  ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
+                                        <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue == i}}">
+                                            {{i}}
+                                        </option>
+                                    </select>
+                                   
+                                <button class="reviewInput"  ng-switch-when="standard">
+                                    {{cell.dataValue}}
+                                </button>
+                                
+                                <div class="reviewInput"  ng-switch-default="">
+                                    {{cell.dataName}}, {{cell.dataValue}}
+                                </div>                                
+                            </div>
+
+                        </td>
+                        <td>{{key}}</td>
+                    </tr>
+                       
+                </table>
+                
+                </div>
+                
+                
+                
+                
                 <!--
                 <form name="reviewForm">
                     <hidden name="aid" value="{{user.activeID}}"/>
@@ -132,7 +179,11 @@
         <div class="ui-layout-south">
             <div class="ui-widget-header ui-corner-top">East-South</div>
             <div class="ui-widget-content">
-
+                <p>AID: {{user.activeID}}</p>
+                <p>BID: {{currentBlockID}}</p>
+                <p>SID: {{currentSampleID}}</p>
+                <p>IID: {{currentImageID}}</p>
+                
                 <!--
                 <table class="std-table" width="100%" cellspacing="0">
                     <tr>
@@ -215,41 +266,6 @@
                     </tr>                    
                 </table>
                 -->
-
-                <table width="100%" border="1" ng-repeat="row in rdf">
-                    <tr>
-                        <td ng-repeat="cell in row">
-                            <div ng-switch="cell.dataName">
-                                
-                                    <input ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>                                                             
-                                
-                                    <input ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
-                                                                
-                                    <select ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
-                                        <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
-                                            {{i}}
-                                        </option>
-                                    </select>
-                                                               
-                                    <select ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
-                                        <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue == i}}">
-                                            {{i}}
-                                        </option>
-                                    </select>
-                                   
-                                <button ng-switch-when="standard">
-                                    {{cell.dataValue}}
-                                </button>
-                                
-                                <div ng-switch-default="">
-                                    {{cell.dataName}}, {{cell.dataValue}}
-                                </div>                                
-                            </div>
-
-                        </td>
-                    </tr>
-                       
-                </table>
                        
                               
             </div>

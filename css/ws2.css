@@ -39,6 +39,15 @@ and open the template in the editor.
 
 .nte { width:10%; max-width:35px; float:left; margin-left:2px; } 
 
+table.reviewFormTable { font-size:12px; width:100%; border:1px dotted grey; margin-bottom:3px;}
+table.reviewFormTable td { text-align:right; padding:0px;}
+table.reviewFormTable td button { width:100% }
+
+table.reviewFormTable td div.reviewInput { text-align:left;}
+
+.reviewPalette { height:50px; }
+
+
 img { border:0px; margin:0px; border:0px dotted grey;}
 
 dl.form_element {
