@@ -97,21 +97,21 @@
                         <td ng-repeat="cell in value">
                             <div ng-switch="cell.dataName">
                                 
-                                    <input class="reviewInput" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>                                                             
-                                
-                                    <input class="reviewInput"  ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
-                                                                
-                                    <select class="reviewInput"  ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
-                                        <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
-                                            {{i}}
-                                        </option>
-                                    </select>
-                                                               
-                                    <select class="reviewInput"  ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
-                                        <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue == i}}">
-                                            {{i}}
-                                        </option>
-                                    </select>
+                                <input class="reviewInput" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>                                                             
+
+                                <input class="reviewInput" ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
+
+                                <select class="reviewInput" ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
+                                    <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
+                                        {{i}}
+                                    </option>
+                                </select>
+
+                                <select class="reviewInput"  ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
+                                    <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue == i}}">
+                                        {{i}}
+                                    </option>
+                                </select>
                                    
                                 <button class="reviewInput"  ng-switch-when="standard">
                                     {{cell.dataValue}}
@@ -119,7 +119,8 @@
                                 
                                 <div class="reviewInput"  ng-switch-default="">
                                     {{cell.dataName}}, {{cell.dataValue}}
-                                </div>                                
+                                </div> 
+                                
                             </div>
 
                         </td>

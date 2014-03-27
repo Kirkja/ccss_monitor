@@ -89,10 +89,44 @@ class Review extends CI_Controller {
     }
         
     
+    public function updateSCR() {
+        
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw); 
+        
+        
+        $this->updateReviewRecord($tmp->id, $tmp->value);
+        
+                
+        //$out = array('data' => 
+        //    array('recordID' => $tmp->id, 'value' => $tmp->value)
+        //);
+
+        // Set the correct JSON response header
+        //header('Content-Type: application/json');
+        //echo json_encode($out);
+        
+        //  DEBUG ONLY
+        //echo "<pre>" . print_r($out, true) . "</pre>";  
+    }
+    
     
     //=======================================================================
     // PRIVATE METHODS
     //
+    
+    /**
+     * 
+     * @param type $recordID
+     * @param type $value
+     */
+    private function updateReviewRecord($recordID, $value) {
+        
+        $sql = "UPDATE review_data SET dataValue = '{$value}' WHERE id={$recordID}";
+        $this->db->query($sql);
+    }
+    
+    
     
     
     /**
