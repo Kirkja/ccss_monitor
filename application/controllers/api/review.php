@@ -240,10 +240,12 @@ class Review extends CI_Controller {
             $imageID
         ) {
           
-        $accountID    = 1;
+        $accountID  = 1;
         $projectID  = 1;
         
         $resp = $this->getNextRDID($activeID, $blockID, $sampleID, $imageID);
+        
+        $resp->gid = $resp->gid == null ? 1 : $resp->gid;
         
         if ($resp->gid > 0) {
             $resp->gid += 1;
