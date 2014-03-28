@@ -19,22 +19,25 @@
 <div id="outer-center" class="hidden">
 
     <!-- Tabs for the panels ............................................... -->
-    <ul id="tabbuttons" class="hidden">
-        <li class="tab1"><a href="#tab1">Admin</a></li>
+    <ul id="tabbuttons" class="hidden">       
         <li class="tab2"><a href="#tab2">Analysis</a></li>
-        <li class="tab3"><a href="#tab3">Account</a></li>
+        <li class="tab3"><a href="#tab3">Account</a></li> 
+        <li class="tab1"><a href="#tab1">Admin</a></li>
     </ul>
 
     <!-- Tab panel container ............................................... -->
     <div id="tabpanels" ng-controller="SettingsController">
-        <!-- Admin Tab ..................................................... -->
-        <?php echo $tab_admin; ?>
-        
+
         <!-- Analysis Tab .................................................. -->
         <?php echo $tab_analysis; ?>
         
         <!-- Account Tab ................................................... -->      
         <?php echo $tab_account; ?>
+        
+        <!-- Admin Tab ..................................................... -->
+        <?php echo $tab_admin; ?>
+                
+        
     </div>
     
 </div>

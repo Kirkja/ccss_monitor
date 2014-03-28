@@ -5,7 +5,6 @@
  * and open the template in the editor.
  */
 ?>
-
 <div id="tab3" class="tab-panel hidden">
     <div class="ui-layout-north ui-widget">
         <div class="toolbar ui-widget-content ui-state-active">
@@ -16,7 +15,7 @@
 
     </div>
     <div id="innerTabs" class="ui-layout-center container tabs">
-        <div class="ui-widget-header ui-corner-top"> Center -Center </div>
+        <div class="ui-widget-header ui-corner-top"> Center - Center </div>
         <ul>
             <li class="tab1"><a href="#simpleTab1">Settings</a></li>
             <li class="tab2"><a href="#simpleTab2">Messages</a></li>

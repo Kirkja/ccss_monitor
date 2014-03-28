@@ -17,14 +17,8 @@
     <div class="ui-layout-center">
         <div class="ui-widget-header ui-corner-top">Center-Center</div>
         <div class="ui-widget-content">
-            <div>
-                path = {{selected.imagePath}} <br/>
-                name = {{selected.imageName}}
-            </div>
 
-            <div style="text-align:center" ng-show="selected.imagePath">
-                <img src="{{selected.imagePath}}{{selected.imageName}}" width="99%"/>
-            </div>
+            center panel
         </div>
     </div>
 

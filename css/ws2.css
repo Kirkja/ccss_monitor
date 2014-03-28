@@ -8,6 +8,9 @@ and open the template in the editor.
     Author     : User1
 */
 
+
+
+
 .bordered-red { 
     border:1px dotted red;
 }
@@ -39,13 +42,20 @@ and open the template in the editor.
 
 .nte { width:10%; max-width:35px; float:left; margin-left:2px; } 
 
-table.reviewFormTable { font-size:12px; width:100%; border:1px dotted grey; margin-bottom:3px;}
-table.reviewFormTable td { text-align:right; padding:0px;}
+table.reviewFormTable { font-size:12px; width:100%; border:1px dotted grey; margin-bottom:3px; padding:0px;}
+table.reviewFormTable td { text-align:right; padding:0px; margin:0px; }
 table.reviewFormTable td button { width:100% }
 
 table.reviewFormTable td div.reviewInput { text-align:left;}
 
-.reviewPalette { height:50px; }
+
+.rdIdBox { width:35px; }
+
+.rdCRdd { width:65px; }
+.rdStd { width:100%; }
+
+
+.reviewPalette { height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px;}
 
 
 img { border:0px; margin:0px; border:0px dotted grey;}

@@ -12,23 +12,43 @@
         </div>
     </div>
 
-    <div class="ui-layout-south ui-widget">
-
-    </div>
-
-
-
+<!--
     <div class="ui-layout-center">
-    
-            <div class="ui-widget-header ui-corner-top">Center-Center</div>
-            <div class="ui-widget-content container">
-                <div style="text-align:center" ng-show="selected.image">
-                    <img src="{{selected.image}}" width="99%"/>
-                </div>                    
-            </div>   
+        <div class="ui-widget-header ui-corner-top">Center-Center</div>
+        <div class="ui-widget-content ">
+            <div style="text-align:center;padding-bottom:5px;" ng-show="selected.image">
+                <img src="{{selected.image}}"  width="99%"/>
+            </div>                    
+        </div>   
     </div>
-
+-->
     
+<div id="innerTabs2" class="ui-layout-center container tabs">
+     
+        <ul>
+            <li class="tab1"><a href="#simpleTab1b">Sample</a></li>
+            <li class="tab2"><a href="#simpleTab2b">Standards</a></li>
+            <li class="tab3"><a href="#simpleTab3b">Misc</a></li>
+        </ul>
+    
+        <div class="ui-widget-content" style="border-top:0;" ng-controller="SettingsController">
+
+            <div id="simpleTab1b" style="padding:0px 0px 5px 0px;" ng-show="selected.image">                                   
+                <img src="{{selected.image}}" width="100%"/>                                                                        
+            </div>
+            
+            <div id="simpleTab2b">
+                Standards Content
+            </div>
+
+            <div id="simpleTab3b"> 
+                Misc Content 
+            </div>
+        </div>
+</div>
+
+
+
     
     <div class="ui-layout-west">
         <div class="ui-layout-center">
@@ -80,7 +100,7 @@
     <div class="ui-layout-east">
         <div class="ui-layout-center">
             <div class="ui-widget-header ui-corner-top">East-Center</div>
-            <div class="ui-widget-content">
+            <div class="ui-widget-content" style="padding:0px;">
 
                 <div class="reviewPalette">
                     <button ng-click="addSCR()">Add SCR</button>
@@ -88,34 +108,34 @@
                 </div>
                 
                 <div id="reviewDataZone">
-                <table class="reviewFormTable" width="100%" ng-repeat="(key, value) in rdf">
+                <table class="reviewFormTable"  ng-repeat="(key, value) in rdf">
                     <tr>
-                        <td width="30">
+                        <td width="20">
                             <input type="checkbox" name="{{key}}" />
                         </td>
                         
                         <td ng-repeat="cell in value">
                             <div ng-switch="cell.dataName">
                                 
-                                <input class="reviewInput" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>                                                             
+                                <input class="rdIdBox" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}" />                                                             
 
-                                <input class="reviewInput" ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
+                                <input class="rdCounterBox" ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
 
-                                <select class="reviewInput" ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
+                                <select class="rdCRdd" ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
                                     <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
                                         {{i}}
                                     </option>
                                 </select>
 
-                                <select class="reviewInput"  ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
+                                <select class="rdCRdd"  ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
                                     <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue == i}}">
                                         {{i}}
                                     </option>
                                 </select>
                                    
-                                <button class="reviewInput"  ng-switch-when="standard">
-                                    {{cell.dataValue}}
-                                </button>
+                                <input type="button" class="rdStd"  ng-switch-when="standard" id="{{cell.dataName}}-{{cell.recordID}}" name="{{cell.dataName}}-{{cell.recordID}}" value="{{cell.dataValue}}"/>
+                                    
+                                
                                 
                                 <div class="reviewInput"  ng-switch-default="">
                                     {{cell.dataName}}, {{cell.dataValue}}
