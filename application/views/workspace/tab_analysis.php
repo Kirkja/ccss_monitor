@@ -5,25 +5,17 @@
  * and open the template in the editor.
  */
 ?>
-<div id="tab2" class="tab-panel hidden">
+<div id="tab2" class="tab-panel hidden" >
     <div class="ui-layout-north ui-widget">
         <div class="toolbar ui-widget-content ui-state-active">
             Toolbar - tab2
         </div>
     </div>
-
-<!--
-    <div class="ui-layout-center">
-        <div class="ui-widget-header ui-corner-top">Center-Center</div>
-        <div class="ui-widget-content ">
-            <div style="text-align:center;padding-bottom:5px;" ng-show="selected.image">
-                <img src="{{selected.image}}"  width="99%"/>
-            </div>                    
-        </div>   
-    </div>
--->
-    
-<div id="innerTabs2" class="ui-layout-center container tabs">
+ 
+    <div id="innerTabs2" 
+         class="ui-layout-center container tabs" 
+         ng-controller="SettingsController" 
+         style="height:100%;">
      
         <ul>
             <li class="tab1"><a href="#simpleTab1b">Sample</a></li>
@@ -31,21 +23,38 @@
             <li class="tab3"><a href="#simpleTab3b">Misc</a></li>
         </ul>
     
-        <div class="ui-widget-content" style="border-top:0;" ng-controller="SettingsController">
+        <div class="ui-widget-content" style="border-top:0;padding:0px;">
 
             <div id="simpleTab1b" style="padding:0px 0px 5px 0px;" ng-show="selected.image">                                   
                 <img src="{{selected.image}}" width="100%"/>                                                                        
             </div>
             
-            <div id="simpleTab2b">
-                Standards Content
+            <div id="simpleTab2b" style="padding:0px;">
+                <div id="catalogPalette">
+                    <span>CA Math</span><input type="radio" ng-model="$parent.catalogID" value="95478981184192512" ng-change="setCID(catalogID)"/>
+                    <span>CA ELA</span><input type="radio" ng-model="$parent.catalogID"   value="1"  ng-change="setCID(catalogID)"/>
+                    <span>CA Science</span><input type="radio" ng-model="$parent.catalogID" value="2"  ng-change="setCID(catalogID)"/>
+                    <span>CA Social Science</span><input type="radio" ng-model="$parent.catalogID" value="3"  ng-change="setCID(catalogID)"/>
+                    
+                </div>
+                
+                <div class="catalogEntry" 
+                     ng-repeat="item in catalogEntries" 
+                     ng-class-odd="'rowOdd'" 
+                     ng-class-even="'rowEven'">                    
+                    <button 
+                        class="stdKey" 
+                        ng-click="addStd(item.key)"
+                        alt="Click to ad standard" 
+                        title="Click to add standard">{{item.key}}</button> <span class="stdDesc">{{item.desc}}</span>                    
+                </div>
             </div>
 
             <div id="simpleTab3b"> 
                 Misc Content 
             </div>
         </div>
-</div>
+    </div>
 
 
 
@@ -76,7 +85,9 @@
         <div class="ui-layout-south">
             <div class="ui-widget-header ui-corner-top">Completed Work
                 <span class="btn right" ng-click="getClosedWork(user)">
-                    <img src="<?php echo base_url(); ?>css/images/refresh_btn_b.png" alt="Refresh Assignments" title="Refresh Assignments"/>
+                    <img src="<?php echo base_url(); ?>css/images/refresh_btn_b.png" 
+                         alt="Refresh Assignments" 
+                         title="Refresh Assignments"/>
                 </span>             
             </div>
             <div class="ui-widget-content">
@@ -117,9 +128,9 @@
                         <td ng-repeat="cell in value">
                             <div ng-switch="cell.dataName">
                                 
-                                <input class="rdIdBox" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}" />                                                             
+                                <input class="rdBox" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}" />                                                             
 
-                                <input class="rdCounterBox" ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
+                                <input class="rdBox" ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
 
                                 <select class="rdCRdd" ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
                                     <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
@@ -133,10 +144,14 @@
                                     </option>
                                 </select>
                                    
-                                <input type="button" class="rdStd"  ng-switch-when="standard" id="{{cell.dataName}}-{{cell.recordID}}" name="{{cell.dataName}}-{{cell.recordID}}" value="{{cell.dataValue}}"/>
+                                <input type="text"
+                                       class="rdStd"                                         
+                                       id="{{cell.dataName}}-{{cell.recordID}}" 
+                                       name="{{cell.dataName}}-{{cell.recordID}}" 
+                                       value="{{cell.dataValue}}"
+                                       ng-switch-when="standard"/>
                                     
-                                
-                                
+                                                                
                                 <div class="reviewInput"  ng-switch-default="">
                                     {{cell.dataName}}, {{cell.dataValue}}
                                 </div> 
@@ -204,6 +219,7 @@
                 <p>BID: {{currentBlockID}}</p>
                 <p>SID: {{currentSampleID}}</p>
                 <p>IID: {{currentImageID}}</p>
+                <p>CID: {{currentCatalogID}}</p>
                 
                 <!--
                 <table class="std-table" width="100%" cellspacing="0">

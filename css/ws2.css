@@ -49,14 +49,23 @@ table.reviewFormTable td button { width:100% }
 table.reviewFormTable td div.reviewInput { text-align:left;}
 
 
-.rdIdBox { width:35px; }
+.rdBox { width:35px; }
 
 .rdCRdd { width:65px; }
-.rdStd { width:100%; }
+.rdStd {  }
 
 
-.reviewPalette { height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px;}
+.reviewPalette { height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; }
+#catalogPalette { height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; }
 
+button.stdKey { font-size:12px; padding:0px; margin:0px; }
+.stdDesc { font-size:12px; }
+
+.catalogEntry { margin-bottom:0.25em; padding:0.25em; }
+
+
+.rowOdd { background-color:rgb(250,250,250); }
+.rowEven { background-color:#D1FFFF; }
 
 img { border:0px; margin:0px; border:0px dotted grey;}
 

@@ -88,32 +88,85 @@ class Review extends CI_Controller {
         //echo "<pre>" . print_r($out, true) . "</pre>";        
     }
         
+        public function addFilledSCR() {
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);        
+        
+        $activeID   = GSAuth::GetUserObject()->activeID;;
+        $blockID    = $tmp->blockID;
+        $sampleID   = $tmp->sampleID;
+        $imageID    = $tmp->imageID;        
+        $stdKey     = $tmp->stdKey;
+ 
+        $this->createFilledSCR($activeID, $blockID, $sampleID, $imageID, $stdKey);
+        
+        $out = array('data' => 
+            $this-> extractReviews($activeID, $blockID, $sampleID, $imageID)
+        );
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);
+        
+        //  DEBUG ONLY
+        //echo "<pre>" . print_r($out, true) . "</pre>";        
+    }
+    
     
     public function updateSCR() {
         
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw); 
-        
-        
+                        
         $this->updateReviewRecord($tmp->id, $tmp->value);
-        
-                
-        //$out = array('data' => 
-        //    array('recordID' => $tmp->id, 'value' => $tmp->value)
-        //);
-
-        // Set the correct JSON response header
-        //header('Content-Type: application/json');
-        //echo json_encode($out);
-        
-        //  DEBUG ONLY
-        //echo "<pre>" . print_r($out, true) . "</pre>";  
     }
     
+    public function updateSTD() {
+        
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw); 
+          
+        
+        $test = $this->testStandard($tmp->value);
+        
+        if ($test) {
+            $this->updateReviewRecord($tmp->id, $tmp->value);
+        }
+        
+        $out = array('data' => 
+            $test
+        );
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);        
+        
+        //$this->updateReviewRecord($tmp->id, $tmp->value);
+    }
+        
     
     //=======================================================================
     // PRIVATE METHODS
     //
+    
+    private function testStandard($stdKey) {
+        
+        $sql ="SELECT * 
+                FROM ccss_standards AS CCSS
+                WHERE CCSS.Tier_2 <> ''
+                AND CONCAT(CCSS.state,'_',CCSS.key0) = '{$stdKey}'
+                GROUP BY CCSS.state, CCSS.key0
+                LIMIT 1";
+                
+        $query = $this->db->query($sql);
+        
+        if ($query->num_rows() > 0) { return true; }
+        
+        return false;
+    }
+    
+    
+    
     
     /**
      * 
@@ -260,9 +313,47 @@ class Review extends CI_Controller {
                 ";
                 
             $this->db->query($sql);
-        }
-        
+        }        
     }
+    
+    
+    
+    private function createFilledSCR(            
+            $activeID, 
+            $blockID, 
+            $sampleID, 
+            $imageID,
+            $std
+        ) {
+          
+        $accountID  = 1;
+        $projectID  = 1;
+        
+        $resp = $this->getNextRDID($activeID, $blockID, $sampleID, $imageID);
+        
+        $resp->gid = $resp->gid == null ? 1 : $resp->gid;
+        
+        if ($resp->gid > 0) {
+            $resp->gid += 1;
+            $sql = "INSERT INTO review_data 
+                (id,accountID, projectID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
+                VALUES 
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','?','text'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'standard','{$std}','button'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},3,NOW(),'dok','','select'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},4,NOW(),'blm','','select'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','?','text')
+                ";
+                
+            $this->db->query($sql);
+        }        
+    }
+    
+       
+    
+    
+    
+    
     
     /**
      * 

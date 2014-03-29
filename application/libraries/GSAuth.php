@@ -145,6 +145,17 @@ class GSAuth {
     }
     
     
+    
+    public function Fence() {
+        if (!GSAuth::$CI->session->userdata('isActive')) {
+            GSAuth::$CI->session->sess_destroy();
+            return null; //redirect(base_url() . "entry");
+        }
+        else {
+            return GSAuth::GetUserObject()->activeID;
+        }
+    }    
+    
     //=========================================================================
     // Private methods
     //.........................................................................
