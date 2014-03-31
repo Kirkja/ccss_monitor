@@ -59,7 +59,7 @@ table.reviewFormTable td div.reviewInput { text-align:left;}
 #catalogPalette { min-height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; font-size:12px;}
 #searchPalette  { min-height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; font-size:12px;}
 
-
+#searchInput { width:100%; margin-right:5px; }
 
 button.stdKey { font-size:12px; padding:0px; margin:0px; }
 .stdDesc { font-size:12px; }
@@ -105,3 +105,7 @@ dl.form_element dd {
     padding:1em;
     
 }
+
+
+image.btn { border:0px dotted grey; }
+image.btn:hover { cursor:pointer; }

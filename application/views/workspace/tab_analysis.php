@@ -59,8 +59,8 @@
                     </label> 
                     <table width="99%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td><input type="text" ng-model="searchTerms"/></td>
-                        <td><input type="button" ng-click="searchNow(searchTerms)" value="S" /></td>
+                        <td><input id="searchInput" type="text" ng-model="searchTerms"</td>
+                        <td width="40" align="right"><image class="btn" ng-click="searchNow(searchTerms)" src="/css/images/search.png"/></td>
                     </tr>
                     </table>                  
                     
