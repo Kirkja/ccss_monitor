@@ -89,16 +89,17 @@ class Work extends CI_Controller {
 
                     foreach ($queryB->result() as $blockB) {
                         $c = array();                       
-                        $c['label']     = trim($blockB->sampleLabel);
-                        $c['id']        = $blockB->sampleID;
-                        $c['image']     = $blockB->image;
-                        $c['imageID']   = $blockB->imageID;
-                        $c['cashValue'] = $blockB->cashValue;
-                        $c['blockID']   = $block->blockID;
+                        $c['label']         = trim($blockB->sampleLabel);
+                        $c['id']            = $blockB->sampleID;
+                        $c['image']         = $blockB->image;
+                        $c['imageID']       = $blockB->imageID;
+                        $c['cashValue']     = $blockB->cashValue;
+                        $c['blockID']       = $block->blockID;
+                        $c['blockName']     = $block->label;
                         
                         // test is there is a review, then mark as completed
                         // just place the date completed
-                        $c['completed'] = '';
+                        $c['completed'] = $mode == 'open' ? 'n' : 'y';
                         
                         // samples have no children, but its needed just in case
                         $c['children']  = array();

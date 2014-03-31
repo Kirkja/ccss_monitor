@@ -55,14 +55,17 @@ table.reviewFormTable td div.reviewInput { text-align:left;}
 .rdStd {  }
 
 
-.reviewPalette { height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; }
-#catalogPalette { height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; }
+.reviewPalette  { min-height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; font-size:12px;}
+#catalogPalette { min-height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; font-size:12px;}
+#searchPalette  { min-height:50px; background-color:rgb(200,200,200); margin-bottom:5px; padding:5px; font-size:12px;}
+
+
 
 button.stdKey { font-size:12px; padding:0px; margin:0px; }
 .stdDesc { font-size:12px; }
 
 .catalogEntry { margin-bottom:0.25em; padding:0.25em; }
-
+.searchEntry { margin-bottom:0.25em; padding:0.25em;}
 
 .rowOdd { background-color:rgb(250,250,250); }
 .rowEven { background-color:#D1FFFF; }

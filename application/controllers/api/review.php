@@ -17,6 +17,10 @@ class Review extends CI_Controller {
     
     public function getReviewData() {
         
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+        
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);
               
@@ -40,6 +44,11 @@ class Review extends CI_Controller {
     
     
     public function delSCR() {
+        
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------        
+        
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);        
         
@@ -66,6 +75,12 @@ class Review extends CI_Controller {
     
     
     public function addSCR() {
+        
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+        
+        
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);        
         
@@ -88,11 +103,25 @@ class Review extends CI_Controller {
         //echo "<pre>" . print_r($out, true) . "</pre>";        
     }
         
-        public function addFilledSCR() {
+    
+    
+    
+   public function addFilledSCR() {
+       
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+        
+        
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);        
+                
+        if (!isset($tmp->blockID))     { exit(); }
+        if (!isset($tmp->sampleID))    { exit(); }
+        if (!isset($tmp->imageID))     { exit(); }
+        if (!isset($tmp->stdKey))      { exit(); }
         
-        $activeID   = GSAuth::GetUserObject()->activeID;;
+        $activeID   = GSAuth::GetUserObject()->activeID;
         $blockID    = $tmp->blockID;
         $sampleID   = $tmp->sampleID;
         $imageID    = $tmp->imageID;        
@@ -121,12 +150,13 @@ class Review extends CI_Controller {
         $this->updateReviewRecord($tmp->id, $tmp->value);
     }
     
+    
+    
     public function updateSTD() {
         
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw); 
-          
-        
+                  
         $test = $this->testStandard($tmp->value);
         
         if ($test) {

@@ -20,7 +20,7 @@
         <ul>
             <li class="tab1"><a href="#simpleTab1b">Sample</a></li>
             <li class="tab2"><a href="#simpleTab2b">Standards</a></li>
-            <li class="tab3"><a href="#simpleTab3b">Misc</a></li>
+            <li class="tab3"><a href="#simpleTab3b">Search</a></li>
         </ul>
     
         <div class="ui-widget-content" style="border-top:0;padding:0px;">
@@ -29,15 +29,16 @@
                 <img src="{{selected.image}}" width="100%"/>                                                                        
             </div>
             
-            <div id="simpleTab2b" style="padding:0px;">
+            <div id="simpleTab2b" style="padding:0px;"> 
+                <!-- List of catalogs that are assigned to this block        -->
                 <div id="catalogPalette">
-                    <span>CA Math</span><input type="radio" ng-model="$parent.catalogID" value="95478981184192512" ng-change="setCID(catalogID)"/>
-                    <span>CA ELA</span><input type="radio" ng-model="$parent.catalogID"   value="1"  ng-change="setCID(catalogID)"/>
-                    <span>CA Science</span><input type="radio" ng-model="$parent.catalogID" value="2"  ng-change="setCID(catalogID)"/>
-                    <span>CA Social Science</span><input type="radio" ng-model="$parent.catalogID" value="3"  ng-change="setCID(catalogID)"/>
-                    
+                    <label ng-repeat="item in catalogs">                    
+                        <input type="radio" ng-model="$parent.catalogID" value="{{item.catalogID}}" ng-change="setCID(catalogID)"/>
+                        <span>{{item.label}}</spn><br/>
+                    </label>
                 </div>
                 
+                <!-- The standards for the selected catalog                  -->
                 <div class="catalogEntry" 
                      ng-repeat="item in catalogEntries" 
                      ng-class-odd="'rowOdd'" 
@@ -45,13 +46,38 @@
                     <button 
                         class="stdKey" 
                         ng-click="addStd(item.key)"
-                        alt="Click to ad standard" 
+                        alt="Click to add standard" 
                         title="Click to add standard">{{item.key}}</button> <span class="stdDesc">{{item.desc}}</span>                    
                 </div>
             </div>
 
-            <div id="simpleTab3b"> 
-                Misc Content 
+            <div id="simpleTab3b" style="padding:0px 0px 5px 0px;"> 
+                <div id="searchPalette">
+                    <label ng-repeat="item in catalogs">                    
+                        <input class="rdSearch" type="checkbox" name="{{item.catalogID}}" value="{{item.catalogID}}"/>
+                        <span>{{item.label}}</spn><br/>
+                    </label> 
+                    <table width="99%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td><input type="text" ng-model="searchTerms"/></td>
+                        <td><input type="button" ng-click="searchNow(searchTerms)" value="S" /></td>
+                    </tr>
+                    </table>                  
+                    
+                </div>
+                
+
+                    
+                <div class="searchEntry" 
+                     ng-repeat="item in searchEntries" 
+                     ng-class-odd="'rowOdd'" 
+                     ng-class-even="'rowEven'">                    
+                    <button 
+                        class="stdKey" 
+                        ng-click="addStd(item.key)"
+                        alt="Click to add standard" 
+                        title="Click to add standard">{{item.key}}</button> <span class="stdDesc">{{item.desc}}</span>                    
+                </div>
             </div>
         </div>
     </div>
@@ -110,7 +136,9 @@
 
     <div class="ui-layout-east">
         <div class="ui-layout-center">
-            <div class="ui-widget-header ui-corner-top">East-Center</div>
+            <div class="ui-widget-header ui-corner-top">
+            {{currentBlockName}} -> {{currentSampleName}}
+            </div>
             <div class="ui-widget-content" style="padding:0px;">
 
                 <div class="reviewPalette">
@@ -122,7 +150,7 @@
                 <table class="reviewFormTable"  ng-repeat="(key, value) in rdf">
                     <tr>
                         <td width="20">
-                            <input type="checkbox" name="{{key}}" />
+                            <input class="rdSelector" type="checkbox" name="{{key}}" />
                         </td>
                         
                         <td ng-repeat="cell in value">
@@ -150,8 +178,7 @@
                                        name="{{cell.dataName}}-{{cell.recordID}}" 
                                        value="{{cell.dataValue}}"
                                        ng-switch-when="standard"/>
-                                    
-                                                                
+                                                                                                    
                                 <div class="reviewInput"  ng-switch-default="">
                                     {{cell.dataName}}, {{cell.dataValue}}
                                 </div> 
@@ -164,51 +191,7 @@
                        
                 </table>
                 
-                </div>
-                
-                
-                
-                
-                <!--
-                <form name="reviewForm">
-                    <hidden name="aid" value="{{user.activeID}}"/>
-                    <hidden name="bid" value="{{currentBlockID}}"/>
-                    <hidden name="sid" value="{{currentSampleID}}"/>
-
-                    <div ng-repeat="field in fields">
-                        
-                        <div ng-switch="field.type">
-                            <div ng-switch-when="text">
-                                {{field.label}} <input name="{{field.label}}" type="{{field.type}}" value="{{field.value}}"/>
-                            </div>
-                            
-                            <div ng-switch-when="checkbox">
-                                {{field.label}} <input name="{{field.label}}"  type="{{field.type}}" checked="{{field.value}}"/>
-                            </div>  
-                            
-                            <div ng-switch-when="radio"> 
-                                <span ng-repeat="radio in field.value">
-                                    {{radio.label}} <input 
-                                        name="{{field.label}}" 
-                                        type="{{field.type}}" 
-                                        value="{{radio.value}}" 
-                                        ng-checked="{{radio.selected}}"/>                                   
-                                </span>
-                                <br/>
-                            </div>
-                            
-                            <div ng-switch-when="select"> 
-                                <select name="{{field.name}}">
-                                    <option ng-repeat="opt in field.value" ng-selected="{{opt.selected}}">{{opt.label}}</option>
-                                </select>
-                            </div>                              
-                                                        
-                        </div>
-                    </div>
-                    
-                    <button ng-click="saveForm()">Save</button>
-                </form>
-                -->
+                </div>                                
             </div>
         </div>
         
@@ -219,92 +202,7 @@
                 <p>BID: {{currentBlockID}}</p>
                 <p>SID: {{currentSampleID}}</p>
                 <p>IID: {{currentImageID}}</p>
-                <p>CID: {{currentCatalogID}}</p>
-                
-                <!--
-                <table class="std-table" width="100%" cellspacing="0">
-                    <tr>
-                        <td><input type="text" maxlength="4" size="4" value="" placeholder="id"/></td>
-                        <td>Standard Here</td>
-                        <td>
-                            <select>
-                                <option value="DOK-?">DOK</option>
-                                <option value="DOK-1">DOK-1</option>
-                                <option value="DOK-2">DOK-2</option>
-                                <option value="DOK-3">DOK-3</option>
-                                <option value="DOK-4">DOK-4</option>
-                            </select>
-                        </td>
-                        <td>                            
-                            <select>
-                                <option value="BLM-?">BLM</option>
-                                <option value="BLM-1">BLM-1</option>
-                                <option value="BLM-2">BLM-2</option>
-                                <option value="BLM-3">BLM-3</option>
-                                <option value="BLM-4">BLM-4</option>
-                                <option value="BLM-5">BLM-5</option>
-                                <option value="BLM-6">BLM-6</option>                                
-                            </select>
-                        </td>
-                        <td><input type="text" maxlength="4" size="4" value="" placeholder="count"/></td>
-                        <td>Note</td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" maxlength="4" size="4" value="" placeholder="id"/></td>
-                        <td>Standard Here</td>
-                        <td>
-                            <select>
-                                <option value="DOK-?">DOK</option>
-                                <option value="DOK-1">DOK-1</option>
-                                <option value="DOK-2">DOK-2</option>
-                                <option value="DOK-3">DOK-3</option>
-                                <option value="DOK-4">DOK-4</option>
-                            </select>
-                        </td>
-                        <td>                            
-                            <select>
-                                <option value="BLM-?">BLM</option>
-                                <option value="BLM-1">BLM-1</option>
-                                <option value="BLM-2">BLM-2</option>
-                                <option value="BLM-3">BLM-3</option>
-                                <option value="BLM-4">BLM-4</option>
-                                <option value="BLM-5">BLM-5</option>
-                                <option value="BLM-6">BLM-6</option>                                
-                            </select>
-                        </td>
-                        <td><input type="text" maxlength="4" size="4" value="" placeholder="count"/></td>
-                        <td>Note</td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" maxlength="4" size="4" value="" placeholder="id"/></td>
-                        <td>Standard Here</td>
-                        <td>
-                            <select>
-                                <option value="DOK-?">DOK</option>
-                                <option value="DOK-1">DOK-1</option>
-                                <option value="DOK-2">DOK-2</option>
-                                <option value="DOK-3">DOK-3</option>
-                                <option value="DOK-4">DOK-4</option>
-                            </select>
-                        </td>
-                        <td>                            
-                            <select>
-                                <option value="BLM-?">BLM</option>
-                                <option value="BLM-1">BLM-1</option>
-                                <option value="BLM-2">BLM-2</option>
-                                <option value="BLM-3">BLM-3</option>
-                                <option value="BLM-4">BLM-4</option>
-                                <option value="BLM-5">BLM-5</option>
-                                <option value="BLM-6">BLM-6</option>                                
-                            </select>
-                        </td>
-                        <td><input type="text" maxlength="4" size="4" value="" placeholder="count"/></td>
-                        <td>Note</td>
-                    </tr>                    
-                </table>
-                -->
-                       
-                              
+                <p>CID: {{currentCatalogID}}</p>   
             </div>
         </div>
     </div>
