@@ -37,6 +37,11 @@
                         <span>{{item.label}}</spn><br/>
                     </label>
                 </div>
+     
+                
+                <div class="loading">
+                    {{loadingMessage}}
+                </div>
                 
                 <!-- The standards for the selected catalog                  -->
                 <div class="catalogEntry" 
@@ -60,13 +65,12 @@
                     <table width="99%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td><input id="searchInput" type="text" ng-model="searchTerms"</td>
-                        <td width="40" align="right"><image class="btn" ng-click="searchNow(searchTerms)" src="/css/images/search.png"/></td>
+                        <td width="40" align="right"><image id="searchButton" class="btn" ng-click="searchNow(searchTerms)" src="/css/images/search.png"/></td>
                     </tr>
                     </table>                  
                     
                 </div>
                 
-
                     
                 <div class="searchEntry" 
                      ng-repeat="item in searchEntries" 
@@ -137,18 +141,24 @@
     <div class="ui-layout-east">
         <div class="ui-layout-center">
             <div class="ui-widget-header ui-corner-top">
-            {{currentBlockName}} -> {{currentSampleName}}
+                Sample Review
             </div>
             <div class="ui-widget-content" style="padding:0px;">
 
                 <div class="reviewPalette">
-                    <button ng-click="addSCR()">Add SCR</button>
-                    <button ng-click="delSCR()">Delete Selected SCR</button>
+                    <a href="" ng-click="addSCR()" class="button add">Add SCR</a>
+                    <a href="" ng-click="delSCR()" class="button delete">Del SCR</a>
+                </div>
+                <div id="sampleInfo">
+                    {{currentBlockName}} <span ng-show="currentSampleName"> - </span> {{currentSampleName}}
                 </div>
                 
                 <div id="reviewDataZone">
-                <table class="reviewFormTable"  ng-repeat="(key, value) in rdf">
-                    <tr>
+                <table class="reviewFormTable"  
+                       ng-repeat="(key, value) in rdf" 
+                       ng-class-odd="'trOdd'" 
+                       ng-class-even="'trEven'">
+                    <tr >
                         <td width="20">
                             <input class="rdSelector" type="checkbox" name="{{key}}" />
                         </td>
@@ -186,7 +196,12 @@
                             </div>
 
                         </td>
-                        <td>{{key}}</td>
+                        <td>
+                            {{value.dataName}}
+                            <!--
+                            <image ng-click="getNote(key)" src="/css/images/no_notes.png" id="{{key}}"/>
+                            -->
+                        </td>
                     </tr>
                        
                 </table>

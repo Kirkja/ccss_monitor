@@ -179,6 +179,13 @@ class Review extends CI_Controller {
     // PRIVATE METHODS
     //
     
+    
+    /**
+     * Tests whether the standard is a valid on record
+     * 
+     * @param type $stdKey
+     * @return boolean
+     */
     private function testStandard($stdKey) {
         
         $sql ="SELECT * 
