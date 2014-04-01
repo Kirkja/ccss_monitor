@@ -211,9 +211,9 @@ class Standards extends CI_Controller {
                   id
                 , CONCAT(state,'_',key0) AS standardKey
                 , Tier_2 AS standardText
-                , MATCH(Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE) AS score
+                , MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE) AS score
                 FROM ccss_standards
-                WHERE MATCH(Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE)
+                WHERE MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE)
                 AND catalogID IN ({$catalogList})
                 ORDER BY score DESC, gradelevel DESC";
         

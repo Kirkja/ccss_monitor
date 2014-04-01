@@ -65,7 +65,7 @@
                     </label> 
                     <table width="99%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td><input id="searchInput" type="text" ng-model="searchTerms"</td>
+                        <td><input id="searchInput" type="text" ng-model="searchTerms" ng-enter="searchNow(searchTerms)"</td>
                         <td width="40" align="right"><image id="searchButton" class="btn" ng-click="searchNow(searchTerms)" src="/css/images/search.png"/></td>
                     </tr>
                     </table>  
@@ -150,7 +150,7 @@
             <div class="ui-widget-content" style="padding:0px;">
 
                 <div class="reviewPalette">
-                    <a href="" ng-click="addSCR()" class="button add">Add SCR</a>
+                    <a href="" ng-click="addSCR()" class="button add right">Add SCR</a>
                     <a href="" ng-click="delSCR()" class="button delete">Del SCR</a>
                 </div>
                 <div id="sampleInfo">
@@ -158,16 +158,17 @@
                 </div>
                 
                 <div id="reviewDataZone">
+  
                 <table class="reviewFormTable"  
-                       ng-repeat="(key, value) in rdf" 
+                       ng-repeat="(key, value) in rdf2" 
                        ng-class-odd="'trOdd'" 
                        ng-class-even="'trEven'">
                     <tr >
                         <td width="20">
-                            <input class="rdSelector" type="checkbox" name="{{key}}" />
+                            {{key}}<input class="rdSelector" type="checkbox" name="{{key}}" />
                         </td>
                         
-                        <td ng-repeat="cell in value">
+                        <td ng-repeat="cell in value['cell']">
                             <div ng-switch="cell.dataName">
                                 
                                 <input class="rdBox" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}" />                                                             
@@ -200,28 +201,37 @@
                             </div>
 
                         </td>
-                        <td>
-                            {{value.dataName}}
-                            <!--
-                            <image ng-click="getNote(key)" src="/css/images/no_notes.png" id="{{key}}"/>
-                            -->
+                        <td width="20">                            
+                            <image class="btn" ng-show="value.note" ng-click="getNote(key)" src="/css/images/yes_notes.png" id="{{key}}"/>
+                            <image class="btn" ng-hide="value.note" ng-click="getNote(key)" src="/css/images/no_notes.png" id="{{key}}"/>                           
                         </td>
                     </tr>
                        
-                </table>
+                </table>                                  
                 
                 </div>                                
             </div>
         </div>
         
         <div class="ui-layout-south">
-            <div class="ui-widget-header ui-corner-top">East-South</div>
-            <div class="ui-widget-content">
+            <div class="ui-widget-header ui-corner-top">Notes</div>
+            <div class="ui-widget-content" style="padding:0px;">
+                
+                <div class="notePallette">
+                    <div id="noteControls">
+                        <a href="" class="button delete" ng-click="delNote()">Delete</a>
+                        <a href="" class="button save right" ng-click="saveNote()">Save</a> 
+                        <div><span>{{noteStamp}}</span></div>
+                    </div>
+                    <textarea id="reviewNote" ng-model="currentNote"></textarea>
+                </div>
+                
                 <p>AID: {{user.activeID}}</p>
                 <p>BID: {{currentBlockID}}</p>
                 <p>SID: {{currentSampleID}}</p>
                 <p>IID: {{currentImageID}}</p>
-                <p>CID: {{currentCatalogID}}</p>   
+                <p>CID: {{currentCatalogID}}</p>  
+                <p>GID: {{currentGroupingID}}</p>  
             </div>
         </div>
     </div>

@@ -31,7 +31,7 @@ class Review extends CI_Controller {
               
         // Create the correct JSON payloads
         $out = array('data' => 
-            $this->extractReviews($activeID, $blockID, $sampleID, $imageID)
+            $this->getReviews($activeID, $blockID, $sampleID, $imageID)
         );
 
         // Set the correct JSON response header
@@ -61,7 +61,7 @@ class Review extends CI_Controller {
         $this->deleteReviews($activeID, $blockID, $sampleID, $imageID, $groups);
         
         $out = array('data' => 
-            $this->extractReviews($activeID, $blockID, $sampleID, $imageID)
+            $this->getReviews($activeID, $blockID, $sampleID, $imageID)
         );
 
         // Set the correct JSON response header
@@ -92,7 +92,7 @@ class Review extends CI_Controller {
         $this->createSCR($activeID, $blockID, $sampleID, $imageID);
         
         $out = array('data' => 
-            $this-> extractReviews($activeID, $blockID, $sampleID, $imageID)
+            $this->getReviews($activeID, $blockID, $sampleID, $imageID)
         );
 
         // Set the correct JSON response header
@@ -130,7 +130,7 @@ class Review extends CI_Controller {
         $this->createFilledSCR($activeID, $blockID, $sampleID, $imageID, $stdKey);
         
         $out = array('data' => 
-            $this-> extractReviews($activeID, $blockID, $sampleID, $imageID)
+            $this->getReviews($activeID, $blockID, $sampleID, $imageID)
         );
 
         // Set the correct JSON response header
@@ -170,14 +170,210 @@ class Review extends CI_Controller {
         // Set the correct JSON response header
         header('Content-Type: application/json');
         echo json_encode($out);        
-        
-        //$this->updateReviewRecord($tmp->id, $tmp->value);
     }
+    
+    
+    
+    public function getNote() {
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
         
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);         
+        
+        if (!isset($tmp->blockID))     { exit(); }
+        if (!isset($tmp->sampleID))    { exit(); }
+        if (!isset($tmp->imageID))     { exit(); }
+        if (!isset($tmp->groupingID))  { exit(); }
+               
+        $blockID    = $tmp->blockID;
+        $sampleID   = $tmp->sampleID;
+        $imageID    = $tmp->imageID;        
+        $groupingID = $tmp->groupingID;        
+        
+        $out = array('data' => 
+            $this->extractNote($activeID, $blockID, $sampleID, $imageID, $groupingID)
+        );
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);                        
+    }
+    
+    
+    public function saveNote() {
+
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+        
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);         
+        
+        if (!isset($tmp->blockID))      { exit(); }
+        if (!isset($tmp->sampleID))     { exit(); }
+        if (!isset($tmp->imageID))      { exit(); }
+        if (!isset($tmp->groupingID))   { exit(); }
+        if (!isset($tmp->noteID))       { exit(); }
+        if (!isset($tmp->noteText))     { exit(); }
+               
+        $blockID    = $tmp->blockID;
+        $sampleID   = $tmp->sampleID;
+        $imageID    = $tmp->imageID;        
+        $groupingID = $tmp->groupingID; 
+        $noteID     = $tmp->noteID; 
+        $noteText   = $tmp->noteText; 
+                        
+        $out = array('data' => 
+            $this->updateNote($activeID,
+                    $blockID,$sampleID,$imageID,
+                    $groupingID,$noteID,$noteText)
+        );
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);        
+    }
+    
+    
+ 
+    public function delNote() {
+
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+        
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);         
+        
+        if (!isset($tmp->blockID))      { exit(); }
+        if (!isset($tmp->sampleID))     { exit(); }
+        if (!isset($tmp->imageID))      { exit(); }
+        if (!isset($tmp->groupingID))   { exit(); }
+        if (!isset($tmp->noteID))       { exit(); }
+        if (!isset($tmp->noteText))     { exit(); }
+               
+        $blockID    = $tmp->blockID;
+        $sampleID   = $tmp->sampleID;
+        $imageID    = $tmp->imageID;        
+        $groupingID = $tmp->groupingID; 
+        $noteID     = $tmp->noteID; 
+        $noteText   = $tmp->noteText; 
+        
+                
+        $out = array('data' => 
+            $this->eraseNote($noteID)
+        );
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);        
+    }
+       
+    
     
     //=======================================================================
     // PRIVATE METHODS
     //
+    
+    private function updateNote(
+            $activeID,
+            $blockID,
+            $sampleID,
+            $imageID,
+            $groupingID,
+            $noteID,
+            $noteText) {
+        
+        $sql = "";
+        
+        if ($noteID > 0) {
+            $sql = "UPDATE review_note
+                    SET note = '{$noteText}'
+                    WHERE id = {$noteID}
+                    LIMIT 1";
+        }
+        else {
+            $sql = "INSERT INTO review_note
+                    SELECT 
+                    UUID_SHORT(),
+                    {$blockID},
+                    {$sampleID},
+                    {$imageID},
+                    {$groupingID},
+                    LI.userID, NOW(),'{$noteText}' ,'y'
+                    FROM review_note AS RN
+                    LEFT JOIN login AS LI ON LI.userID = rn.createdBY
+                    WHERE LI.id = {$activeID} ";           
+        }
+        
+        if (!empty($sql)) {
+            $this->db->query($sql);
+        }
+        
+        return "saved"; //$sql;
+    }
+    
+    
+    
+    
+    private function eraseNote($noteID) {
+        
+        if ($noteID > 0) {
+            
+        }
+        else {
+            
+        }
+        
+        return "deleted";
+    }
+        
+    
+    
+    
+    private function extractNote(
+            $activeID, 
+            $blockID, 
+            $sampleID, 
+            $imageID, 
+            $groupingID) {
+        
+        $sql = "SELECT RN.id, RN.note, 
+                DATE_FORMAT(RN.createdON,'%b %d %Y, %h:%i %p') as createdON
+                FROM review_note AS RN
+                LEFT JOIN login AS LI ON LI.userID = RN.createdBY
+                WHERE RN.active = 'y'
+                AND RN.blockID = {$blockID}
+                AND RN.sampleID = {$sampleID}
+                AND RN.imageID = {$imageID}
+                AND RN.groupingID = {$groupingID}
+                AND LI.id = {$activeID} LIMIT 1";
+        
+        $query = $this->db->query($sql);
+        
+        $data = array();
+        
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $data['id']     = $row->id;            
+            $data['note']   = $row->note;
+            $data['stamp']  = $row->createdON;            
+        }
+            
+        return $data;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     /**
@@ -274,6 +470,57 @@ class Review extends CI_Controller {
         return $data;
     }
     
+    private function getReviews($aid, $bid, $sid, $iid) {
+        
+        $sql = "SELECT RD.*,
+            RN.id AS noteID
+            FROM `review_data` AS RD
+            JOIN login AS LI ON LI.userID = RD.createdBY
+            LEFT JOIN review_note AS RN ON (
+                        RN.blockID = RD.blockID
+                    AND RN.sampleID = RD.sampleID
+                    AND RN.imageID = RD.imageID
+                    AND RN.createdBY = LI.userID
+                    AND RN.groupingID = RD.groupingID
+            )
+            WHERE RD.active = 'y' 
+            AND RD.blockID = {$bid}
+            AND RD.sampleID = {$sid}
+            AND RD.imageID = {$iid}
+            AND LI.id = {$aid}
+            GROUP BY RD.createdBY, RD.accountID, RD.projectID, RD.blockID, RD.sampleID, RD.imageID, RD.id
+            ORDER BY RD.accountID, RD.projectID, RD.blockID, RD.sampleID, RD.imageID, RD.groupingID, RD.groupingOrder";
+
+        
+        $data = array();
+        
+        $query = $this->db->query($sql);
+
+        if ($query->num_rows() > 0) {
+
+            $record = array();
+            $idx = 1;
+            foreach ($query->result() as $row) {
+                
+                $key = sprintf("%04d",$row->groupingID);
+                $id  = sprintf("%04d",$idx++);
+                
+                if (!array_key_exists($key, $data)) {
+                    $data[$key] = array();
+                }
+                
+                $data[$key]['cell'][$id] = array(
+                    'dataName'  => $row->dataName
+                  , 'recordID'  => $row->id 
+                  , 'dataValue' => $row->dataValue
+                );
+                
+                $data[$key]['note'] = $row->noteID;
+            }     
+        }
+        
+        return $data;                
+    }
     
     
     /**
@@ -424,6 +671,13 @@ class Review extends CI_Controller {
         
         return $nextID;
     }
+    
+    
+    
+    
+    
+    
+    
     
     
 }
