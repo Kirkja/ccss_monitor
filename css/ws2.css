@@ -65,6 +65,10 @@ table.reviewFormTable td div.reviewInput { text-align:left;}
 
 
 button.stdKey { font-size:12px; padding:0px; margin:0px; }
+
+#searchButton:hover { background-image:"/css/images/search.png"; }
+
+
 .stdDesc { font-size:12px; }
 
 .catalogEntry { margin-bottom:0.25em; padding:0.25em; }
@@ -212,3 +216,5 @@ image.btn:hover { cursor:pointer; }
 .play:before {
     content: "\25B6";
 }
+
+

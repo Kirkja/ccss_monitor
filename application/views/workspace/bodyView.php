@@ -8,7 +8,7 @@
     
     <button id="btn_logout">Log Out</button>
     <br/>
-    <span>(<?php echo GSAuth::GetUserObject()->activeID; ?>)</span>    
+    <span><?php echo GSAuth::GetUserObject()->position; ?></span>    
 </div>
 
 <div id="page-loading">Loading...</div>
@@ -21,21 +21,31 @@
     <!-- Tabs for the panels ............................................... -->
     <ul id="tabbuttons" class="hidden">       
         <li class="tab2"><a href="#tab2">Analysis</a></li>
+        <!--
         <li class="tab3"><a href="#tab3">Account</a></li> 
+        -->
+        <!--
         <li class="tab1"><a href="#tab1">Admin</a></li>
+        -->
     </ul>
 
     <!-- Tab panel container ............................................... -->
     <div id="tabpanels" ng-controller="SettingsController">
 
         <!-- Analysis Tab .................................................. -->
-        <?php echo $tab_analysis; ?>
+        <?php 
+        echo $tab_analysis; 
+        ?>
         
         <!-- Account Tab ................................................... -->      
-        <?php echo $tab_account; ?>
+        <?php 
+        //echo $tab_account; 
+        ?>
         
         <!-- Admin Tab ..................................................... -->
-        <?php echo $tab_admin; ?>
+        <?php 
+        //echo $tab_admin; 
+        ?>
                 
         
     </div>

@@ -113,6 +113,8 @@ class GSAuth {
                 GSAuth::$CI->session->set_userdata('userCode', $uc);               
                 GSAuth::$CI->session->set_userdata('screenName', GSAuth::$userString);
                 GSAuth::$CI->session->set_userdata('isActive', true);
+                GSAuth::$CI->session->set_userdata('position', "Analyst");
+                
                 
                 GSAuth::$user->screenName = "test only";
                 GSAuth::$user->activeID = GSAuth::$activeID;

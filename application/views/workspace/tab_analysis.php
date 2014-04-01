@@ -30,6 +30,7 @@
             </div>
             
             <div id="simpleTab2b" style="padding:0px;"> 
+                
                 <!-- List of catalogs that are assigned to this block        -->
                 <div id="catalogPalette">
                     <label ng-repeat="item in catalogs">                    
@@ -37,8 +38,7 @@
                         <span>{{item.label}}</spn><br/>
                     </label>
                 </div>
-     
-                
+                     
                 <div class="loading">
                     {{loadingMessage}}
                 </div>
@@ -54,6 +54,7 @@
                         alt="Click to add standard" 
                         title="Click to add standard">{{item.key}}</button> <span class="stdDesc">{{item.desc}}</span>                    
                 </div>
+                
             </div>
 
             <div id="simpleTab3b" style="padding:0px 0px 5px 0px;"> 
@@ -67,10 +68,12 @@
                         <td><input id="searchInput" type="text" ng-model="searchTerms"</td>
                         <td width="40" align="right"><image id="searchButton" class="btn" ng-click="searchNow(searchTerms)" src="/css/images/search.png"/></td>
                     </tr>
-                    </table>                  
-                    
+                    </table>  
+                                    
                 </div>
-                
+                 <div class="loading">
+                    {{searchMessage}}
+                 </div>   
                     
                 <div class="searchEntry" 
                      ng-repeat="item in searchEntries" 
@@ -82,6 +85,7 @@
                         alt="Click to add standard" 
                         title="Click to add standard">{{item.key}}</button> <span class="stdDesc">{{item.desc}}</span>                    
                 </div>
+                
             </div>
         </div>
     </div>
