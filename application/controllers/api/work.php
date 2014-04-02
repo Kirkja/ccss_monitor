@@ -20,6 +20,7 @@ class Work extends CI_Controller {
      */
     public function getassignments() {
         
+        setlocale(LC_MONETARY, 'en_US');
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);
         
