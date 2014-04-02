@@ -23,8 +23,7 @@ class Review extends CI_Controller {
         
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);
-              
-        $activeID   = GSAuth::GetUserObject()->activeID;
+                    
         $blockID    = $tmp->blockID;
         $sampleID   = $tmp->sampleID;
         $imageID    = $tmp->imageID;
@@ -111,8 +110,7 @@ class Review extends CI_Controller {
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); }
         //-------------------------
-        
-        
+                
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);        
                 
@@ -144,6 +142,11 @@ class Review extends CI_Controller {
     
     public function updateSCR() {
         
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+                
+        
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw); 
                         
@@ -153,6 +156,11 @@ class Review extends CI_Controller {
     
     
     public function updateSTD() {
+        
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+                
         
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw); 
@@ -175,6 +183,7 @@ class Review extends CI_Controller {
     
     
     public function getNote() {
+        
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); }
         //-------------------------
