@@ -20,6 +20,7 @@ class Work extends CI_Controller {
      */
     public function getassignments() {
         
+        setlocale(LC_MONETARY, 'en_US');
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);
         
@@ -109,6 +110,8 @@ class Work extends CI_Controller {
                         // add the sample cash value to the block
                         $item['cashValue'] += $blockB->cashValue;
                     }
+                     $item['cashValue'] = sprintf('%01.2f',$item['cashValue']);
+                    
                 }
 
                 $data[] = $item;
