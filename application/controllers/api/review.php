@@ -256,19 +256,19 @@ class Review extends CI_Controller {
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);         
         
-        if (!isset($tmp->blockID))      { exit(); }
-        if (!isset($tmp->sampleID))     { exit(); }
-        if (!isset($tmp->imageID))      { exit(); }
-        if (!isset($tmp->groupingID))   { exit(); }
+        //if (!isset($tmp->blockID))      { exit(); }
+        //if (!isset($tmp->sampleID))     { exit(); }
+        //if (!isset($tmp->imageID))      { exit(); }
+        //if (!isset($tmp->groupingID))   { exit(); }
         if (!isset($tmp->noteID))       { exit(); }
-        if (!isset($tmp->noteText))     { exit(); }
+        //if (!isset($tmp->noteText))     { exit(); }
                
-        $blockID    = $tmp->blockID;
-        $sampleID   = $tmp->sampleID;
-        $imageID    = $tmp->imageID;        
-        $groupingID = $tmp->groupingID; 
+        //$blockID    = $tmp->blockID;
+        //$sampleID   = $tmp->sampleID;
+        //$imageID    = $tmp->imageID;        
+        //$groupingID = $tmp->groupingID; 
         $noteID     = $tmp->noteID; 
-        $noteText   = $tmp->noteText; 
+        //$noteText   = $tmp->noteText; 
         
                 
         $out = array('data' => 
@@ -330,7 +330,12 @@ class Review extends CI_Controller {
     private function eraseNote($noteID) {
         
         if ($noteID > 0) {
-            
+            $sql = "UPDATE review_note
+                    SET active = 'n'
+                    WHERE id = {$noteID}
+                    LIMIT 1;";
+                    
+            $this->db->query($sql);
         }
         else {
             
@@ -491,6 +496,7 @@ class Review extends CI_Controller {
                     AND RN.imageID = RD.imageID
                     AND RN.createdBY = LI.userID
                     AND RN.groupingID = RD.groupingID
+                    AND RN.active = 'y'
             )
             WHERE RD.active = 'y' 
             AND RD.blockID = {$bid}

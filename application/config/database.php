@@ -49,9 +49,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'toolUser';
+$db['default']['username'] = 'learnir1_gsUser';
 $db['default']['password'] = '4No1TooCee!';
-$db['default']['database'] = 'ccss_monitor2';
+$db['default']['database'] = 'learnir1_ccss_monitor2';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
