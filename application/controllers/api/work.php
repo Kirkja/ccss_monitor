@@ -27,10 +27,8 @@ class Work extends CI_Controller {
         
         $modeText = $mode == "open" ? " IS NULL " : " IS NOT NULL ";
         
-        // Gather all the available OPEN blocks assigned to user
-        
-        //$activeID = '95466432296386561';
-        
+        // Gather all the available OPEN blocks assigned to the user
+
         $activeID = GSAuth::GetUserObject()->activeID;
         
         $sql = "SELECT MBU.blockID, MBU.userID, DATE_FORMAT(MBU.dueON, '%M %e, %Y') AS dueON,
@@ -104,11 +102,14 @@ class Work extends CI_Controller {
                         // samples have no children, but its needed just in case
                         $c['children']  = array();
 
+                        // add the samples as children to the block
                         $item['children'][] = $c;
                         
                         // add the sample cash value to the block
                         $item['cashValue'] += $blockB->cashValue;
                     }
+                     $item['cashValue'] = sprintf('%01.2f',$item['cashValue']);
+                    
                 }
 
                 $data[] = $item;

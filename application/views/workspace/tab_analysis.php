@@ -144,9 +144,8 @@
 
     <div class="ui-layout-east">
         <div class="ui-layout-center">
-            <div class="ui-widget-header ui-corner-top">
-                Sample Review
-            </div>
+            <div class="ui-widget-header ui-corner-top">Review Items</div>
+            
             <div class="ui-widget-content" style="padding:0px;">
 
                 <div class="reviewPalette">
@@ -162,10 +161,11 @@
                 <table class="reviewFormTable"  
                        ng-repeat="(key, value) in rdf2" 
                        ng-class-odd="'trOdd'" 
-                       ng-class-even="'trEven'">
+                       ng-class-even="'trEven'"
+                       ng-class="{lite: currentGroupingID === (key|num)}">
                     <tr >
                         <td width="20">
-                            {{key}}<input class="rdSelector" type="checkbox" name="{{key}}" />
+                            <input class="rdSelector" type="checkbox" name="{{key}}" />
                         </td>
                         
                         <td ng-repeat="cell in value['cell']">
@@ -214,14 +214,17 @@
         </div>
         
         <div class="ui-layout-south">
-            <div class="ui-widget-header ui-corner-top">Notes</div>
+            <div class="ui-widget-header ui-corner-top">Item Note</div>
             <div class="ui-widget-content" style="padding:0px;">
                 
                 <div class="notePallette">
                     <div id="noteControls">
                         <a href="" class="button delete" ng-click="delNote()">Delete</a>
                         <a href="" class="button save right" ng-click="saveNote()">Save</a> 
-                        <div><span>{{noteStamp}}</span></div>
+                        <div>
+                            <span>{{noteStamp}}</span>
+                            
+                        </div>
                     </div>
                     <textarea id="reviewNote" ng-model="currentNote"></textarea>
                 </div>
