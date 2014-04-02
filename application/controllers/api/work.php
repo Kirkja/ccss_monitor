@@ -68,21 +68,22 @@ class Work extends CI_Controller {
                           , MIS.imageID
                           , CONCAT(BI.imagePath, BI.imageName) AS image
                           , CASE BI.payRate
-                          WHEN 'A' THEN  0.50 * 2.50
-                          WHEN 'B' THEN  0.50 * 1.50
-                          WHEN 'C' THEN  0.50 * 1.00
-                          WHEN 'D' THEN  0.50 * 0.75
-                          WHEN 'E' THEN  0.50 * 0.50
-                          WHEN 'F' THEN  0.50 * 0.25
-                          ELSE 0.50
-                          END AS cashValue
-                          FROM map_sample_block AS MSB
-                          JOIN map_image_sample AS MIS ON MIS.sampleID = MSB.sampleID
-                          JOIN bank_image AS BI ON BI.id = MIS.imageID
-                          JOIN bank_sample AS BS ON BS.id = MSB.sampleID
-                          WHERE MSB.active= 'y'
-                          AND MSB.blockID = {$block->blockID}
-                          GROUP BY MSB.blockID, MIS.sampleID, MIS.imageID";
+                            WHEN 'A' THEN  BB.baseValue * 2.50
+                            WHEN 'B' THEN  BB.baseValue * 1.50
+                            WHEN 'C' THEN  BB.baseValue * 1.00
+                            WHEN 'D' THEN  BB.baseValue * 0.75
+                            WHEN 'E' THEN  BB.baseValue * 0.50
+                            WHEN 'F' THEN  BB.baseValue * 0.25
+                            ELSE BB.baseValue
+                            END AS cashValue
+                            FROM map_sample_block AS MSB
+                            JOIN map_image_sample AS MIS ON MIS.sampleID = MSB.sampleID
+                            JOIN bank_image AS BI ON BI.id = MIS.imageID
+                            JOIN bank_sample AS BS ON BS.id = MSB.sampleID
+                            JOIN bank_block AS BB ON BB.id = MSB.blockID
+                            WHERE MSB.active= 'y'
+                            AND MSB.blockID = {$block->blockID}
+                            GROUP BY MSB.blockID, MIS.sampleID, MIS.imageID";
                 
                 $queryB = $this->db->query($sqlB);
 
