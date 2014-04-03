@@ -95,9 +95,9 @@
     
     <div class="ui-layout-west">
         <div class="ui-layout-center">
-            <div class="ui-widget-header ui-corner-top">Open Work                        
+            <div class="ui-widget-header ui-corner-top" style="padding-right:2px;padding-top:1px;">Open Work                        
                 <span class="btn right" ng-click="getOpenWork(user)">
-                    <img src="<?php echo base_url(); ?>css/images/refresh_btn_b.png" alt="Refresh Assignments" title="Refresh Assignments"/>
+                    <img src="<?php echo base_url(); ?>css/images/refresh24.png" alt="Refresh Assignments" title="Refresh Assignments"/>
                 </span>                                          
             </div>
             <div class="ui-widget-content">
@@ -117,9 +117,9 @@
             </div>
         </div>
         <div class="ui-layout-south">
-            <div class="ui-widget-header ui-corner-top">Completed Work
+            <div class="ui-widget-header ui-corner-top" style="padding-right:2px;padding-top:1px;">Completed Work
                 <span class="btn right" ng-click="getClosedWork(user)">
-                    <img src="<?php echo base_url(); ?>css/images/refresh_btn_b.png" 
+                    <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
                          alt="Refresh Assignments" 
                          title="Refresh Assignments"/>
                 </span>             
@@ -144,7 +144,11 @@
 
     <div class="ui-layout-east">
         <div class="ui-layout-center">
-            <div class="ui-widget-header ui-corner-top">Review Items</div>
+            <div class="ui-widget-header ui-corner-top" style="padding-right:2px; padding-top:1px;">Review Items
+                <span class="btn right" ng-click="refreshRD()">
+                    <img src="<?php echo base_url(); ?>css/images/refresh24.png" alt="Refresh Rview Items" title="Refresh Review Items"/>
+                </span>             
+            </div>
             
             <div class="ui-widget-content" style="padding:0px;">
 
@@ -234,7 +238,9 @@
                 <p>SID: {{currentSampleID}}</p>
                 <p>IID: {{currentImageID}}</p>
                 <p>CID: {{currentCatalogID}}</p>  
-                <p>GID: {{currentGroupingID}}</p>  
+                <p>GID: {{currentGroupingID}}</p> 
+                <p>NID: {{currentNoteID}}</p> 
+                
             </div>
         </div>
     </div>
