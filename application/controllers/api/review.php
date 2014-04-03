@@ -23,14 +23,18 @@ class Review extends CI_Controller {
         
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);
-                    
-        $blockID    = $tmp->blockID;
-        $sampleID   = $tmp->sampleID;
-        $imageID    = $tmp->imageID;
-              
+                  
+        if (!isset($tmp->blockID))     { exit(); }        
+        if (!isset($tmp->sampleID))    { exit(); }                
+        if (!isset($tmp->imageID))     { exit(); }                
+
         // Create the correct JSON payloads
         $out = array('data' => 
-            $this->getReviews($activeID, $blockID, $sampleID, $imageID)
+            $this->getReviews(
+                    $activeID, 
+                    $tmp->blockID, 
+                    $tmp->sampleID, 
+                    $tmp->imageID)
         );
 
         // Set the correct JSON response header
@@ -51,16 +55,23 @@ class Review extends CI_Controller {
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);        
         
-        $activeID   = GSAuth::GetUserObject()->activeID;;
-        $blockID    = $tmp->blockID;
-        $sampleID   = $tmp->sampleID;
-        $imageID    = $tmp->imageID;
-        $groups     = $tmp->groups;
-                
-        $this->deleteReviews($activeID, $blockID, $sampleID, $imageID, $groups);
+        if (!isset($tmp->blockID))     { exit(); }        
+        if (!isset($tmp->sampleID))    { exit(); }                
+        if (!isset($tmp->imageID))     { exit(); }           
+        if (!isset($tmp->groups))      { exit(); }    
+   
+        $this->deleteReviews(
+                $activeID, 
+                $tmp->blockID, 
+                $tmp->sampleID, 
+                $tmp->imageID, 
+                $tmp->groups);
         
         $out = array('data' => 
-            $this->getReviews($activeID, $blockID, $sampleID, $imageID)
+            $this->getReviews($activeID, 
+                $tmp->blockID, 
+                $tmp->sampleID, 
+                $tmp->imageID)
         );
 
         // Set the correct JSON response header
@@ -78,20 +89,26 @@ class Review extends CI_Controller {
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); }
         //-------------------------
-        
-        
+                
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);        
-        
-        $activeID   = GSAuth::GetUserObject()->activeID;;
-        $blockID    = $tmp->blockID;
-        $sampleID   = $tmp->sampleID;
-        $imageID    = $tmp->imageID;
+          
+        if (!isset($tmp->blockID))     { exit(); }        
+        if (!isset($tmp->sampleID))    { exit(); }                
+        if (!isset($tmp->imageID))     { exit(); }
  
-        $this->createSCR($activeID, $blockID, $sampleID, $imageID);
+        $this->createSCR(
+                $activeID, 
+                $tmp->blockID, 
+                $tmp->sampleID, 
+                $tmp->imageID);
         
         $out = array('data' => 
-            $this->getReviews($activeID, $blockID, $sampleID, $imageID)
+            $this->getReviews(
+                $activeID, 
+                $tmp->blockID, 
+                $tmp->sampleID, 
+                $tmp->imageID)
         );
 
         // Set the correct JSON response header
@@ -118,17 +135,20 @@ class Review extends CI_Controller {
         if (!isset($tmp->sampleID))    { exit(); }
         if (!isset($tmp->imageID))     { exit(); }
         if (!isset($tmp->stdKey))      { exit(); }
-        
-        $activeID   = GSAuth::GetUserObject()->activeID;
-        $blockID    = $tmp->blockID;
-        $sampleID   = $tmp->sampleID;
-        $imageID    = $tmp->imageID;        
-        $stdKey     = $tmp->stdKey;
  
-        $this->createFilledSCR($activeID, $blockID, $sampleID, $imageID, $stdKey);
+        $this->createFilledSCR(
+                $activeID, 
+                $tmp->blockID, 
+                $tmp->sampleID, 
+                $tmp->imageID, 
+                $tmp->stdKey);
         
         $out = array('data' => 
-            $this->getReviews($activeID, $blockID, $sampleID, $imageID)
+            $this->getReviews(
+                    $activeID, 
+                    $tmp->blockID, 
+                    $tmp->sampleID, 
+                    $tmp->imageID)
         );
 
         // Set the correct JSON response header
@@ -145,11 +165,13 @@ class Review extends CI_Controller {
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); }
         //-------------------------
-                
-        
+                        
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw); 
-                        
+                
+        if (!isset($tmp->id))     { exit(); }        
+        if (!isset($tmp->value))  { exit(); }      
+        
         $this->updateReviewRecord($tmp->id, $tmp->value);
     }
     
@@ -160,11 +182,13 @@ class Review extends CI_Controller {
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); }
         //-------------------------
-                
-        
+                        
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw); 
-                  
+                     
+        if (!isset($tmp->id))       { exit(); }        
+        if (!isset($tmp->value))    { exit(); }                          
+        
         $test = $this->testStandard($tmp->value);
         
         if ($test) {
@@ -195,14 +219,14 @@ class Review extends CI_Controller {
         if (!isset($tmp->sampleID))    { exit(); }
         if (!isset($tmp->imageID))     { exit(); }
         if (!isset($tmp->groupingID))  { exit(); }
-               
-        $blockID    = $tmp->blockID;
-        $sampleID   = $tmp->sampleID;
-        $imageID    = $tmp->imageID;        
-        $groupingID = $tmp->groupingID;        
-        
+                              
         $out = array('data' => 
-            $this->extractNote($activeID, $blockID, $sampleID, $imageID, $groupingID)
+            $this->extractNote(
+                    $activeID, 
+                    $tmp->blockID, 
+                    $tmp->sampleID, 
+                    $tmp->imageID, 
+                    $tmp->groupingID)
         );
 
         // Set the correct JSON response header
@@ -256,23 +280,10 @@ class Review extends CI_Controller {
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);         
         
-        //if (!isset($tmp->blockID))      { exit(); }
-        //if (!isset($tmp->sampleID))     { exit(); }
-        //if (!isset($tmp->imageID))      { exit(); }
-        //if (!isset($tmp->groupingID))   { exit(); }
         if (!isset($tmp->noteID))       { exit(); }
-        //if (!isset($tmp->noteText))     { exit(); }
-               
-        //$blockID    = $tmp->blockID;
-        //$sampleID   = $tmp->sampleID;
-        //$imageID    = $tmp->imageID;        
-        //$groupingID = $tmp->groupingID; 
-        $noteID     = $tmp->noteID; 
-        //$noteText   = $tmp->noteText; 
-        
-                
+       
         $out = array('data' => 
-            $this->eraseNote($noteID)
+            $this->eraseNote($tmp->noteID)
         );
 
         // Set the correct JSON response header

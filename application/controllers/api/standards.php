@@ -27,12 +27,12 @@ class Standards extends CI_Controller {
         $data   = array();
         $raw    = file_get_contents("php://input");
         $tmp    = json_decode($raw);
-        
-        $blockID = $tmp->blockID;
-        
+                
+        if (!isset($tmp->blockID))     { exit(); }   
+                
         // Create the correct JSON payloads
         $out = array('data' => 
-            $this->findCatalogs($blockID)
+            $this->findCatalogs($tmp->blockID)
         );
 
         // Set the correct JSON response header
@@ -56,13 +56,11 @@ class Standards extends CI_Controller {
         $raw    = file_get_contents("php://input");
         $tmp    = json_decode($raw);
         
-        $catalogID = $tmp->cid;
-        
-        //$catalogID = '95478981184192512';
-        
+        if (!isset($tmp->cid))     { exit(); }   
+
         // Create the correct JSON payloads
         $out = array('data' => 
-            $this->extractCatalog($catalogID)
+            $this->extractCatalog($tmp->cid)
         );
 
         // Set the correct JSON response header
@@ -84,12 +82,12 @@ class Standards extends CI_Controller {
         $raw    = file_get_contents("php://input");
         $tmp    = json_decode($raw);
         
-        $catalogList    = $tmp->cidList;
-        $terms          = $tmp->terms;
-        
+        if (!isset($tmp->cidList))      { exit(); }   
+        if (!isset($tmp->terms))        { exit(); }   
+
         // Create the correct JSON payloads
         $out = array('data' => 
-            $this->catalogSearch($catalogList, $terms)
+            $this->catalogSearch($tmp->cidList, $tmp->terms)
         );
 
         // Set the correct JSON response header
@@ -103,7 +101,7 @@ class Standards extends CI_Controller {
     
     
     
-    
+    /*
     public function searchFor() {
         
         $activeID = GSAuth::Fence();        
@@ -129,7 +127,7 @@ class Standards extends CI_Controller {
         //  DEBUG ONLY
         //echo "<pre>" . print_r($out, true) . "</pre>";           
     }
-    
+    */
     
     
     
@@ -149,10 +147,11 @@ class Standards extends CI_Controller {
                 CCSS.id
               , CONCAT(CCSS.state,'_',CCSS.key0) AS standardKey
               , CASE
+                    WHEN CCSS.Tier_7 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6, ' --- ', CCSS.Tier_7)  
                     WHEN CCSS.Tier_6 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6) 
                     ELSE CCSS.Tier_5
                 END AS standardText
-                FROM ccss_standards AS CCSS
+                FROM bank_ccss AS CCSS
                 WHERE CCSS.Tier_5 <> ''
                 AND catalogID = {$catalogID}
                 ORDER BY CCSS.gradelevel, CONCAT(CCSS.state,'_',CCSS.key0)";
@@ -214,11 +213,12 @@ class Standards extends CI_Controller {
                   id
                 , CONCAT(state,'_',key0) AS standardKey                
                 , CASE
+                    WHEN Tier_7 <> '' THEN CONCAT(Tier_5, ' -- ', Tier_6, ' -- ', Tier_7)
                     WHEN Tier_6 <> '' THEN CONCAT(Tier_5, ' -- ', Tier_6) 
                     ELSE Tier_5
                     END AS standardText
                 , MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE) AS score
-                FROM ccss_standards
+                FROM bank_ccss
                 WHERE MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE)
                 AND catalogID IN ({$catalogList})
                 ORDER BY score DESC, gradelevel DESC";

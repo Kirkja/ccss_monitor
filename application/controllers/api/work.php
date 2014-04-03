@@ -20,18 +20,18 @@ class Work extends CI_Controller {
      */
     public function getassignments() {
         
-        setlocale(LC_MONETARY, 'en_US');
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------        
+        
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);
         
-        $mode = $tmp->mode;
+        if (!isset($tmp->mode))     { exit(); }           
         
-        $modeText = $mode == "open" ? " IS NULL " : " IS NOT NULL ";
+        $modeText = $tmp->mode == "open" ? " IS NULL " : " IS NOT NULL ";
         
-        // Gather all the available OPEN blocks assigned to the user
-
-        $activeID = GSAuth::GetUserObject()->activeID;
-        
+        // Gather all the available OPEN work folders assigned to the user
         $sql = "SELECT MBU.blockID, MBU.userID, DATE_FORMAT(MBU.dueON, '%M %e, %Y') AS dueON,
                 BB.label
                 FROM `map_block_user` AS MBU
@@ -99,7 +99,7 @@ class Work extends CI_Controller {
                         
                         // test is there is a review, then mark as completed
                         // just place the date completed
-                        $c['completed'] = $mode == 'open' ? 'n' : 'y';
+                        $c['completed'] = $tmp->mode == 'open' ? 'n' : 'y';
                         
                         // samples have no children, but its needed just in case
                         $c['children']  = array();
@@ -131,52 +131,132 @@ class Work extends CI_Controller {
 
      
     
-    public function getReview() {
-        $raw = file_get_contents("php://input");
-        $tmp = json_decode($raw);
-        
-        $data = array();
+    public function gatherSampleMeta() {
                 
-        $data[] = array("name" => "last", "type" => "text", "label" => "Last Name", "value" => "Jones");
-        $data[] = array("name" => "first", "type" => "text", "label" => "First Name", "value" => "Ben");
-        $data[] = array("name" => "address", "type" => "text", "label" => "Address", "value" => "321 Something Lane");
-        $data[] = array("name" => "checker", "type" => "checkbox", "label" => "Checker", "value" => "checked");
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); } 
         
-        $data[] = array("name" => "DOK[]", "type" => "radio", "label" => "DOK", "value" => array(
-                array("label"=>"DOK-1", "value"=>"DOK-1", "selected"=>""),
-                array("label"=>"DOK-2", "value"=>"DOK-2", "selected"=>"true"),
-                array("label"=>"DOK-3", "value"=>"DOK-3", "selected"=>""),
-                array("label"=>"DOK-4", "value"=>"DOK-4", "selected"=>"")
-            ));
+        $sql = "SELECT
+                            BP.accountID 
+                          , MSP.projectID
+                          , BC.siteID, MSC.collectorID, MSC.sampleID
+                          , BC.subjectArea, BC.gradeLevel
+                          , COUNT(MIS.imageID) AS images
+                          , BS.label AS sampleName
+                  FROM map_sample_collector AS MSC
+                  LEFT JOIN bank_collector AS BC ON BC.id = MSC.collectorID
+                  LEFT JOIN map_site_project AS MSP ON MSP.siteID = BC.siteID
+                  LEFT JOIN bank_project AS BP ON BP.id = MSP.projectID
+                  LEFT JOIN bank_sample AS BS ON BS.id = MSC.sampleID
+                  LEFT JOIN map_image_sample AS MIS ON MIS.sampleID = MSC.sampleID
+                  WHERE BP.active = 'y'
+                          AND MSP.active = 'y'
+                          AND MSC.active = 'y'
+                          AND BC.active = 'y'
+                          AND BS.active = 'y'
+                          AND MIS.active = 'y'
+                  GROUP BY BP.accountID
+                          , MSP.projectID
+                          , BC.siteID
+                          , MSC.collectorID
+                          , MSC.sampleID
+                          , BC.subjectArea
+                          , BC.gradeLevel	
+                  HAVING images > 0";
         
-        $data[] = array("name" => "Blooms[]", "type" => "select", "label" => "Blooms", "value" => array(
-                array("label"=>"BLM-1", "value"=>"BLM-1", "selected"=>""),
-                array("label"=>"BLM-2", "value"=>"BLM-2", "selected"=>"selected"),
-                array("label"=>"BLM-3", "value"=>"BLM-3", "selected"=>""),
-                array("label"=>"BLM-4", "value"=>"BLM-4", "selected"=>""),
-                array("label"=>"BLM-5", "value"=>"BLM-5", "selected"=>""),
-                array("label"=>"BLM-6", "value"=>"BLM-6", "selected"=>""),            
-            
-            ));                
-        $data[] = array("name" => "DOKB[]", "type" => "select", "label" => "DOK", "value" => array(
-                array("label"=>"DOK-1", "value"=>"DOK-1", "selected"=>""),
-                array("label"=>"DOK-2", "value"=>"DOK-2", "selected"=>""),
-                array("label"=>"DOK-3", "value"=>"DOK-3", "selected"=>"selected"),
-                array("label"=>"DOK-4", "value"=>"DOK-4", "selected"=>"")
-            ));        
+        $query = $this->db->query($sql);
         
-        // Create the correct JSON payloads
-        $out = array('data' => $data);
+        $blocks         = array();
+        $threshold      = 2;
+        $imageCount     = 0;
+        $idx            = 0;
+        
+        $currentSubject     = "";
+        $currentGradeLevel  = 0;
+        
+        $idxFlag = false;
+        
+        if ($query->num_rows() > 0) {
 
-        // Set the correct JSON response header
-        header('Content-Type: application/json');
-        echo json_encode($out);        
+            foreach ($query->result() as $row) {
+                  
+
+                if ($currentSubject != $row->subjectArea) {
+                    $currentSubject = $row->subjectArea;
+                    $idxFlag = true;
+                }
+                
+                if ($currentGradeLevel != $row->gradeLevel) {
+                    $currentGradeLevel  = $row->gradeLevel;               
+                    $idxFlag = true;
+                }
+                
+                
+                if ($imageCount > $threshold) {
+                    $idxFlag = true;
+                }
+                
+                if ($idxFlag) {
+                    $idx++;
+                    $idxFlag = false;
+                    $imageCount = 0;
+                }
+                
+                $imageCount += $row->images;
+               
+                $blocks[$idx][] = array(
+                    'sampleID'      => $row->sampleID,
+                    'subjectArea'   => $currentSubject,
+                    'gradeLevel'    => $currentGradeLevel,
+                    'images'        => $row->images,
+                    'sampleName'    => $row->sampleName
+                    );
+            }
+            
+            //echo "<pre>". print_r($blocks, true) ."</pre>";
+        }
+        
+        
+        foreach ($blocks as $blockData) {
+            //echo "<pre>". print_r($block, true) . "</pre>";
+            if ($this->checkSampleBlock($blockData) == 0) {
+                $blockLabel = $this->createAplphaNumericLabel(10);
+
+                $blockID = $this->createBlock($blockLabel);
+                
+                $this->mapSamplesToBlock($blockID, $blockData);
+            }
+            else {
+                echo "<div>Possible collision in sample to block mapping</div>";
+            }
+            //echo "<p/>";
+        }
+        
+        
+        
+    }
+    
+    private function createBlock($label) {
+        echo "<div>Creating block {$label}</div>";
+        
+        return "some-block-id";
     }
     
     
-    
-    
-    
+    private function mapSamplesToBlock($blockID, $samples) {
+        
+        echo "<ul>";
+        
+        foreach ($samples as $sample) {
+            
+            $sampleLabel = $this->createAplphaNumericLabel(10);
+            
+            echo "<li>Mapping {$sample['sampleID']} as {$sampleLabel}</li>";
+            
+        } 
+        
+        echo "</ul>";
+    }
     
     
     
@@ -191,6 +271,47 @@ class Work extends CI_Controller {
         return $record;
     }
 
+    
+    private function checkSampleBlock($block) {
+        
+        $ids = "";
+
+        foreach ($block as $sample) {
+            $ids .= "{$sample['sampleID']}";
+            $ids .= ",";
+        }
+        
+        $ids =  trim($ids, ",");
+        
+        $sql = "SELECT 
+                * FROM map_sample_block 
+                WHERE sampleID 
+                IN ( {$ids} )";
+                
+        $query = $this->db->query($sql);
+        
+        return $query->num_rows();        
+    }
+    
+    private function createAplphaNumericLabel($length) {
+        $letters = array('A','B','C','D','E', 'F','G','H','J','K','L','M','N','P','Q','R','S','T','U','W','X','Y','Z');
+        $digits = array('2','3','5','6','7','8','9');
+        
+        $keys = array_merge($letters, $digits);
+        
+        $key = "";
+        
+        for ($idx=0; $idx < $length; $idx++) {
+            $key .= $keys[array_rand($keys)];
+        }
+        
+        return $key;
+    }
+    
+    
+    
+    
+    
 }
 
 ?>
