@@ -52,7 +52,7 @@
                         class="stdKey" 
                         ng-click="addStd(item.key)"
                         alt="Click to add standard" 
-                        title="Click to add standard">{{item.key}}</button> <span class="stdDesc">{{item.desc}}</span>                    
+                        title="Click to add standard">{{item.key}}</button> <span class="stdDesc" ng-bind-html="item.desc"></span>                    
                 </div>
                 
             </div>

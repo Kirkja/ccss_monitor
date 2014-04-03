@@ -32,7 +32,7 @@ class Workspace extends CI_Controller {
             base_url() .'lib/js/actions/ws2_actions.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js',
-            
+            'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.min.js',
             base_url() .'lib/js/angular/ws/app.js',
             base_url() .'lib/js/angular/ws/SettingsController.js',
             base_url() .'lib/js/angular/dynamic-forms/dynamic-forms.js'

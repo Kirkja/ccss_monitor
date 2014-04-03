@@ -148,11 +148,14 @@ class Standards extends CI_Controller {
         $sql = "SELECT 
                 CCSS.id
               , CONCAT(CCSS.state,'_',CCSS.key0) AS standardKey
-              , CCSS.Tier_2 AS standardText
-              FROM ccss_standards AS CCSS
-              WHERE CCSS.Tier_2 <> ''
-              AND catalogID = {$catalogID}
-              ORDER BY CCSS.gradelevel, CONCAT(CCSS.state,'_',CCSS.key0)";
+              , CASE
+                    WHEN CCSS.Tier_6 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6) 
+                    ELSE CCSS.Tier_5
+                END AS standardText
+                FROM ccss_standards AS CCSS
+                WHERE CCSS.Tier_5 <> ''
+                AND catalogID = {$catalogID}
+                ORDER BY CCSS.gradelevel, CONCAT(CCSS.state,'_',CCSS.key0)";
         
         $query = $this->db->query($sql);
         
@@ -209,8 +212,11 @@ class Standards extends CI_Controller {
 
         $sql = "SELECT 
                   id
-                , CONCAT(state,'_',key0) AS standardKey
-                , Tier_2 AS standardText
+                , CONCAT(state,'_',key0) AS standardKey                
+                , CASE
+                    WHEN Tier_6 <> '' THEN CONCAT(Tier_5, ' -- ', Tier_6) 
+                    ELSE Tier_5
+                    END AS standardText
                 , MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE) AS score
                 FROM ccss_standards
                 WHERE MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE)
