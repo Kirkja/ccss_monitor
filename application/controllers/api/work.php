@@ -180,7 +180,6 @@ class Work extends CI_Controller {
 
             foreach ($query->result() as $row) {
                   
-
                 if ($currentSubject != $row->subjectArea) {
                     $currentSubject = $row->subjectArea;
                     $idxFlag = true;
@@ -189,8 +188,7 @@ class Work extends CI_Controller {
                 if ($currentGradeLevel != $row->gradeLevel) {
                     $currentGradeLevel  = $row->gradeLevel;               
                     $idxFlag = true;
-                }
-                
+                }                
                 
                 if ($imageCount > $threshold) {
                     $idxFlag = true;
@@ -211,36 +209,41 @@ class Work extends CI_Controller {
                     'images'        => $row->images,
                     'sampleName'    => $row->sampleName
                     );
-            }
-            
+            }            
             //echo "<pre>". print_r($blocks, true) ."</pre>";
         }
         
         
         foreach ($blocks as $blockData) {
-            //echo "<pre>". print_r($block, true) . "</pre>";
+            
             if ($this->checkSampleBlock($blockData) == 0) {
-                $blockLabel = $this->createAplphaNumericLabel(10);
+                
+                $blockLabel = $this->createUniqueInTable(10, 'bank_block', 'label');
 
-                $blockID = $this->createBlock($blockLabel);
+                $blockID    = $this->createBlock($blockLabel);
                 
                 $this->mapSamplesToBlock($blockID, $blockData);
             }
             else {
                 echo "<div>Possible collision in sample to block mapping</div>";
             }
-            //echo "<p/>";
-        }
-        
-        
-        
+           
+        }        
     }
     
+    
+    
+    
+    
     private function createBlock($label) {
-        echo "<div>Creating block {$label}</div>";
+        $blockID = $this->getUuidInt();
         
-        return "some-block-id";
+        echo "<div>Creating block {$label} [{$blockID}]</div>";
+        
+        return $blockID;
     }
+    
+    
     
     
     private function mapSamplesToBlock($blockID, $samples) {
@@ -249,10 +252,9 @@ class Work extends CI_Controller {
         
         foreach ($samples as $sample) {
             
-            $sampleLabel = $this->createAplphaNumericLabel(10);
+            $sampleLabel = $this->createUniqueInTable(10, 'map_sample_block', 'label');
             
-            echo "<li>Mapping {$sample['sampleID']} as {$sampleLabel}</li>";
-            
+            echo "<li>Mapping {$sampleLabel} [{$sample['sampleID']}]</li>";            
         } 
         
         echo "</ul>";
@@ -271,6 +273,14 @@ class Work extends CI_Controller {
         return $record;
     }
 
+    
+    private function getUuidInt() {
+        $sql = "SELECT UUID_SHORT() as id";
+        $query = $this->db->query($sql);
+        return $query->row()->id;
+    }
+    
+    
     
     private function checkSampleBlock($block) {
         
@@ -293,6 +303,8 @@ class Work extends CI_Controller {
         return $query->num_rows();        
     }
     
+    
+    
     private function createAplphaNumericLabel($length) {
         $letters = array('A','B','C','D','E', 'F','G','H','J','K','L','M','N','P','Q','R','S','T','U','W','X','Y','Z');
         $digits = array('2','3','5','6','7','8','9');
@@ -309,6 +321,23 @@ class Work extends CI_Controller {
     }
     
     
+    private function createUniqueInTable($length, $tableName, $fieldName) {
+        
+        $notUnique = true;
+    
+        $label = "";
+        
+        do {
+            $label  = $this->createAplphaNumericLabel($length);
+            $sql    = "SELECT {$fieldName} from {$tableName} where {$fieldName} = '{$label}' LIMIT 1";        
+            $query  = $this->db->query($sql);        
+            
+            if ($query->num_rows() == 0) { $notUnique = false; }
+        }
+        while ($notUnique);
+        
+        return $label;
+    }
     
     
     
