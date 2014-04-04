@@ -95,10 +95,13 @@
     
     <div class="ui-layout-west">
         <div class="ui-layout-center">
-            <div class="ui-widget-header ui-corner-top" style="padding-right:2px;padding-top:1px;">Open Work                        
-                <span class="btn right" ng-click="getOpenWork(user)">
-                    <img src="<?php echo base_url(); ?>css/images/refresh24.png" alt="Refresh Assignments" title="Refresh Assignments"/>
-                </span>                                          
+            <div class="ui-widget-header ui-corner-top" style="padding:2px;">                                       
+                <span class="btn fit" ng-click="getOpenWork(user)">
+                    <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
+                         alt="Refresh Assignments" 
+                         title="Refresh Assignments"/>
+                </span> 
+                <span class="lift">Open Work</span>
             </div>
             <div class="ui-widget-content">
                 <treecontrol class="tree-classic" 
@@ -117,12 +120,13 @@
             </div>
         </div>
         <div class="ui-layout-south">
-            <div class="ui-widget-header ui-corner-top" style="padding-right:2px;padding-top:1px;">Completed Work
-                <span class="btn right" ng-click="getClosedWork(user)">
+            <div class="ui-widget-header ui-corner-top" style="padding:2px;">
+                <span class="btn fit" ng-click="getClosedWork(user)">
                     <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
                          alt="Refresh Assignments" 
                          title="Refresh Assignments"/>
-                </span>             
+                </span> 
+                <span class="lift">Completed Work</span>
             </div>
             <div class="ui-widget-content">
                 <treecontrol class="tree-classic" 
@@ -144,21 +148,24 @@
 
     <div class="ui-layout-east">
         <div class="ui-layout-center">
-            <div class="ui-widget-header ui-corner-top" style="padding-right:2px; padding-top:1px;">Review Items
-                <span class="btn right" ng-click="refreshRD()">
-                    <img src="<?php echo base_url(); ?>css/images/refresh24.png" alt="Refresh Rview Items" title="Refresh Review Items"/>
-                </span>             
+            <div class="ui-widget-header ui-corner-top" style="padding:2px;">
+                <span class="btn fit" ng-click="refreshRD()">
+                    <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
+                         alt="Refresh Rview Items" 
+                         title="Refresh Review Items"/>
+                </span>    
+                <span class="lift">Review Items</span>
             </div>
             
             <div class="ui-widget-content" style="padding:0px;">
 
-                <div class="reviewPalette">
+                <div class="fixedPallette">
                     <a href="" ng-click="addSCR()" class="button add right">Add SCR</a>
                     <a href="" ng-click="delSCR()" class="button delete">Del SCR</a>
-                </div>
-                <div id="sampleInfo">
-                    {{currentBlockName}} <span ng-show="currentSampleName"> - </span> {{currentSampleName}}
-                </div>
+                    <div class="palletteInfo">
+                        {{currentBlockName}} <span ng-show="currentSampleName"> - </span> {{currentSampleName}}
+                    </div>
+                </div>                
                 
                 <div id="reviewDataZone">
   
@@ -221,17 +228,16 @@
             <div class="ui-widget-header ui-corner-top">Item Note</div>
             <div class="ui-widget-content" style="padding:0px;">
                 
-                <div class="notePallette">
-                    <div id="noteControls">
-                        <a href="" class="button delete" ng-click="delNote()">Delete</a>
-                        <a href="" class="button save right" ng-click="saveNote()">Save</a> 
-                        <div>
-                            <span>{{noteStamp}}</span>
-                            
-                        </div>
-                    </div>
-                    <textarea id="reviewNote" ng-model="currentNote"></textarea>
+                <div class="fixedPallette">                    
+                    <a href="" class="button delete" ng-click="delNote()">Delete</a>
+                    <a href="" class="button save right" ng-click="saveNote()">Save</a> 
+                    <div class="palletteInfo">
+                        <span>{{noteStamp}}</span>                            
+                    </div>                                        
                 </div>
+                
+                <textarea id="reviewNote" ng-model="currentNote"></textarea>
+                
                 
                 <p>AID: {{user.activeID}}</p>
                 <p>BID: {{currentBlockID}}</p>
