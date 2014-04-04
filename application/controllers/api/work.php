@@ -143,12 +143,14 @@ class Work extends CI_Controller {
                           , BC.subjectArea, BC.gradeLevel
                           , COUNT(MIS.imageID) AS images
                           , BS.label AS sampleName
+                          , MGG.gradeBand
                   FROM map_sample_collector AS MSC
                   LEFT JOIN bank_collector AS BC ON BC.id = MSC.collectorID
                   LEFT JOIN map_site_project AS MSP ON MSP.siteID = BC.siteID
                   LEFT JOIN bank_project AS BP ON BP.id = MSP.projectID
                   LEFT JOIN bank_sample AS BS ON BS.id = MSC.sampleID
                   LEFT JOIN map_image_sample AS MIS ON MIS.sampleID = MSC.sampleID
+                  LEFT JOIN map_gradelevel_gradeband AS MGG ON MGG.gradeLevel = BC.gradeLevel
                   WHERE BP.active = 'y'
                           AND MSP.active = 'y'
                           AND MSC.active = 'y'
@@ -190,8 +192,7 @@ class Work extends CI_Controller {
                     $currentGradeLevel  = $row->gradeLevel;               
                     $idxFlag = true;
                 }
-                
-                
+                                
                 if ($imageCount > $threshold) {
                     $idxFlag = true;
                 }
@@ -209,38 +210,72 @@ class Work extends CI_Controller {
                     'subjectArea'   => $currentSubject,
                     'gradeLevel'    => $currentGradeLevel,
                     'images'        => $row->images,
-                    'sampleName'    => $row->sampleName
+                    'sampleName'    => $row->sampleName,
+                    'gradeBand'     => $row->gradeBand
                     );
             }
-            
-            //echo "<pre>". print_r($blocks, true) ."</pre>";
+
         }
         
-        
+        // build out the links
         foreach ($blocks as $blockData) {
-            //echo "<pre>". print_r($block, true) . "</pre>";
+            
+            //echo "<pre>". print_r($blockData, true) ."</pre>";
+            
             if ($this->checkSampleBlock($blockData) == 0) {
-                $blockLabel = $this->createAplphaNumericLabel(10);
+                
+                $blockLabel = $this->createUniqueInTable(10, 'bank_block', 'label');
 
-                $blockID = $this->createBlock($blockLabel);
+                $blockID    = $this->createBlock($blockLabel);
                 
                 $this->mapSamplesToBlock($blockID, $blockData);
+                
+                $this->mapUsersToBlock($blockID, $blockData[0]['subjectArea'], $blockData[0]['gradeBand']);
+                
             }
             else {
                 echo "<div>Possible collision in sample to block mapping</div>";
-            }
-            //echo "<p/>";
-        }
-        
-        
-        
+            }           
+        }        
     }
     
-    private function createBlock($label) {
-        echo "<div>Creating block {$label}</div>";
+    
+    private function mapUsersToBlock($blockID, $subjectArea, $gradeBand) {
+        echo "<p>Looking for users who prefer {$gradeBand} {$subjectArea} for block {$blockID}</p>";
         
-        return "some-block-id";
+        $sql = "SELECT 
+                MRU.*
+                , user.nameLast, user.nameFirst
+                FROM `map_rprefs_user` AS MRU
+                LEFT JOIN `map_subjectarea_subjectband` AS MSS ON MSS.subjectBand = MRU.subjectBand
+                LEFT JOIN USER ON user.id = MRU.userID
+                WHERE MSS.subjectArea = '{$subjectArea}'
+                AND MRU.gradeBand = '{$gradeBand}'";
+                
+        $query = $this->db->query($sql);
+        
+        if ($query->num_rows() > 0)
+        {   
+            echo "<ol>";
+            foreach ($query->result() as $row) {
+                if (isset($row->nameLast)) { 
+                    echo "<li>{$row->nameLast}, {$row->nameFirst}</li>";                     
+                }
+            }
+            echo "</ol>";
+        }
     }
+    
+    
+    private function createBlock($label) {
+        $blockID = $this->getUuidInt();
+        
+        echo "<div>Creating block {$label} [{$blockID}]</div>";
+        
+        return $blockID;
+    }
+    
+    
     
     
     private function mapSamplesToBlock($blockID, $samples) {
@@ -249,10 +284,9 @@ class Work extends CI_Controller {
         
         foreach ($samples as $sample) {
             
-            $sampleLabel = $this->createAplphaNumericLabel(10);
+            $sampleLabel = $this->createUniqueInTable(10, 'map_sample_block', 'label');
             
-            echo "<li>Mapping {$sample['sampleID']} as {$sampleLabel}</li>";
-            
+            echo "<li>Mapping {$sampleLabel} [{$sample['sampleID']}]  = {$sample['subjectArea']}, {$sample['gradeBand']}, {$sample['images']}</li>";
         } 
         
         echo "</ul>";
@@ -271,6 +305,14 @@ class Work extends CI_Controller {
         return $record;
     }
 
+
+    private function getUuidInt() {
+        $sql = "SELECT UUID_SHORT() as id";
+        $query = $this->db->query($sql);
+        return $query->row()->id;
+    }
+    
+    
     
     private function checkSampleBlock($block) {
         
@@ -293,6 +335,8 @@ class Work extends CI_Controller {
         return $query->num_rows();        
     }
     
+    
+    
     private function createAplphaNumericLabel($length) {
         $letters = array('A','B','C','D','E', 'F','G','H','J','K','L','M','N','P','Q','R','S','T','U','W','X','Y','Z');
         $digits = array('2','3','5','6','7','8','9');
@@ -306,6 +350,25 @@ class Work extends CI_Controller {
         }
         
         return $key;
+    }
+    
+    
+    private function createUniqueInTable($length, $tableName, $fieldName) {
+        
+        $notUnique = true;
+    
+        $label = "";
+        
+        do {
+            $label  = $this->createAplphaNumericLabel($length);
+            $sql    = "SELECT {$fieldName} from {$tableName} where {$fieldName} = '{$label}' LIMIT 1";        
+            $query  = $this->db->query($sql);        
+            
+            if ($query->num_rows() == 0) { $notUnique = false; }
+        }
+        while ($notUnique);
+        
+        return $label;
     }
     
     
