@@ -182,7 +182,6 @@ class Work extends CI_Controller {
 
             foreach ($query->result() as $row) {
                   
-
                 if ($currentSubject != $row->subjectArea) {
                     $currentSubject = $row->subjectArea;
                     $idxFlag = true;
@@ -220,8 +219,6 @@ class Work extends CI_Controller {
         // build out the links
         foreach ($blocks as $blockData) {
             
-            //echo "<pre>". print_r($blockData, true) ."</pre>";
-            
             if ($this->checkSampleBlock($blockData) == 0) {
                 
                 $blockLabel = $this->createUniqueInTable(10, 'bank_block', 'label');
@@ -235,7 +232,8 @@ class Work extends CI_Controller {
             }
             else {
                 echo "<div>Possible collision in sample to block mapping</div>";
-            }           
+            }
+           
         }        
     }
     
