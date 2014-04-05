@@ -16,7 +16,7 @@ class GSAuth {
     private static $CI          = null;
     private static $userString  = null;
     private static $activeID    = null;    
-    public static $user         = null;
+    public static  $user         = null;
     
     
     public function __construct() {
@@ -176,7 +176,7 @@ class GSAuth {
             LI.loginName, LI.loginCode,
             CONCAT(U.nameFirst, \" \", U.nameLast) AS userString 
             FROM login AS LI
-            LEFT JOIN USER AS U ON U.id = LI.userID
+            LEFT JOIN bank_user AS U ON U.id = LI.userID
             WHERE LI.loginName COLLATE latin1_general_cs = '{$userName}'
             AND LI.loginCode COLLATE latin1_general_cs = '{$userCode}'
             AND userStatus = 'a' 
