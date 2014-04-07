@@ -16,7 +16,7 @@ class GSAuth {
     private static $CI          = null;
     private static $userString  = null;
     private static $activeID    = null;    
-    public static $user         = null;
+    public static  $user         = null;
     
     
     public function __construct() {
