@@ -246,7 +246,7 @@ class Work extends CI_Controller {
                 , user.nameLast, user.nameFirst
                 FROM `map_rprefs_user` AS MRU
                 LEFT JOIN `map_subjectarea_subjectband` AS MSS ON MSS.subjectBand = MRU.subjectBand
-                LEFT JOIN USER ON user.id = MRU.userID
+                LEFT JOIN bank_user as user ON user.id = MRU.userID
                 WHERE MSS.subjectArea = '{$subjectArea}'
                 AND MRU.gradeBand = '{$gradeBand}'";
                 
@@ -269,6 +269,12 @@ class Work extends CI_Controller {
         $blockID = $this->getUuidInt();
         
         echo "<div>Creating block {$label} [{$blockID}]</div>";
+                
+        $sql = "INSERT INTO bank_block 
+            (id, label, createdON, createdBY, active) VALUES
+            ({$blockID}, '{$label}', NOW(), 1, 'p')";
+        
+        $query = $this->db->query($sql);
         
         return $blockID;
     }
@@ -285,6 +291,13 @@ class Work extends CI_Controller {
             $sampleLabel = $this->createUniqueInTable(10, 'map_sample_block', 'label');
             
             echo "<li>Mapping {$sampleLabel} [{$sample['sampleID']}]  = {$sample['subjectArea']}, {$sample['gradeBand']}, {$sample['images']}</li>";
+            
+            
+            $sql = "INSERT INTO map_sample_block 
+                    (id, sampleID, blockID, label, createdON, createdBY, active) VALUES
+                    (UUID_SHORT(), {$sample['sampleID']}, {$blockID}, '{$sampleLabel}', NOW(), 1, 'p')";
+            
+            $this->db->query($sql);
         } 
         
         echo "</ul>";
