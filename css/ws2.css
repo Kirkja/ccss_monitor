@@ -57,6 +57,7 @@ table.reviewFormTable td div.reviewInput { text-align:left;}
 .rdStd {  }
 
 .fixedPallette  { min-height:55px; background-color:rgb(200,200,200); margin-bottom:0px; padding:5px; font-size:12px;}
+.fixedPalletteNarrow  { min-height:35px; background-color:rgb(200,200,200); margin-bottom:0px; padding:5px; font-size:12px;}
 .palletteInfo   { font-size:12px; margin-bottom:0px; padding:0em 0em 0.0em 0.5em; }
 
 

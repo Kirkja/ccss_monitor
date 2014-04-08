@@ -25,8 +25,12 @@
     
         <div class="ui-widget-content" style="border-top:0;padding:0px;">
 
-            <div id="simpleTab1b" style="padding:0px 0px 5px 0px;" ng-show="selected.image">                                   
-                <img src="{{selected.image}}" width="100%"/>                                                                        
+            <div id="simpleTab1b" style="padding:0px 0px 5px 0px;" ng-show="selected.image"> 
+                <div class="fixedPalletteNarrow">
+                    <a href="" class="button " ng-click="rotate(-90)">Rotate CCW</a>
+                    <a href="" class="button  right" ng-click="rotate(90)">Rotate CW</a>
+                </div>
+                <img degrees='angle' rotate id="sampleImage" src="{{selected.image}}" width="100%"/>                                                                        
             </div>
             
             <div id="simpleTab2b" style="padding:0px;"> 
