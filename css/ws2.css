@@ -118,10 +118,12 @@ dl.form_element dd {
 
 
 #btn_logout {
-    padding:0.25em 0.5em;
-    float:right;
+    //padding:0.25em 0.5em;
+    //float:right;
 }
 
+
+.infoZone { min-height:40px;}
 
 .padding_container {
     padding:1em;

@@ -36,7 +36,7 @@ class Work extends CI_Controller {
         
         // Gather all the available OPEN work folders assigned to the user
         $sql = "SELECT MBU.blockID, MBU.userID, DATE_FORMAT(MBU.dueON, '%M %e, %Y') AS dueON,
-                BB.label
+                BB.label, BB.alphaCode
                 FROM `map_block_user` AS MBU
                 LEFT JOIN bank_block AS BB ON BB.id = MBU.blockID
                 LEFT JOIN login AS LI ON LI.userID = MBU.userID
@@ -56,6 +56,7 @@ class Work extends CI_Controller {
             foreach ($query->result() as $block) {
 
                 $item['label']      = $block->label;
+                $item['alphaCode']  = $block->alphaCode;
                 $item['id']         = $block->blockID;
                 $item['cashValue']  = 0.00;
                 $item['dueON']      = $block->dueON;
@@ -75,14 +76,18 @@ class Work extends CI_Controller {
                             WHEN 'D' THEN  BB.baseValue * 0.75
                             WHEN 'E' THEN  BB.baseValue * 0.50
                             WHEN 'F' THEN  BB.baseValue * 0.25
-                            ELSE BB.baseValue
+                            ELSE BB.baseValue                           
                             END AS cashValue
+                          , BB.alphaCode 
                             FROM map_sample_block AS MSB
                             JOIN map_image_sample AS MIS ON MIS.sampleID = MSB.sampleID
                             JOIN bank_image AS BI ON BI.id = MIS.imageID
                             JOIN bank_sample AS BS ON BS.id = MSB.sampleID
                             JOIN bank_block AS BB ON BB.id = MSB.blockID
                             WHERE MSB.active= 'y'
+                            AND BS.active = 'y'
+                            AND BB.active = 'y'
+                            AND BI.active = 'y'                            
                             AND MSB.blockID = {$block->blockID}
                             GROUP BY MSB.blockID, MIS.sampleID, MIS.imageID";
                 
@@ -99,6 +104,7 @@ class Work extends CI_Controller {
                         $c['cashValue']     = $blockB->cashValue;
                         $c['blockID']       = $block->blockID;
                         $c['blockName']     = $block->label;
+                        $c['alphaCode']     = $blockB->alphaCode;
                         
                         // test is there is a review, then mark as completed
                         // just place the date completed
@@ -113,11 +119,13 @@ class Work extends CI_Controller {
                         // add the sample cash value to the block
                         $item['cashValue'] += $blockB->cashValue;
                     }
-                     $item['cashValue'] = sprintf('%01.2f',$item['cashValue']);
                     
+                    $item['cashValue'] = sprintf('%01.2f',$item['cashValue']);
+                    
+                    $data[] = $item;
                 }
 
-                $data[] = $item;
+                
             }
 
             // Create the correct JSON payloads
@@ -140,13 +148,13 @@ class Work extends CI_Controller {
         if (!$activeID) { exit(); } 
         
         $sql = "SELECT
-                            BP.accountID 
-                          , MSP.projectID
-                          , BC.siteID, MSC.collectorID, MSC.sampleID
-                          , BC.subjectArea, BC.gradeLevel
-                          , COUNT(MIS.imageID) AS images
-                          , BS.label AS sampleName
-                          , MGG.gradeBand
+                BP.accountID 
+              , MSP.projectID
+              , BC.siteID, MSC.collectorID, MSC.sampleID
+              , BC.subjectArea, BC.gradeLevel
+              , COUNT(MIS.imageID) AS images
+              , BS.label AS sampleName
+              , MGG.gradeBand
                   FROM map_sample_collector AS MSC
                   LEFT JOIN bank_collector AS BC ON BC.id = MSC.collectorID
                   LEFT JOIN map_site_project AS MSP ON MSP.siteID = BC.siteID
@@ -224,9 +232,11 @@ class Work extends CI_Controller {
             
             if ($this->checkSampleBlock($blockData) == 0) {
                 
-                $blockLabel = $this->createUniqueInTable(10, 'bank_block', 'label');
+                $alphaCode  = $this->createUniqueInTable(8, 'bank_block', 'label');
 
-                $blockID    = $this->createBlock($blockLabel);
+                $blockLabel = $blockData[0]['subjectArea'] ." - ". $blockData[0]['gradeLevel'];
+
+                $blockID    = $this->createBlock($blockLabel, $alphaCode);
                 
                 $this->mapSamplesToBlock($blockID, $blockData);
                 
@@ -268,14 +278,14 @@ class Work extends CI_Controller {
     }
     
     
-    private function createBlock($label) {
+    private function createBlock($label, $alphaCode) {
         $blockID = $this->getUuidInt();
         
         echo "<div>Creating block {$label} [{$blockID}]</div>";
                 
         $sql = "INSERT INTO bank_block 
-            (id, label, createdON, createdBY, active) VALUES
-            ({$blockID}, '{$label}', NOW(), 1, 'p')";
+            (id, label, createdON, createdBY, active, alphaCode) VALUES
+            ({$blockID}, '{$label}', NOW(), 1, 'p', '{$alphaCode}')";
         
         $query = $this->db->query($sql);
         

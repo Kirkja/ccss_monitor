@@ -293,9 +293,47 @@ class Review extends CI_Controller {
        
     
     
+    public function setBlank() {
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+        
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);   
+        
+        if (!isset($tmp->imageID))       { exit(); }
+        
+        $this->setImageAsBlank($tmp->imageID);
+        
+
+        $out = array('data' => 
+            "true"
+        );
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);             
+    }
+    
+    
+    
+    
+    
+    
     //=======================================================================
     // PRIVATE METHODS
     //
+    
+    private function setImageAsBlank($imageID) {
+        $sql = "UPDATE bank_image 
+                SET active = 'b' 
+                WHERE id = {$imageID} 
+                LIMIT 1";
+        
+        $this->db->query($sql);
+    }
+    
+    
     
     private function updateNote(
             $activeID,

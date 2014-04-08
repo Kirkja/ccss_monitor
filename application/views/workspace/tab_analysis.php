@@ -25,10 +25,13 @@
     
         <div class="ui-widget-content" style="border-top:0;padding:0px;">
 
-            <div id="simpleTab1b" style="padding:0px 0px 5px 0px;" ng-show="selected.image"> 
+            <div id="simpleTab1b" 
+                 style="padding:0px 0px 5px 0px;" 
+                 ng-show="selected.image"> 
                 <div class="fixedPalletteNarrow">
                     <a href="" class="button " ng-click="rotate(-90)">Rotate CCW</a>
                     <a href="" class="button  right" ng-click="rotate(90)">Rotate CW</a>
+                    <a href="" class="button " ng-click="blank()">Blank</a>
                 </div>
                 <img degrees='angle' rotate id="sampleImage" src="{{selected.image}}" width="100%"/>                                                                        
             </div>
@@ -38,7 +41,10 @@
                 <!-- List of catalogs that are assigned to this block        -->
                 <div id="catalogPalette">
                     <label ng-repeat="item in catalogs">                    
-                        <input type="radio" ng-model="$parent.catalogID" value="{{item.catalogID}}" ng-change="setCID(catalogID)"/>
+                        <input type="radio" 
+                               ng-model="$parent.catalogID" 
+                               value="{{item.catalogID}}" 
+                               ng-change="setCID(catalogID)"/>
                         <span>{{item.label}}</spn><br/>
                     </label>
                 </div>
@@ -56,7 +62,9 @@
                         class="stdKey" 
                         ng-click="addStd(item.key)"
                         alt="Click to add standard" 
-                        title="Click to add standard">{{item.key}}</button> <span class="stdDesc" ng-bind-html="item.desc"></span>                    
+                        title="Click to add standard">{{item.key}}
+                    </button> 
+                    <span class="stdDesc" ng-bind-html="item.desc"></span>                    
                 </div>
                 
             </div>
@@ -64,13 +72,23 @@
             <div id="simpleTab3b" style="padding:0px 0px 5px 0px;"> 
                 <div id="searchPalette">
                     <label ng-repeat="item in catalogs">                    
-                        <input class="rdSearch" type="checkbox" name="{{item.catalogID}}" value="{{item.catalogID}}"/>
+                        <input class="rdSearch" type="checkbox" 
+                               name="{{item.catalogID}}" 
+                               value="{{item.catalogID}}"/>
                         <span>{{item.label}}</spn><br/>
                     </label> 
                     <table width="99%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td><input id="searchInput" type="text" ng-model="searchTerms" ng-enter="searchNow(searchTerms)"</td>
-                        <td width="40" align="right"><image id="searchButton" class="btn" ng-click="searchNow(searchTerms)" src="/css/images/search.png"/></td>
+                        <td><input id="searchInput" type="text" 
+                                   ng-model="searchTerms" 
+                                   ng-enter="searchNow(searchTerms)"
+                        </td>
+                        <td width="40" align="right">
+                            <image id="searchButton" 
+                                   class="btn" 
+                                   ng-click="searchNow(searchTerms)" 
+                                   src="/css/images/search.png"/>
+                        </td>
                     </tr>
                     </table>  
                                     
@@ -87,7 +105,8 @@
                         class="stdKey" 
                         ng-click="addStd(item.key)"
                         alt="Click to add standard" 
-                        title="Click to add standard">{{item.key}}</button> <span class="stdDesc" ng-bind-html="item.desc"></span>                    
+                        title="Click to add standard">{{item.key}}</button> 
+                    <span class="stdDesc" ng-bind-html="item.desc"></span>                    
                 </div>
                 
             </div>
@@ -100,7 +119,7 @@
     <div class="ui-layout-west">
         <div class="ui-layout-center">
             <div class="ui-widget-header ui-corner-top" style="padding:2px;">                                       
-                <span class="btn fit" ng-click="getOpenWork(user)">
+                <span class="btn fit" ng-click="getWork('open')">
                     <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
                          alt="Refresh Assignments" 
                          title="Refresh Assignments"/>
@@ -116,16 +135,18 @@
                     {{node.label}}
                 </treecontrol>                
             </div>
-            <div class="ui-state-default blockSummary">
+            <div class="ui-state-default blockSummary infoZone">
                 <div ng-show="node1.dueON">
-                    <span class="right">Due On {{node1.dueON}}</span>
-                    ${{node1.cashValue}}
+                    <div>Due on: {{node1.dueON}}</div>
+                    <div>Pays: ${{node1.cashValue}}</div>
+                    <div>Code: {{node1.alphaCode}}</div>
                 </div>
+
             </div>
         </div>
         <div class="ui-layout-south">
             <div class="ui-widget-header ui-corner-top" style="padding:2px;">
-                <span class="btn fit" ng-click="getClosedWork(user)">
+                <span class="btn fit" ng-click="getWork('closed')">
                     <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
                          alt="Refresh Assignments" 
                          title="Refresh Assignments"/>
@@ -167,7 +188,12 @@
                     <a href="" ng-click="addSCR()" class="button add right">Add SCR</a>
                     <a href="" ng-click="delSCR()" class="button delete">Del SCR</a>
                     <div class="palletteInfo">
-                        {{currentBlockName}} <span ng-show="currentSampleName"> - </span> {{currentSampleName}}
+                        {{currentBlockName}} 
+                        <span ng-show="currentSampleName"> - </span> {{currentSampleName}}  
+                        <span alt="This is the sample code." 
+                              title="This is the sample code." 
+                              class="right">{{currentSampleAlphacode}}
+                        </span>
                     </div>
                 </div>                
                 

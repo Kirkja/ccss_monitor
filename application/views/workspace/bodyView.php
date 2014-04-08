@@ -5,8 +5,8 @@
 <div id="outer-north">
     <span id="branded_as">Granted Solutions</span>
     <span>(<?php echo GSAuth::GetUserObject()->screenName; ?>)</span>
-    
-    <button id="btn_logout">Log Out</button>
+        
+    <a href="" id="btn_logout" class="button right">Log Out</a>
     <br/>
     <span><?php echo GSAuth::GetUserObject()->position; ?></span>    
 </div>
