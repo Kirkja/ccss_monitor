@@ -147,6 +147,7 @@ class Work extends CI_Controller {
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); } 
         
+        /*
         $sql = "SELECT
                 BP.accountID 
               , MSP.projectID
@@ -176,6 +177,30 @@ class Work extends CI_Controller {
                           , BC.subjectArea
                           , BC.gradeLevel	
                   HAVING images > 0";
+        */
+        
+        $sql = "SELECT 
+                    BC.subjectArea, BC.gradeLevel
+                  , MSC.sampleID, MSC.collectorID
+                  , MCSite.siteID
+                  , MSP.projectID
+                  , COUNT(MIS.imageID) AS images
+                  , MGG.gradeBand
+                  , BS.label AS sampleName
+                 FROM map_sample_collector AS MSC
+                 LEFT JOIN bank_sample AS BS ON BS.id = MSC.sampleID
+                 LEFT JOIN bank_collector AS BC ON BC.id = MSC.collectorID
+                 LEFT JOIN map_collector_site MCSite ON MCSite.collectorID = MSC.collectorID
+                 LEFT JOIN map_image_sample AS MIS ON MIS.sampleID = MSC.sampleID
+                 LEFT JOIN map_site_project AS MSP ON MSP.siteID = MCSite.siteID
+                 LEFT JOIN map_gradelevel_gradeband AS MGG ON MGG.gradeLevel = BC.gradeLevel
+                 WHERE MSP.active = 'y'
+                 AND MCSite.active = 'y'
+                 AND MSC.active = 'y'
+                 AND BC.active = 'y'
+                 AND MIS.active = 'y'
+                 GROUP BY MSP.projectID, MCSite.siteID, MSC.collectorID, MSC.sampleID
+                 HAVING images > 0";
         
         $query = $this->db->query($sql);
         
@@ -270,7 +295,13 @@ class Work extends CI_Controller {
             echo "<ol>";
             foreach ($query->result() as $row) {
                 if (isset($row->nameLast)) { 
-                    echo "<li>{$row->nameLast}, {$row->nameFirst}</li>";                     
+                    echo "<li>{$row->nameLast}, {$row->nameFirst}</li>";  
+                    
+                    $sqlB = "INSERT INTO `map_block_user` (id, blockID, userID, active) 
+                            VALUES (UUID_SHORT(), {$blockID}, {$row->userID}, 'y') 
+                            ON DUPLICATE KEY UPDATE active = VALUES(active);";
+                    
+                    $this->db->query($sqlB);
                 }
             }
             echo "</ol>";
@@ -285,7 +316,7 @@ class Work extends CI_Controller {
                 
         $sql = "INSERT INTO bank_block 
             (id, label, createdON, createdBY, active, alphaCode) VALUES
-            ({$blockID}, '{$label}', NOW(), 1, 'p', '{$alphaCode}')";
+            ({$blockID}, '{$label}', NOW(), 1, 'y', '{$alphaCode}')";
         
         $query = $this->db->query($sql);
         
@@ -301,16 +332,20 @@ class Work extends CI_Controller {
         
         foreach ($samples as $sample) {
             
-            $sampleLabel = $this->createUniqueInTable(10, 'map_sample_block', 'label');
+            $sampleLabel = $this->createUniqueInTable(8, 'map_sample_block', 'label');
             
             echo "<li>Mapping {$sampleLabel} [{$sample['sampleID']}]  = {$sample['subjectArea']}, {$sample['gradeBand']}, {$sample['images']}</li>";
             
             
             $sql = "INSERT INTO map_sample_block 
                     (id, sampleID, blockID, label, createdON, createdBY, active) VALUES
-                    (UUID_SHORT(), {$sample['sampleID']}, {$blockID}, '{$sampleLabel}', NOW(), 1, 'p')";
+                    (UUID_SHORT(), {$sample['sampleID']}, {$blockID}, '{$sampleLabel}', NOW(), 1, 'y')";
             
             $this->db->query($sql);
+            
+            
+            $sqlB = "UPDATE bank_sample SET label = '{$sampleLabel}', active= 'y' WHERE id = {$sample['sampleID']} LIMIT 1";            
+            $this->db->query($sqlB);
         } 
         
         echo "</ul>";

@@ -136,12 +136,9 @@
                 </treecontrol>                
             </div>
             <div class="ui-state-default blockSummary infoZone">
-                <div ng-show="node1.dueON">
-                    <div>Due on: {{node1.dueON}}</div>
-                    <div>Pays: ${{node1.cashValue}}</div>
-                    <div>Code: {{node1.alphaCode}}</div>
-                </div>
-
+                <div ng-show="node1.dueON">Due on: {{node1.dueON}}</div>
+                <div ng-show="node1.cashValue">Pays: ${{node1.cashValue}}</div>
+                <div ng-show="node1.alphaCode">Folder: {{node1.alphaCode}}</div>
             </div>
         </div>
         <div class="ui-layout-south">
@@ -163,10 +160,9 @@
                 </treecontrol>
             </div>
             <div class="ui-state-default blockSummary">
-                <div ng-show="node2.dueON">
-                    <span class="right">Due On {{node2.dueON}}</span>
-                    ${{node2.cashValue}}
-                </div>
+                <div ng-show="node2.dueON">Due on: {{node2.dueON}}</div>
+                <div ng-show="node2.cashValue">Pays: ${{node2.cashValue}}</div>
+                <div ng-show="node2.alphaCode">Folder: {{node2.alphaCode}}</div>
             </div>            
         </div>
     </div>
@@ -189,7 +185,7 @@
                     <a href="" ng-click="delSCR()" class="button delete">Del SCR</a>
                     <div class="palletteInfo">
                         {{currentBlockName}} 
-                        <span ng-show="currentSampleName"> - </span> {{currentSampleName}}  
+                        <span ng-show="currentSampleName"> / </span> {{currentSampleName}}  
                         <span alt="This is the sample code." 
                               title="This is the sample code." 
                               class="right">{{currentSampleAlphacode}}
