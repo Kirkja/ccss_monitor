@@ -199,13 +199,17 @@ class Work extends CI_Controller {
                  AND MSC.active = 'y'
                  AND BC.active = 'y'
                  AND MIS.active = 'y'
-                 GROUP BY MSP.projectID, MCSite.siteID, MSC.collectorID, MSC.sampleID
-                 HAVING images > 0";
+                GROUP BY MSP.projectID, 
+                MCSite.siteID, BC.gradeLevel, 
+                BC.subjectArea, MSC.collectorID, MSC.sampleID
+                HAVING images > 0
+                ORDER BY BC.gradeLevel DESC, BC.subjectArea, 
+                MSC.collectorID, MSC.sampleID";
         
         $query = $this->db->query($sql);
         
         $blocks         = array();
-        $threshold      = 2;
+        $threshold      = 20;
         $imageCount     = 0;
         $idx            = 0;
         
@@ -257,8 +261,10 @@ class Work extends CI_Controller {
             
             if ($this->checkSampleBlock($blockData) == 0) {
                 
-                $alphaCode  = $this->createUniqueInTable(8, 'bank_block', 'label');
+                //$alphaCode  = $this->createUniqueInTable(8, 'bank_block', 'label');
 
+                $alphaCode  = GSUtil::createAlphaCode(8, 'bank_block', 'label');
+                
                 $blockLabel = $blockData[0]['subjectArea'] ." - ". $blockData[0]['gradeLevel'];
 
                 $blockID    = $this->createBlock($blockLabel, $alphaCode);
@@ -278,6 +284,8 @@ class Work extends CI_Controller {
     
     private function mapUsersToBlock($blockID, $subjectArea, $gradeBand) {
         echo "<p>Looking for users who prefer {$gradeBand} {$subjectArea} for block {$blockID}</p>";
+        
+        $assignments = array();
         
         $sql = "SELECT 
                 MRU.*
@@ -301,7 +309,8 @@ class Work extends CI_Controller {
                             VALUES (UUID_SHORT(), {$blockID}, {$row->userID}, 'y') 
                             ON DUPLICATE KEY UPDATE active = VALUES(active);";
                     
-                    $this->db->query($sqlB);
+                    //$this->db->query($sqlB);
+                                    
                 }
             }
             echo "</ol>";
@@ -310,7 +319,9 @@ class Work extends CI_Controller {
     
     
     private function createBlock($label, $alphaCode) {
-        $blockID = $this->getUuidInt();
+        //$blockID = $this->getUuidInt();
+        
+        $blockID = GSUtil::getUUID();
         
         echo "<div>Creating block {$label} [{$blockID}]</div>";
                 
@@ -318,7 +329,7 @@ class Work extends CI_Controller {
             (id, label, createdON, createdBY, active, alphaCode) VALUES
             ({$blockID}, '{$label}', NOW(), 1, 'y', '{$alphaCode}')";
         
-        $query = $this->db->query($sql);
+        //$query = $this->db->query($sql);
         
         return $blockID;
     }
@@ -332,7 +343,9 @@ class Work extends CI_Controller {
         
         foreach ($samples as $sample) {
             
-            $sampleLabel = $this->createUniqueInTable(8, 'map_sample_block', 'label');
+            //$sampleLabel = $this->createUniqueInTable(8, 'map_sample_block', 'label');
+            
+            $sampleLabel = GSUtil::createAlphaCode(8, 'map_sample_block', 'label');
             
             echo "<li>Mapping {$sampleLabel} [{$sample['sampleID']}]  = {$sample['subjectArea']}, {$sample['gradeBand']}, {$sample['images']}</li>";
             
@@ -341,11 +354,11 @@ class Work extends CI_Controller {
                     (id, sampleID, blockID, label, createdON, createdBY, active) VALUES
                     (UUID_SHORT(), {$sample['sampleID']}, {$blockID}, '{$sampleLabel}', NOW(), 1, 'y')";
             
-            $this->db->query($sql);
+            //$this->db->query($sql);
             
             
             $sqlB = "UPDATE bank_sample SET label = '{$sampleLabel}', active= 'y' WHERE id = {$sample['sampleID']} LIMIT 1";            
-            $this->db->query($sqlB);
+            //$this->db->query($sqlB);
         } 
         
         echo "</ul>";
@@ -365,13 +378,14 @@ class Work extends CI_Controller {
     }
 
 
+    /*
     private function getUuidInt() {
         $sql = "SELECT UUID_SHORT() as id";
         $query = $this->db->query($sql);
         return $query->row()->id;
     }
     
-    
+   */
     
     private function checkSampleBlock($block) {
         
@@ -395,7 +409,7 @@ class Work extends CI_Controller {
     }
     
     
-    
+    /*
     private function createAplphaNumericLabel($length) {
         $letters = array('A','B','C','D','E', 'F','G','H','J','K','L','M','N','P','Q','R','S','T','U','W','X','Y','Z');
         $digits = array('2','3','5','6','7','8','9');
@@ -410,8 +424,10 @@ class Work extends CI_Controller {
         
         return $key;
     }
+    */
     
     
+    /*
     private function createUniqueInTable($length, $tableName, $fieldName) {
         
         $notUnique = true;
@@ -429,7 +445,7 @@ class Work extends CI_Controller {
         
         return $label;
     }
-    
+    */
     
     
     

@@ -33,7 +33,10 @@
                     <a href="" class="button  right" ng-click="rotate(90)">Rotate CW</a>
                     <a href="" class="button " ng-click="blank()">Blank</a>
                 </div>
-                <img degrees='angle' rotate id="sampleImage" src="{{selected.image}}" width="100%"/>                                                                        
+                <img degrees='angle' rotate 
+                     id="sampleImage" 
+                     src="<?php echo base_url();?>scan_images/{{selected.image}}" 
+                     width="100%"/>                                                                        
             </div>
             
             <div id="simpleTab2b" style="padding:0px;"> 
