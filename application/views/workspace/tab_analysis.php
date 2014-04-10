@@ -32,11 +32,13 @@
                     <a href="" class="button " ng-click="rotate(-90)">Rotate CCW</a>
                     <a href="" class="button  right" ng-click="rotate(90)">Rotate CW</a>
                     <a href="" class="button " ng-click="blank()">Blank</a>
+                    <a href="" class="button " ng-click="detachImage(parent.currentImageID)">Detach</a>
+                    {{parent.currentImageID}}
                 </div>
                 <img degrees='angle' rotate 
                      id="sampleImage" 
                      src="<?php echo base_url();?>scan_images/{{selected.image}}" 
-                     width="100%"/>                                                                        
+                     width="99%"/>                                                                        
             </div>
             
             <div id="simpleTab2b" style="padding:0px;"> 
@@ -139,9 +141,9 @@
                 </treecontrol>                
             </div>
             <div class="ui-state-default blockSummary infoZone">
-                <div ng-show="node1.dueON">Due on: {{node1.dueON}}</div>
-                <div ng-show="node1.cashValue">Pays: ${{node1.cashValue}}</div>
-                <div ng-show="node1.alphaCode">Folder: {{node1.alphaCode}}</div>
+                <div>Due on: {{node1.dueON}}</div>
+                <div>Pays: ${{node1.cashValue}}</div>
+                <div>AlphaCode: {{node1.alphaCode}}</div>
             </div>
         </div>
         <div class="ui-layout-south">
@@ -162,10 +164,10 @@
                     {{node.label}}
                 </treecontrol>
             </div>
-            <div class="ui-state-default blockSummary">
-                <div ng-show="node2.dueON">Due on: {{node2.dueON}}</div>
-                <div ng-show="node2.cashValue">Pays: ${{node2.cashValue}}</div>
-                <div ng-show="node2.alphaCode">Folder: {{node2.alphaCode}}</div>
+            <div class="ui-state-default blockSummary infoZone">
+                <div>Due on: {{node2.dueON}}</div>
+                <div>Pays: ${{node2.cashValue}}</div>
+                <div>AlphaCode: {{node2.alphaCode}}</div>
             </div>            
         </div>
     </div>
@@ -184,13 +186,29 @@
             <div class="ui-widget-content" style="padding:0px;">
 
                 <div class="fixedPallette">
-                    <a href="" ng-click="addSCR()" class="button add right">Add SCR</a>
-                    <a href="" ng-click="delSCR()" class="button delete">Del SCR</a>
+                    <a href="" 
+                       alt="Adds a new SCR entry" 
+                       title="Adds a new SCR entry"
+                       ng-click="addSCR()" 
+                       class="button add right">Add SCR</a>
+                    <a href="" 
+                       ng-click="delSCR()" 
+                       alt="Deletes all selected SCR entries" 
+                       title="Deletes all selected SCR entries"                       
+                       class="button delete">Del SCR</a>
                     <div class="palletteInfo">
-                        {{currentBlockName}} 
-                        <span ng-show="currentSampleName"> / </span> {{currentSampleName}}  
-                        <span alt="This is the sample code." 
-                              title="This is the sample code." 
+                        <span alt="This is the folder name" 
+                              title="This is the floder name">
+                            {{currentBlockName}} 
+                        </span>
+                        <span ng-show="currentSampleName" 
+                              alt="This is the sample name" 
+                              title="This is the sample name"> 
+                            / 
+                        </span>
+                        <span>{{currentSampleName}} </span>
+                        <span alt="This is the image code" 
+                              title="This is the image code" 
                               class="right">{{currentSampleAlphacode}}
                         </span>
                     </div>

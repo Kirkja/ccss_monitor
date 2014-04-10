@@ -78,13 +78,14 @@ class Work extends CI_Controller {
                             WHEN 'F' THEN  BB.baseValue * 0.25
                             ELSE BB.baseValue                           
                             END AS cashValue
-                          , BB.alphaCode 
+                          , BI.alphaCode 
                             FROM map_sample_block AS MSB
                             JOIN map_image_sample AS MIS ON MIS.sampleID = MSB.sampleID
                             JOIN bank_image AS BI ON BI.id = MIS.imageID
                             JOIN bank_sample AS BS ON BS.id = MSB.sampleID
                             JOIN bank_block AS BB ON BB.id = MSB.blockID
                             WHERE MSB.active= 'y'
+                            AND MIS.active = 'y'
                             AND BS.active = 'y'
                             AND BB.active = 'y'
                             AND BI.active = 'y'                            

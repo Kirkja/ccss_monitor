@@ -2,11 +2,16 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
+  
 class Tools extends CI_Controller {
 
     /**
      * 
      */
+    
+    public $live = false;
+  
+
     public function index() {
         // Automatically exit. Noone needs to access the root
         //
@@ -14,8 +19,42 @@ class Tools extends CI_Controller {
     }
 
     
+
+    public function alphacodeBlocks() {
+        
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------        
+                
+        $sql = "SELECT * FROM bank_block WHERE alphaCode IS NULL";
+        
+        $query = $this->db->query($sql);
+        
+        $codeCount = 0;
+        
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $alphaCode = GSUtil::createAlphaCode(8, 'bank_block', 'alphaCode');
+                
+                $sqlB = "UPDATE bank_block SET alphaCode ='{$alphaCode}' WHERE id = {$row->id} LIMIT 1";
+                
+                $this->db->query($sqlB);
+                
+                $codeCount +=1;
+            }
+        }
+        
+        echo "alphaCode set for {$codeCount} blocks";
+    }
+    
+    
     
     public function alphacodeImages() {
+        
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------        
+                
         $sql = "SELECT * FROM bank_image WHERE alphaCode IS NULL";
         
         $query = $this->db->query($sql);
@@ -28,7 +67,7 @@ class Tools extends CI_Controller {
                 
                 $sqlB = "UPDATE bank_image SET alphaCode ='{$alphaCode}' WHERE id = {$row->id} LIMIT 1";
                 
-                //$this->db->query($sqlB);
+                $this->db->query($sqlB);
                 
                 $codeCount +=1;
             }
@@ -38,7 +77,13 @@ class Tools extends CI_Controller {
     }
 
     
-        public function alphacodeSamples() {
+   public function alphacodeSamples() {
+            
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------        
+        
+                     
         $sql = "SELECT * FROM bank_sample WHERE alphaCode IS NULL";
         
         $query = $this->db->query($sql);
@@ -51,7 +96,7 @@ class Tools extends CI_Controller {
                 
                 $sqlB = "UPDATE bank_sample SET alphaCode ='{$alphaCode}' WHERE id = {$row->id} LIMIT 1";
                 
-                //$this->db->query($sqlB);
+                $this->db->query($sqlB);
                 
                 $codeCount +=1;
             }
@@ -61,12 +106,22 @@ class Tools extends CI_Controller {
     }
 
     
-    
-    
-    public function processAssignments() {
+  
+    public function processAssignments($mode=null) {
                 
         $activeID = GSAuth::Fence();        
-        if (!$activeID) { exit(); } 
+        if (!$activeID) { exit(); }
+        //-------------------------        
+        
+ 
+        if ($mode == 'golive') 
+        { 
+            $this->live = true; 
+            echo "<p>IN LIVE MODE</p>";             
+        }
+        else {
+            echo "<p>IN SAFE MODE</p>";
+        }
                 
         $sql = "SELECT 
                 BC.subjectArea, BC.gradeLevel
@@ -233,7 +288,9 @@ class Tools extends CI_Controller {
                         VALUES (UUID_SHORT(), {$row->id}, {$blockID}, 'y') 
                         ON DUPLICATE KEY UPDATE active = VALUES(active)";
                         
-                //$this->db->query($sql);
+                if ($this->live) {
+                    $this->db->query($sql);
+                }
             }
             echo "</ul>";
         }
@@ -267,9 +324,9 @@ class Tools extends CI_Controller {
                     $sqlB = "INSERT INTO `map_block_user` (id, blockID, userID, active) 
                             VALUES (UUID_SHORT(), {$blockID}, {$row->userID}, 'y') 
                             ON DUPLICATE KEY UPDATE active = VALUES(active)";
-                    
-                    //$this->db->query($sqlB);
-                                    
+                    if ($this->live) {
+                        $this->db->query($sqlB);
+                    }              
                 }
             }
             echo "</ol>";
@@ -288,7 +345,9 @@ class Tools extends CI_Controller {
             (id, label, createdON, createdBY, active, alphaCode) VALUES
             ({$blockID}, '{$label}', NOW(), 1, 'y', '{$alphaCode}')";
         
-        //$query = $this->db->query($sql);
+        if ($this->live) {
+            $query = $this->db->query($sql);
+        }
         
         return $blockID;
     }
@@ -309,17 +368,19 @@ class Tools extends CI_Controller {
             $sampleLabel = GSUtil::createAlphaCode(8, 'map_sample_block', 'label');
             
             echo "<li>Mapping {$sampleLabel} [{$sample['sampleID']}]  = {$sample['subjectArea']}, {$sample['gradeBand']}, {$sample['images']}</li>";
-            
-            
+                        
             $sql = "INSERT INTO map_sample_block 
                     (id, sampleID, blockID, label, createdON, createdBY, active) VALUES
                     (UUID_SHORT(), {$sample['sampleID']}, {$blockID}, '{$sampleLabel}', NOW(), 1, 'y')";
             
-            //$this->db->query($sql);
-                        
+            if ($this->live) {
+                $this->db->query($sql);
+            }          
             $sqlB = "UPDATE bank_sample SET label = '{$sampleLabel}', active= 'y' WHERE id = {$sample['sampleID']} LIMIT 1";            
             
-            //$this->db->query($sqlB);
+            if ($this->live) {
+                $this->db->query($sqlB);                
+            }
         } 
         
         echo "</ul>";
