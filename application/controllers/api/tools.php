@@ -1,148 +1,69 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Work extends CI_Controller {
+class Tools extends CI_Controller {
 
     /**
      * 
      */
     public function index() {
-        // Automatically exit. Non one needs to access the root
+        // Automatically exit. Noone needs to access the root
         //
         exit();
     }
 
     
     
-    
-    
-    /**
-     * 
-     */
-    public function getassignments() {
+    public function alphacodeImages() {
+        $sql = "SELECT * FROM bank_image WHERE alphaCode IS NULL";
         
-        $activeID = GSAuth::Fence();        
-        if (!$activeID) { exit(); }
-        //-------------------------        
-        
-        $raw = file_get_contents("php://input");
-        $tmp = json_decode($raw);
-        
-        if (!isset($tmp->mode))     { exit(); }           
-        
-        $modeText = $tmp->mode == "open" ? " IS NULL " : " IS NOT NULL ";
-        
-        // Gather all the available OPEN work folders assigned to the user
-        $sql = "SELECT MBU.blockID, MBU.userID, DATE_FORMAT(MBU.dueON, '%M %e, %Y') AS dueON,
-                BB.label, BB.alphaCode
-                FROM `map_block_user` AS MBU
-                LEFT JOIN bank_block AS BB ON BB.id = MBU.blockID
-                LEFT JOIN login AS LI ON LI.userID = MBU.userID
-                WHERE MBU.blockID IS NOT NULL
-                AND MBU.completedON {$modeText}
-                AND MBU.active = 'y'
-                AND LI.id = {$activeID}
-                ORDER BY MBU.dueON, BB.label"
-                ;
-                               
         $query = $this->db->query($sql);
-
-        $data = array();
+        
+        $codeCount = 0;
         
         if ($query->num_rows() > 0) {
-
-            foreach ($query->result() as $block) {
-
-                $item['label']      = $block->label;
-                $item['alphaCode']  = $block->alphaCode;
-                $item['id']         = $block->blockID;
-                $item['cashValue']  = 0.00;
-                $item['dueON']      = $block->dueON;
-                $item['children']   = array();
+            foreach ($query->result() as $row) {
+                $alphaCode = GSUtil::createAlphaCode(8, 'bank_image', 'alphaCode');
                 
-                //-- Gather all the available samples for a specific block
-                $sqlB = "SELECT 
-                            CONCAT(BS.label,'-',MIS.sequence) AS sampleLabel
-                          , MSB.blockID
-                          , MSB.sampleID
-                          , MIS.imageID
-                          , CONCAT(BI.imagePath, BI.imageName) AS image
-                          , CASE BI.payRate
-                            WHEN 'A' THEN  BB.baseValue * 2.50
-                            WHEN 'B' THEN  BB.baseValue * 1.50
-                            WHEN 'C' THEN  BB.baseValue * 1.00
-                            WHEN 'D' THEN  BB.baseValue * 0.75
-                            WHEN 'E' THEN  BB.baseValue * 0.50
-                            WHEN 'F' THEN  BB.baseValue * 0.25
-                            ELSE BB.baseValue                           
-                            END AS cashValue
-                          , BB.alphaCode 
-                            FROM map_sample_block AS MSB
-                            JOIN map_image_sample AS MIS ON MIS.sampleID = MSB.sampleID
-                            JOIN bank_image AS BI ON BI.id = MIS.imageID
-                            JOIN bank_sample AS BS ON BS.id = MSB.sampleID
-                            JOIN bank_block AS BB ON BB.id = MSB.blockID
-                            WHERE MSB.active= 'y'
-                            AND BS.active = 'y'
-                            AND BB.active = 'y'
-                            AND BI.active = 'y'                            
-                            AND MSB.blockID = {$block->blockID}
-                            GROUP BY MSB.blockID, MIS.sampleID, MIS.imageID";
+                $sqlB = "UPDATE bank_image SET alphaCode ='{$alphaCode}' WHERE id = {$row->id} LIMIT 1";
                 
-                $queryB = $this->db->query($sqlB);
-
-                if ($queryB->num_rows() > 0) {
-
-                    foreach ($queryB->result() as $blockB) {
-                        $c = array();                       
-                        $c['label']         = trim($blockB->sampleLabel);
-                        $c['id']            = $blockB->sampleID;
-                        $c['image']         = $blockB->image;
-                        $c['imageID']       = $blockB->imageID;
-                        $c['cashValue']     = $blockB->cashValue;
-                        $c['blockID']       = $block->blockID;
-                        $c['blockName']     = $block->label;
-                        $c['alphaCode']     = $blockB->alphaCode;
-                        
-                        // test is there is a review, then mark as completed
-                        // just place the date completed
-                        $c['completed'] = $tmp->mode == 'open' ? 'n' : 'y';
-                        
-                        // samples have no children, but its needed just in case
-                        $c['children']  = array();
-
-                        // add the samples as children to the block
-                        $item['children'][] = $c;
-                        
-                        // add the sample cash value to the block
-                        $item['cashValue'] += $blockB->cashValue;
-                    }
-                    
-                    $item['cashValue'] = sprintf('%01.2f',$item['cashValue']);
-                    
-                    $data[] = $item;
-                }
-
+                //$this->db->query($sqlB);
                 
+                $codeCount +=1;
             }
-
-            // Create the correct JSON payloads
-            $out = array('data' => $data);
-
-            // Set the correct JSON response header
-            header('Content-Type: application/json');
-            echo json_encode($out);
-
-            //  DEBUG ONLY
-            //echo "<pre>" . print_r($out, true) . "</pre>";
         }
+        
+        echo "alphaCode set for {$codeCount} images";
     }
 
-     
-    /*
-    public function gatherSampleMeta() {
+    
+        public function alphacodeSamples() {
+        $sql = "SELECT * FROM bank_sample WHERE alphaCode IS NULL";
+        
+        $query = $this->db->query($sql);
+        
+        $codeCount = 0;
+        
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $alphaCode = GSUtil::createAlphaCode(8, 'bank_sample', 'alphaCode');
+                
+                $sqlB = "UPDATE bank_sample SET alphaCode ='{$alphaCode}' WHERE id = {$row->id} LIMIT 1";
+                
+                //$this->db->query($sqlB);
+                
+                $codeCount +=1;
+            }
+        }
+        
+        echo "alphaCode set for {$codeCount} samples";
+    }
+
+    
+    
+    
+    public function processAssignments() {
                 
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); } 
@@ -264,10 +185,35 @@ class Work extends CI_Controller {
         echo "Processed {$sampleCount} samples into {$blockCount} working folders";
     }
     
-    */
     
     
-    /*
+    //=======================================================================
+    //
+    //
+    
+    
+    private function checkSampleBlock($block) {
+        
+        $ids = "";
+
+        foreach ($block as $sample) {
+            $ids .= "{$sample['sampleID']}";
+            $ids .= ",";
+        }
+        
+        $ids =  trim($ids, ",");
+        
+        $sql = "SELECT 
+                * FROM map_sample_block 
+                WHERE sampleID 
+                IN ( {$ids} )";
+                
+        $query = $this->db->query($sql);
+        
+        return $query->num_rows();        
+    }    
+    
+    
     private function mapCatalogsToBlock($blockID, $subjectArea, $state) {
         $sql = "SELECT 
                 BC.id, BC.state, BC.year, BC.label, MSS.subjectband 
@@ -293,10 +239,8 @@ class Work extends CI_Controller {
         }
     }
     
-    */
     
     
-    /*
     private function mapUsersToBlock($blockID, $subjectArea, $gradeBand) {
         echo "<p>Assigning users who prefer {$gradeBand} {$subjectArea} for block {$blockID}</p>";
         
@@ -332,11 +276,7 @@ class Work extends CI_Controller {
         }
     }
     
-    */
     
-    
-    
-    /*
     private function createBlock($label, $alphaCode) {
         //$blockID = $this->getUuidInt();
         
@@ -353,10 +293,9 @@ class Work extends CI_Controller {
         return $blockID;
     }
     
-    */
     
     
-    /*
+    
     private function mapSamplesToBlock($blockID, $samples) {
         
         $sampleCount = 0;
@@ -388,47 +327,10 @@ class Work extends CI_Controller {
         return $sampleCount;
     }
     
-    */
-    
-    //========================================================================
-
-    private function loadFolder($row) {
-        $record = array();
-        foreach ($row as $key => $value) {
-            $record[$key] = $value;
-        }
-
-        return $record;
-    }
+       
 
 
 
-    /*
-    private function checkSampleBlock($block) {
-        
-        $ids = "";
 
-        foreach ($block as $sample) {
-            $ids .= "{$sample['sampleID']}";
-            $ids .= ",";
-        }
-        
-        $ids =  trim($ids, ",");
-        
-        $sql = "SELECT 
-                * FROM map_sample_block 
-                WHERE sampleID 
-                IN ( {$ids} )";
-                
-        $query = $this->db->query($sql);
-        
-        return $query->num_rows();        
-    }
-    */
-    
-    
-    
-    
 }
-
 ?>
