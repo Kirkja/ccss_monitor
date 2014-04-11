@@ -34,8 +34,8 @@ class Workspace extends CI_Controller {
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.min.js',
             base_url() .'lib/js/angular/ws/app.js',
-            base_url() .'lib/js/angular/ws/SettingsController.js',
-            base_url() .'lib/js/angular/dynamic-forms/dynamic-forms.js'
+            base_url() .'lib/js/angular/ws/SettingsController.js'
+            //base_url() .'lib/js/angular/dynamic-forms/dynamic-forms.js'
         );         
 
         // Data structures for each subview call if needed

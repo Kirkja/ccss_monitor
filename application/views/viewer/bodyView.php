@@ -23,7 +23,30 @@ if (isset($imageID)) {
 
 
 ?>
-<h3>Image Viewer</h3>
-<p><?php echo $imageID; ?></p>
-
-<img src="<?php echo $src; ?>"/>
+<div ng-controller="viewerController">
+    
+    <div class="fixedPalletteNarrow">
+        <a href="" class="button " ng-click="rotate(-90)">Rotate CCW</a>
+        <a href="" class="button " ng-click="rotate(90)">Rotate CW</a>
+        <input type="range" min="10" max="100" ng-model="scaler"  ng-change="resize(scaler)"/> {{scaler}}
+    </div>
+    <div>
+        scale: {{scaler}}
+    </div>
+    
+    <div style="margin:0 auto 0 auto; background-color:yellow;">
+        
+        <div style="border:1px solid green;display:block; width:200px; height:300px; background-color:red;"
+             magicview degrees='angle' scale="scaler" >
+            
+        </div>
+ <!--   
+        <img  degrees='angle' rotate resizer scale='scaler'                     
+        id="detachedImage"                      
+        ng-src="<?php echo $src; ?>"  
+        style="border:1px solid green;display:block;"
+    />
+-->
+    </div>
+    
+</div>

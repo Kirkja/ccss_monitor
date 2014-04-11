@@ -30,9 +30,9 @@
                  ng-show="selected.image"> 
                 <div class="fixedPalletteNarrow">
                     <a href="" class="button " ng-click="rotate(-90)">Rotate CCW</a>
-                    <a href="" class="button  right" ng-click="rotate(90)">Rotate CW</a>
+                    <a href="" class="button " ng-click="rotate(90)">Rotate CW</a>
                     <a href="" class="button " ng-click="blank()">Blank</a>
-                    <a href="" class="button " ng-click="detachImage(parent.currentImageID)">Detach</a>
+                    <a href="" class="button right" ng-click="detachImage(parent.currentImageID)">Detach</a>
                     {{parent.currentImageID}}
                 </div>
                 <img degrees='angle' rotate 

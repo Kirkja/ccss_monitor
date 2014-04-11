@@ -15,16 +15,27 @@ class Viewer extends CI_Controller {
 
         // Include the required CSS
         $data['css_includes'] = array(
-           base_url().'css/style_basic.css'
+            base_url() .'lib/js/jquery/jquery-ui-1.10.4/themes/base/jquery.ui.all.css',            
+            base_url() .'css/layout.css',
+            base_url() .'css/ws2.css',
+            //base_url() .'css/tree.css'
         );
         
         // Include the required JS
         $data['js_includes'] = array(
             //'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',
-           // 'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js',
-           // 'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js',            
-           //  base_url(). 'lib/js/angular/root.js',
-           //  base_url(). 'lib/js/angular/entry/entryController.js'
+            //'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js',
+            //base_url() .'lib/js/jquery/jquery.layout-latest.js',
+            //base_url() .'lib/js/jquery/jquery.layout.resizeTabLayout-latest.min.js',
+            //base_url() .'lib/js/jquery/jquery.layout.resizePaneAccordions-latest.js',
+            //base_url() .'lib/js/actions/init_workspace.js',
+            //base_url() .'lib/js/actions/ws2_actions.js',
+            'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js',
+            'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js',
+            'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.min.js',
+            base_url() .'lib/js/angular/viewer/viewer.js',
+            base_url() .'lib/js/angular/viewer/viewerController.js'
+            //base_url() .'lib/js/angular/dynamic-forms/dynamic-forms.js'
         );         
 
         // Data structures for each subview call if needed
