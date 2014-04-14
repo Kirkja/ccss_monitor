@@ -5,16 +5,16 @@
  * and open the template in the editor.
  */
 ?>
-<div id="tab2" class="tab-panel hidden" >
+<div id="tab2" class="tab-panel hidden" ng-controller="SettingsController">
     <div class="ui-layout-north ui-widget">
         <div class="toolbar ui-widget-content ui-state-active">
             Toolbar - tab2
+            <a href="" class="button" ng-click="emptyEntries()">empty</a>
         </div>
     </div>
  
     <div id="innerTabs2" 
-         class="ui-layout-center container tabs" 
-         ng-controller="SettingsController" 
+         class="ui-layout-center container tabs"          
          style="height:100%;">
      
         <ul>
@@ -32,9 +32,9 @@
                     <a href="" class="button " ng-click="rotate(-90)">Rotate CCW</a>
                     <a href="" class="button " ng-click="rotate(90)">Rotate CW</a>
                     <a href="" class="button " ng-click="blank()">Blank</a>
-                    <a href="" class="button right" ng-click="detachImage(parent.currentImageID)">Detach</a>
-                    {{parent.currentImageID}}
+                    <a href="" class="button right" ng-click="detachImage(parent.currentImageID)">Detach</a>                   
                 </div>
+                
                 <img degrees='angle' rotate 
                      id="sampleImage" 
                      src="<?php echo base_url();?>scan_images/{{selected.image}}" 
@@ -47,9 +47,9 @@
                 <div id="catalogPalette">
                     <label ng-repeat="item in catalogs">                    
                         <input type="radio" 
-                               ng-model="$parent.catalogID" 
+                               ng-model="$parent.currentCatalogID" 
                                value="{{item.catalogID}}" 
-                               ng-change="setCID($parent.catalogID)"/>
+                               ng-change="setCID($parent.currentCatalogID)"/>
                         <span>{{item.label}}</spn><br/>
                     </label>
                 </div>

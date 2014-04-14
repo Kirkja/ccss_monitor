@@ -30,7 +30,7 @@
     </ul>
 
     <!-- Tab panel container ............................................... -->
-    <div id="tabpanels" ng-controller="SettingsController">
+    <div id="tabpanels">
 
         <!-- Analysis Tab .................................................. -->
         <?php 
