@@ -31,6 +31,7 @@ if (isset($imageID)) {
         <!--
         <input type="range" min="10" max="100" ng-model="scaler"  ng-change="resize(scaler)"/> {{scaler}}
         -->
+        <label style="color:black; font-size:14px;"><input ng-model="fit" ng-true-value="100%" ng-false-value="" type="checkbox" name="fit"/> Fit window</label>
     </div>
 
     
@@ -41,6 +42,7 @@ if (isset($imageID)) {
             scale='scaler'                     
             id="detachedImage"                      
             ng-src="<?php echo $src; ?>"  
+            width="{{fit}}"
             style="display:block; position:relative; top:0;bottom:0;left:0;right:0; margin:auto;"
         />
 

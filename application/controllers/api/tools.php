@@ -145,6 +145,7 @@ class Tools extends CI_Controller {
                 AND MSC.active = 'y'
                 AND BC.active = 'y'
                 AND MIS.active = 'y'
+                AND MIS.pruned = 'n'
                 GROUP BY state, MSP.projectID, MCSite.siteID, BC.gradeLevel, BC.subjectArea, MSC.collectorID, MSC.sampleID
                 HAVING images > 0
                 ORDER BY state,CONVERT(BC.gradeLevel, SIGNED INTEGER) DESC, BC.subjectArea, MSC.collectorID, MSC.sampleID";
@@ -152,7 +153,7 @@ class Tools extends CI_Controller {
         $query = $this->db->query($sql);
         
         $blocks         = array();
-        $threshold      = 30;
+        $threshold      = 20;
         $imageCount     = 0;
         $idx            = 0;
         
@@ -181,7 +182,7 @@ class Tools extends CI_Controller {
                     $idxFlag = true;
                 }
                                 
-                if ($imageCount > $threshold) {
+                if ($imageCount >= $threshold) {
                     $idxFlag = true;
                 }
                 
@@ -232,7 +233,7 @@ class Tools extends CI_Controller {
                 
             }
             else {
-                echo "<div>Possible collision in sample to block mapping</div>";
+                echo "<div>A sample in this work folder has already assigned, skipping folder</div>";
             }
            
         } 
@@ -358,16 +359,19 @@ class Tools extends CI_Controller {
     private function mapSamplesToBlock($blockID, $samples) {
         
         $sampleCount = 0;
+        $cashTotal = 0;
         
         echo "<ul>";
         
         foreach ($samples as $sample) {
             
             $sampleCount +=1;
+            
+            //$cashTotal += $sample['cashValue'];
 
             $sampleLabel = GSUtil::createAlphaCode(8, 'map_sample_block', 'label');
             
-            echo "<li>Mapping {$sampleLabel} [{$sample['sampleID']}]  = {$sample['subjectArea']}, {$sample['gradeBand']}, {$sample['images']}</li>";
+            echo "<li>{$sampleCount} - Mapping {$sampleLabel} [{$sample['sampleID']}]  = {$sample['subjectArea']}, {$sample['gradeBand']}, {$sample['images']}</li>";
                         
             $sql = "INSERT INTO map_sample_block 
                     (id, sampleID, blockID, label, createdON, createdBY, active) VALUES
@@ -384,6 +388,8 @@ class Tools extends CI_Controller {
         } 
         
         echo "</ul>";
+        
+        //echo "<p>Cash value: {$cashTotal}</p>" ;
         
         return $sampleCount;
     }

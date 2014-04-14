@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : User1
 */
 
-
+.toolbar a { font-size:11px; }
 
 
 .bordered-red { 
@@ -228,6 +228,10 @@ image.btn:hover { cursor:pointer; }
 
 .play:before {
     content: "\25B6";
+}
+
+.dotrahd:before {
+    content: "\00bb";
 }
 
 

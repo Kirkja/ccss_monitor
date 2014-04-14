@@ -9,7 +9,8 @@ class Viewer extends CI_Controller {
     
     public function detach($imageID) {
         
-                
+        
+                        
         $data = array();
         $data['page_title'] = "View Image";
 
@@ -17,25 +18,16 @@ class Viewer extends CI_Controller {
         $data['css_includes'] = array(
             base_url() .'lib/js/jquery/jquery-ui-1.10.4/themes/base/jquery.ui.all.css',            
             base_url() .'css/layout.css',
-            base_url() .'css/ws2.css',
-            //base_url() .'css/tree.css'
+            base_url() .'css/ws2.css'
         );
         
         // Include the required JS
-        $data['js_includes'] = array(
-            //'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js',
-            //'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js',
-            //base_url() .'lib/js/jquery/jquery.layout-latest.js',
-            //base_url() .'lib/js/jquery/jquery.layout.resizeTabLayout-latest.min.js',
-            //base_url() .'lib/js/jquery/jquery.layout.resizePaneAccordions-latest.js',
-            //base_url() .'lib/js/actions/init_workspace.js',
-            //base_url() .'lib/js/actions/ws2_actions.js',
+        $data['js_includes'] = array(            
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.min.js',
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.min.js',
             base_url() .'lib/js/angular/viewer/viewer.js',
-            base_url() .'lib/js/angular/viewer/viewerController.js'
-            //base_url() .'lib/js/angular/dynamic-forms/dynamic-forms.js'
+            base_url() .'lib/js/angular/viewer/viewerController.js'            
         );         
 
         // Data structures for each subview call if needed

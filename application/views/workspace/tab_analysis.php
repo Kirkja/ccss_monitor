@@ -8,8 +8,8 @@
 <div id="tab2" class="tab-panel hidden" ng-controller="SettingsController">
     <div class="ui-layout-north ui-widget">
         <div class="toolbar ui-widget-content ui-state-active">
-            Toolbar - tab2
-            <a href="" class="button" ng-click="emptyEntries()">empty</a>
+            &nbsp;
+            <a href="" class="button" ng-click="markFolderCompleted()">Mark folder as completed</a>
         </div>
     </div>
  
@@ -32,7 +32,7 @@
                     <a href="" class="button " ng-click="rotate(-90)">Rotate CCW</a>
                     <a href="" class="button " ng-click="rotate(90)">Rotate CW</a>
                     <a href="" class="button " ng-click="blank()">Blank</a>
-                    <a href="" class="button right" ng-click="detachImage(parent.currentImageID)">Detach</a>                   
+                    <a href="" class="button right" ng-click="detachImage(currentImageID)">Detach</a>                   
                 </div>
                 
                 <img degrees='angle' rotate 
@@ -95,12 +95,12 @@
                                    src="/css/images/search.png"/>
                         </td>
                     </tr>
-                    </table>  
-                                    
+                    </table>                                      
                 </div>
-                 <div class="loading">
+                
+                <div class="loading">
                     {{searchMessage}}
-                 </div>   
+                </div>   
                     
                 <div class="searchEntry" 
                      ng-repeat="item in searchEntries" 
@@ -110,7 +110,9 @@
                         class="stdKey" 
                         ng-click="addStd(item.key)"
                         alt="Click to add standard" 
-                        title="Click to add standard">{{item.key}}</button> 
+                        title="Click to add standard">
+                        <span ng-bind-html="item.key">/span>
+                    </button> 
                     <span class="stdDesc" ng-bind-html="item.desc"></span>                    
                 </div>
                 
@@ -148,7 +150,8 @@
         </div>
         <div class="ui-layout-south">
             <div class="ui-widget-header ui-corner-top" style="padding:2px;">
-                <span class="btn fit" ng-click="getWork('closed')">
+                <span class="btn fit" 
+                      ng-click="getWork('closed')">
                     <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
                          alt="Refresh Assignments" 
                          title="Refresh Assignments"/>
@@ -177,7 +180,7 @@
             <div class="ui-widget-header ui-corner-top" style="padding:2px;">
                 <span class="btn fit" ng-click="refreshRD()">
                     <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
-                         alt="Refresh Rview Items" 
+                         alt="Refresh Review Items" 
                          title="Refresh Review Items"/>
                 </span>    
                 <span class="lift">Review Items</span>
