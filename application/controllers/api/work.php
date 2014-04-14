@@ -24,7 +24,11 @@ class Work extends CI_Controller {
     public function getassignments() {
         
         $activeID = GSAuth::Fence();        
-        if (!$activeID) { exit(); }
+        if (!$activeID) {             
+            header('Content-Type: application/json');
+            echo json_encode(array('data'=>'invalid'));
+            exit();             
+        }
         //-------------------------        
         
         $raw = file_get_contents("php://input");

@@ -28,25 +28,22 @@ if (isset($imageID)) {
     <div class="fixedPalletteNarrow">
         <a href="" class="button " ng-click="rotate(-90)">Rotate CCW</a>
         <a href="" class="button " ng-click="rotate(90)">Rotate CW</a>
+        <!--
         <input type="range" min="10" max="100" ng-model="scaler"  ng-change="resize(scaler)"/> {{scaler}}
+        -->
     </div>
-    <div>
-        scale: {{scaler}}
-    </div>
+
     
-    <div style="margin:0 auto 0 auto; background-color:yellow;">
-        
-        <div style="border:1px solid green;display:block; width:200px; height:300px; background-color:red;"
-             magicview degrees='angle' scale="scaler" >
-            
-        </div>
- <!--   
-        <img  degrees='angle' rotate resizer scale='scaler'                     
-        id="detachedImage"                      
-        ng-src="<?php echo $src; ?>"  
-        style="border:1px solid green;display:block;"
-    />
--->
+    <div>
+
+        <img 
+            rotate degrees='angle' 
+            scale='scaler'                     
+            id="detachedImage"                      
+            ng-src="<?php echo $src; ?>"  
+            style="display:block; position:relative; top:0;bottom:0;left:0;right:0; margin:auto;"
+        />
+
     </div>
     
 </div>

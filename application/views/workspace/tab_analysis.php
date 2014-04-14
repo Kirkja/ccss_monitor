@@ -49,7 +49,7 @@
                         <input type="radio" 
                                ng-model="$parent.catalogID" 
                                value="{{item.catalogID}}" 
-                               ng-change="setCID(catalogID)"/>
+                               ng-change="setCID($parent.catalogID)"/>
                         <span>{{item.label}}</spn><br/>
                     </label>
                 </div>
@@ -59,7 +59,7 @@
                 </div>
                 
                 <!-- The standards for the selected catalog                  -->
-                <div class="catalogEntry" 
+                <div class="catalogEntry"
                      ng-repeat="item in catalogEntries" 
                      ng-class-odd="'rowOdd'" 
                      ng-class-even="'rowEven'">                    
@@ -293,6 +293,7 @@
                 <p>CID: {{currentCatalogID}}</p>  
                 <p>GID: {{currentGroupingID}}</p> 
                 <p>NID: {{currentNoteID}}</p> 
+                <p>STD: {{std}}</p> 
                 
             </div>
         </div>

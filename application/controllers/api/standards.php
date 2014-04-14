@@ -151,7 +151,7 @@ class Standards extends CI_Controller {
                     WHEN CCSS.Tier_6 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6) 
                     ELSE CCSS.Tier_5
                 END AS standardText
-                FROM bank_ccss AS CCSS
+                FROM bank_standards AS CCSS
                 WHERE CCSS.Tier_5 <> ''
                 AND catalogID = {$catalogID}
                 ORDER BY CCSS.gradelevel, CONCAT(CCSS.state,'_',CCSS.key0)";
@@ -218,7 +218,7 @@ class Standards extends CI_Controller {
                     ELSE Tier_5
                     END AS standardText
                 , MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE) AS score
-                FROM bank_ccss
+                FROM bank_standards
                 WHERE MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE)
                 AND catalogID IN ({$catalogList})
                 ORDER BY score DESC, gradelevel DESC";
