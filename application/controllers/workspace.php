@@ -42,36 +42,20 @@ class Workspace extends CI_Controller {
         $headData = array(); 
         
         $bodyData = array();
-        $bodyData['tab_admin']      = $this->GetView('workspace/tab_admin', null, true);
-        $bodyData['tab_analysis']   = $this->GetView('workspace/tab_analysis', null, true);
-        $bodyData['tab_account']    = $this->GetView('workspace/tab_account', null, true);
+        $bodyData['tab_admin']      = GSUtil::GetView('workspace/tab_admin', null, true);
+        $bodyData['tab_analysis']   = GSUtil::GetView('workspace/tab_analysis', null, true);
+        $bodyData['tab_account']    = GSUtil::GetView('workspace/tab_account', null, true);
         
         $footData = array();
         
         // Load the subviews into the page         
-        $data['header_zone']    = $this->GetView('workspace/headerView', $headData); 
-        $data['body_zone']      = $this->GetView('workspace/bodyView', $bodyData);
-        $data['footer_zone']    = $this->GetView('workspace/footerView', $footData);
-        
-        
-        
-        
-        
-        
+        $data['header_zone']    = GSUtil::GetView('workspace/headerView', $headData); 
+        $data['body_zone']      = GSUtil::GetView('workspace/bodyView', $bodyData);
+        $data['footer_zone']    = GSUtil::GetView('workspace/footerView', $footData);
         
         // render the constructed page
         $this->load->view('pagestub', $data);        
     }
     
-    
-    private function GetView($filename, $data)
-    {
-        if (file_exists(APPPATH."views/{$filename}.php")) {
-            return $this->load->view($filename, $data, true);
-        }
-        else {
-            return null;
-        }
-    }    
 }
 ?>

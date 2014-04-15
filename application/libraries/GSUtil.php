@@ -25,6 +25,18 @@ class GSUtil {
         return GSUtil::getUuidInt();
     }
     
+    
+    
+    public function GetView($filename, $data)
+    {
+        if (file_exists(APPPATH."views/{$filename}.php")) {
+            return $this->load->view($filename, $data, true);
+        }
+        else {
+            return null;
+        }
+    }    
+    
     //#########################################################################
     //
     //

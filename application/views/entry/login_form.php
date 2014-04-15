@@ -10,7 +10,7 @@
         <input id="password" type="password" placeholder="Password" required autocomplete="off" name="user_password" />        
     </fieldset>
     <fieldset id="actions">
-        <input type="submit" id="submit" value="Log in" class="btn right">        
+        <input type="submit" id="submit" value="Log in" class="btn right"> 
     </fieldset>
 </form>
 </div>

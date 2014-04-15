@@ -107,7 +107,7 @@ class Tools extends CI_Controller {
 
     
   
-    public function processAssignments($mode=null) {
+    public function makeAssignments($mode=null) {
                 
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); }
@@ -275,13 +275,14 @@ class Tools extends CI_Controller {
                 BC.id, BC.state, BC.year, BC.label, MSS.subjectband 
                 FROM bank_catalog AS BC
                 LEFT JOIN map_subjectarea_subjectband AS MSS ON MSS.subjectband = BC.subjectBand
-                WHERE MSS.subjectArea = '{$subjectArea}'
+                WHERE BC.active = 'y'
+                AND MSS.subjectArea = '{$subjectArea}'
                 AND BC.state = '$state'";
                 
         $query = $this->db->query($sql);
         
         if ($query->num_rows() > 0) {
-            echo "<ul>";
+            echo "<ul style='color:green;'>";
             foreach($query->result() as $row) {
                 echo "<li>adding catalog for {$row->state} {$row->year} {$row->label}</li>";
                                 
@@ -322,8 +323,8 @@ class Tools extends CI_Controller {
                 if (isset($row->nameLast)) { 
                     echo "<li>{$row->nameLast}, {$row->nameFirst}</li>";  
                     
-                    $sqlB = "INSERT INTO `map_block_user` (id, blockID, userID, active) 
-                            VALUES (UUID_SHORT(), {$blockID}, {$row->userID}, 'y') 
+                    $sqlB = "INSERT INTO `map_block_user` (id, blockID, userID, active, createdON) 
+                            VALUES (UUID_SHORT(), {$blockID}, {$row->userID}, 'y', NOW()) 
                             ON DUPLICATE KEY UPDATE active = VALUES(active)";
                     if ($this->live) {
                         $this->db->query($sqlB);
@@ -340,7 +341,7 @@ class Tools extends CI_Controller {
         
         $blockID = GSUtil::getUUID();
         
-        echo "<div>Creating block {$label} [{$blockID}]</div>";
+        echo "<h3>Creating block {$label} [{$blockID}]</h3>";
                 
         $sql = "INSERT INTO bank_block 
             (id, label, createdON, createdBY, active, alphaCode) VALUES

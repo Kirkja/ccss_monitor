@@ -45,31 +45,15 @@ class Entry extends CI_Controller {
         $footData = array();
         
         // Load the subviews into the page         
-        $data['header_zone']    = $this->GetView('entry/headerView', $headData); 
-        $data['body_zone']      = $this->GetView('entry/bodyView', $bodyData);
-        $data['footer_zone']    = $this->GetView('entry/footerView', $footData);
+        $data['header_zone']    = GSUtil::GetView('entry/headerView',  $headData); 
+        $data['body_zone']      = GSUtil::GetView('entry/bodyView',    $bodyData);
+        $data['footer_zone']    = GSUtil::GetView('entry/footerView',  $footData);
+        
         
         // render the constructed page
         $this->load->view('pagestub', $data);                
     }
     
-    /**
-     * Fecthes a view without causing an error is the file does not exists.
-     * 
-     * @param type $filename
-     * @param type $data
-     * @return null
-     */
-    private function GetView($filename, $data)
-    {
-        if (file_exists(APPPATH."views/{$filename}.php")) {
-            return $this->load->view($filename, $data, true);
-        }
-        else {
-            return null;
-        }
-    }
-
     
     
     /**
