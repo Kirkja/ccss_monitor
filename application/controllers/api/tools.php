@@ -243,9 +243,139 @@ class Tools extends CI_Controller {
     
     
     
+    public function demoData() {
+        
+        $userID = '95466432296386563';
+        
+        $sql = "SELECT 
+                MBU.userID, MSB.blockID, MSB.sampleID, MIS.imageID, MCB.catalogID, BC.gradeLevel
+                FROM map_image_sample AS MIS
+                LEFT JOIN map_sample_block AS MSB ON MSB.sampleID = MIS.sampleID
+                LEFT JOIN map_block_user AS MBU ON MBU.blockID = MSB.blockID
+                LEFT JOIN map_catalog_block AS MCB ON MCB.blockID = MSB.blockID
+                LEFT JOIN map_sample_collector AS MSC ON MSC.sampleID = MIS.sampleID
+                LEFT JOIN bank_collector AS BC ON BC.id = MSC.collectorID
+                WHERE MSB.blockID IS NOT NULL
+                AND MSB.sampleID IS NOT NULL
+                AND MIS.imageID IS NOT NULL
+                AND BC.gradeLevel IS NOT NULL
+                AND MIS.active = 'y' 
+                AND MIS.pruned = 'n'
+                AND MBU.userID = {$userID}
+                GROUP BY MSB.blockID, MSB.sampleID, MIS.imageID 
+                ORDER BY MSB.blockID, MSB.sampleID, MIS.imageID";
+        
+        $query = $this->db->query($sql);
+        
+        $currentBlockID = "";
+        $currentSampleID = "";
+        $currentImageID = "";
+        
+        $imageCounter = 0;
+        
+        if ($query->num_rows() > 0) {
+            echo "<ol>";
+            
+            foreach ($query->result() as $row) {
+                $imageCounter++;
+                
+                echo "<li>ImageID: {$row->imageID}";
+                
+                $this->generateDemoReviews(
+                        $row->userID, 
+                        $row->blockID, 
+                        $row->sampleID, 
+                        $row->imageID,
+                        $row->catalogID,
+                        $row->gradeLevel);
+                               
+                echo "</li>";
+            }
+            
+            echo "</ol>";
+        }
+    }
+    
     //=======================================================================
     //
     //
+    private function randomSCR() {
+                
+        $blm        = "BLM-". rand(1,6);
+        $dok        = "DOK-". rand(1,6);
+        
+        $exemplar   = rand(1,50);
+        $count      = rand(1,20);        
+    }
+    
+    private function randomBLM() {
+        return "BLM-". rand(1,6);
+    }
+
+    private function randomDOK() {
+        return "DOK-". rand(1,4);
+    }    
+    
+    private function randomStandard($catalogID, $hits, $gradeLevel) {
+        
+        $gl     = $gradeLevel > 12 ? 7 : $gradeLevel;
+        $spread = 3;
+        
+        $minGL = $gl - $spread;
+        $maxGL = $gl + $spread;
+                
+        $sql = "SELECT CONCAT(state,'_',key0) as std, 
+                gradeLevel
+                FROM `bank_standards`
+                WHERE catalogID = {$catalogID}
+                AND gradeLevel > {$minGL}
+                AND gradeLevel < {$maxGL}
+                ORDER BY RAND()
+                LIMIT {$hits}";
+                
+        $query = $this->db->query($sql);
+        
+        $data = array();
+        
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $data[] = array(
+                    'standard'      => $row->std, 
+                    'gradeLevel'    => $row->gradeLevel,
+                    'blm'           => $this->randomBLM(),
+                    'dok'           => $this->randomDOK(),
+                    'exemplar'      => rand(1,50),
+                    'hits'          => rand(1,10)
+                );
+            }
+        }
+        
+        return $data;
+    }
+    
+    
+    
+    private function generateDemoReviews(
+            $userID, 
+            $blockID, 
+            $sampleID, 
+            $imageID,
+            $catalogID,
+            $gradeLevel)
+    {
+        $reviews = rand(1,8);
+        
+        $SCR = $this->randomStandard($catalogID, $reviews, $gradeLevel);
+        
+        $GL = $gradeLevel >12 ? 7 : $gradeLevel;
+        
+        echo "<ul>";
+        foreach ($SCR as $item) {
+            echo "<li>{$item['exemplar']}, {$item['standard']}, {$item['dok']}, {$item['blm']}, {$item['hits']} ( {$item['gradeLevel']} / {$GL})</li>";
+        }
+        echo "</ul>";
+        
+    }
     
     
     private function checkSampleBlock($block) {
