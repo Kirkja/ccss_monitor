@@ -245,7 +245,12 @@ class Tools extends CI_Controller {
     
     public function demoData() {
         
-        $userID = '95466432296386563';
+        $userID         = '95466432296386563';
+        $accountID      = 1;
+        $projectID      = 1;
+        $imageCounter   = 0;        
+        $reviewCount    = 0;
+        
         
         $sql = "SELECT 
                 MBU.userID, MSB.blockID, MSB.sampleID, MIS.imageID, MCB.catalogID, BC.gradeLevel
@@ -267,12 +272,7 @@ class Tools extends CI_Controller {
         
         $query = $this->db->query($sql);
         
-        $currentBlockID = "";
-        $currentSampleID = "";
-        $currentImageID = "";
-        
-        $imageCounter = 0;
-        
+
         if ($query->num_rows() > 0) {
             echo "<ol>";
             
@@ -281,7 +281,8 @@ class Tools extends CI_Controller {
                 
                 echo "<li>ImageID: {$row->imageID}";
                 
-                $this->generateDemoReviews(
+                $reviewCount += $this->generateDemoReviews(
+                        $accountID, $projectID,
                         $row->userID, 
                         $row->blockID, 
                         $row->sampleID, 
@@ -294,19 +295,23 @@ class Tools extends CI_Controller {
             
             echo "</ol>";
         }
+        
+        echo "<p>Created {$reviewCount} SCR items</p>";
+
     }
     
     //=======================================================================
     //
     //
+    /*
     private function randomSCR() {
                 
         $blm        = "BLM-". rand(1,6);
-        $dok        = "DOK-". rand(1,6);
-        
+        $dok        = "DOK-". rand(1,6);        
         $exemplar   = rand(1,50);
         $count      = rand(1,20);        
     }
+    */
     
     private function randomBLM() {
         return "BLM-". rand(1,6);
@@ -356,6 +361,8 @@ class Tools extends CI_Controller {
     
     
     private function generateDemoReviews(
+            $accountID,
+            $projectID,
             $userID, 
             $blockID, 
             $sampleID, 
@@ -369,13 +376,47 @@ class Tools extends CI_Controller {
         
         $GL = $gradeLevel >12 ? 7 : $gradeLevel;
         
+        $gid        = 1;              
+        //$accountID   = 1;
+        //$projectID  = 1;
+        
+        $sql = "INSERT INTO review_data 
+                (id, accountID, projectID, blockID, sampleID, 
+                imageID, createdBY, createdON, groupingID, groupingOrder, 
+                dataName,dataValue,dataType)
+                VALUES ";
+        
+        $leader = "UUID_SHORT(), {$accountID},"
+        . "{$projectID}, {$blockID},{$sampleID},"
+        . "{$imageID}, {$userID}, NOW()";
+        
+        $valueLines = "";
+                
         echo "<ul>";
+        
         foreach ($SCR as $item) {
-            echo "<li>{$item['exemplar']}, {$item['standard']}, {$item['dok']}, {$item['blm']}, {$item['hits']} ( {$item['gradeLevel']} / {$GL})</li>";
+            
+           echo "<li>{$item['exemplar']}, {$item['standard']}, {$item['dok']}, {$item['blm']}, {$item['hits']} ( {$item['gradeLevel']} / {$GL})</li>";
+        
+           $valueLines .= " ({$leader}, {$gid}, 1, 'id',{$item['exemplar']},'text'),
+                ({$leader}, {$gid}, 2, 'standard','{$item['standard']}','button'),
+                ({$leader}, {$gid}, 3, 'dok','{$item['dok']}','select'),
+                ({$leader}, {$gid}, 4, 'blm','{$item['blm']}','select'),
+                ({$leader}, {$gid}, 5, 'counter','{$item['hits']}','text'),"
+                ;
+           
+           $gid++;
         }
         echo "</ul>";
         
+        $sql .= trim($valueLines,',');
+        
+        $this->db->query($sql);
+        
+        
+        return $reviews;
     }
+    
     
     
     private function checkSampleBlock($block) {
