@@ -128,10 +128,11 @@ class Tools extends CI_Controller {
                 , MSC.sampleID, MSC.collectorID
                 , MCSite.siteID
                 , MSP.projectID
+                , BP.accountID
                 , COUNT(MIS.imageID) AS images
                 , MGG.gradeBand
                 , BS.label AS sampleName
-                , BSite.st_abbr as state
+                , BSite.st_abbr AS state
                 FROM map_sample_collector AS MSC
                 LEFT JOIN bank_sample AS BS ON BS.id = MSC.sampleID
                 LEFT JOIN bank_collector AS BC ON BC.id = MSC.collectorID
@@ -140,12 +141,14 @@ class Tools extends CI_Controller {
                 LEFT JOIN map_site_project AS MSP ON MSP.siteID = MCSite.siteID
                 LEFT JOIN map_gradelevel_gradeband AS MGG ON MGG.gradeLevel = BC.gradeLevel
                 LEFT JOIN bank_site AS BSite ON BSite.id = MCSite.siteID
+                LEFT JOIN bank_project AS BP ON BP.id = MSP.projectID
                 WHERE MSP.active = 'y'
                 AND MCSite.active = 'y'
                 AND MSC.active = 'y'
                 AND BC.active = 'y'
                 AND MIS.active = 'y'
                 AND MIS.pruned = 'n'
+                AND BP.active = 'y'
                 GROUP BY state, MSP.projectID, MCSite.siteID, BC.gradeLevel, BC.subjectArea, MSC.collectorID, MSC.sampleID
                 HAVING images > 0
                 ORDER BY state,CONVERT(BC.gradeLevel, SIGNED INTEGER) DESC, BC.subjectArea, MSC.collectorID, MSC.sampleID";
@@ -216,8 +219,6 @@ class Tools extends CI_Controller {
             if ($this->checkSampleBlock($blockData) == 0) {
                 
                 $blockCount +=1;
-                
-                //$alphaCode  = $this->createUniqueInTable(8, 'bank_block', 'label');
 
                 $alphaCode  = GSUtil::createAlphaCode(8, 'bank_block', 'label');
                 
@@ -234,8 +235,7 @@ class Tools extends CI_Controller {
             }
             else {
                 echo "<div>A sample in this work folder has already assigned, skipping folder</div>";
-            }
-           
+            }           
         } 
         
         echo "Processed {$sampleCount} samples into {$blockCount} working folders";
@@ -250,8 +250,7 @@ class Tools extends CI_Controller {
         $projectID      = 1;
         $imageCounter   = 0;        
         $reviewCount    = 0;
-        
-        
+                
         $sql = "SELECT 
                 MBU.userID, MSB.blockID, MSB.sampleID, MIS.imageID, MCB.catalogID, BC.gradeLevel
                 FROM map_image_sample AS MIS
@@ -303,16 +302,7 @@ class Tools extends CI_Controller {
     //=======================================================================
     //
     //
-    /*
-    private function randomSCR() {
-                
-        $blm        = "BLM-". rand(1,6);
-        $dok        = "DOK-". rand(1,6);        
-        $exemplar   = rand(1,50);
-        $count      = rand(1,20);        
-    }
-    */
-    
+
     private function randomBLM() {
         return "BLM-". rand(1,6);
     }
