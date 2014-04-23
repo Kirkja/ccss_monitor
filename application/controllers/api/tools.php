@@ -107,8 +107,10 @@ class Tools extends CI_Controller {
 
     
   
-    public function makeAssignments($mode=null) {
-                
+    public function makeAssignments($state, $mode=null) {
+              
+        if (!isset($state)) { echo "Need a state"; exit(); }
+        
         $activeID = GSAuth::Fence();        
         if (!$activeID) { exit(); }
         //-------------------------        
@@ -142,7 +144,8 @@ class Tools extends CI_Controller {
                 LEFT JOIN map_gradelevel_gradeband AS MGG ON MGG.gradeLevel = BC.gradeLevel
                 LEFT JOIN bank_site AS BSite ON BSite.id = MCSite.siteID
                 LEFT JOIN bank_project AS BP ON BP.id = MSP.projectID
-                WHERE MSP.active = 'y'
+                WHERE BSite.st_abbr = '{$state}'
+                AND MSP.active = 'y'
                 AND MCSite.active = 'y'
                 AND MSC.active = 'y'
                 AND BC.active = 'y'
