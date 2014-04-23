@@ -321,12 +321,45 @@ class Review extends CI_Controller {
     
     
     
-    
+    public function completeFolder() {
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+        
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);   
+        
+        if (!isset($tmp->bid))       { exit(); }
+        
+        
+        $out = array('data' => 
+            $this->setFolderCompleted($tmp->bid, $activeID)
+        );
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);        
+    }
     
     
     //=======================================================================
     // PRIVATE METHODS
     //
+    
+    private function setFolderCompleted($blockID, $activeID) {
+        
+        $sql = "UPDATE `map_block_user` AS MBU
+                LEFT JOIN login ON login.userID = MBU.userID
+                SET completedON = NOW()
+                WHERE MBU.blockID = {$blockID}
+                AND login.id = {$activeID}";
+        
+        $result = $this->db->query($sql);
+                
+        return "true";
+    }
+    
+    
     
     private function setImageAsBlank($imageID) {
         $sql = "UPDATE bank_image 

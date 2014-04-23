@@ -126,7 +126,7 @@
     <div class="ui-layout-west">
         <div class="ui-layout-center">
             <div class="ui-widget-header ui-corner-top" style="padding:2px;">                                       
-                <span class="btn fit" ng-click="getWork('open')">
+                <span class="btn fit" ng-click="refreshWA('open')">
                     <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
                          alt="Refresh Assignments" 
                          title="Refresh Assignments"/>
@@ -134,6 +134,7 @@
                 <span class="lift">Open Work</span>
             </div>
             <div class="ui-widget-content">
+                <span class="loading">{{loadingOpenworkMessage}}</span>
                 <treecontrol class="tree-classic" 
                              tree-model="openworkTree" 
                              node-children="children" 
@@ -151,7 +152,7 @@
         <div class="ui-layout-south">
             <div class="ui-widget-header ui-corner-top" style="padding:2px;">
                 <span class="btn fit" 
-                      ng-click="getWork('closed')">
+                      ng-click="refreshWA('closed')">
                     <img src="<?php echo base_url(); ?>css/images/refresh24.png" 
                          alt="Refresh Assignments" 
                          title="Refresh Assignments"/>
@@ -159,6 +160,7 @@
                 <span class="lift">Completed Work</span>
             </div>
             <div class="ui-widget-content">
+                <span class="loading">{{loadingClosedworkMessage}}</span>
                 <treecontrol class="tree-classic" 
                              tree-model="closedworkTree" 
                              node-children="children" 
