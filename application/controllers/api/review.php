@@ -399,8 +399,8 @@ class Review extends CI_Controller {
                     {$groupingID},
                     LI.userID, NOW(),'{$noteText}' ,'y'
                     FROM review_note AS RN
-                    LEFT JOIN login AS LI ON LI.userID = rn.createdBY
-                    WHERE LI.id = {$activeID} ";           
+                    LEFT JOIN login AS LI ON LI.userID = RN.createdBY
+                    WHERE LI.id = {$activeID} LIMIT 1";           
         }
         
         if (!empty($sql)) {
