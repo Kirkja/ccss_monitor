@@ -10,6 +10,7 @@ and open the template in the editor.
 
 .toolbar a { font-size:11px; }
 
+.full { width:99%; }
 
 .bordered-red { 
     border:1px dotted red;
@@ -267,6 +268,8 @@ image.btn:hover { cursor:pointer; }
     overflow: hidden;
     visibility: hidden;
 }
+
+.w150 { width:150px; }
 
 #lessons { 
     width:99%;
