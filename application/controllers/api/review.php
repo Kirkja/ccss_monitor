@@ -496,7 +496,7 @@ class Review extends CI_Controller {
     private function testStandard($stdKey) {
         
         $sql ="SELECT * 
-                FROM ccss_standards AS CCSS
+                FROM bank_standards AS CCSS
                 WHERE CCSS.Tier_2 <> ''
                 AND CONCAT(CCSS.state,'_',CCSS.key0) = '{$stdKey}'
                 GROUP BY CCSS.state, CCSS.key0

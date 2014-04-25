@@ -25,7 +25,8 @@ $js_stub = '<script type="text/javascript" src="JS_PATH"></script>';
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
         <title><?php echo isset($page_title) ? $page_title : "No Page Title"; ?></title>
-
+        
+        <link rel="icon" type="image/png" href="/logo-16x16.png" />
         <!--[if IE]>
             <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
