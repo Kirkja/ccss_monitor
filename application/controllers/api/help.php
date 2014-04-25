@@ -97,7 +97,9 @@ class Help extends CI_Controller {
                 $data[] = array('label' => 'Topic 02', 'file' => 'lesson_02');
                 $data[] = array('label' => 'Topic 03', 'file' => 'lesson_03');
                 $data[] = array('label' => 'Topic 04', 'file' => 'lesson_04');
-                
+                $data[] = array('label' => 'Topic 05', 'file' => 'lesson_05');
+                $data[] = array('label' => 'Topic 06', 'file' => 'lesson_06');
+                                
                 break;
         }
         
