@@ -290,7 +290,7 @@
                 
                 <textarea id="reviewNote" ng-model="currentNote"></textarea>
                 
-                
+                <p>The numbers below are just for debugging purposes</p>
                 <p>AID: {{user.activeID}}</p>
                 <p>BID: {{currentBlockID}}</p>
                 <p>SID: {{currentSampleID}}</p>
