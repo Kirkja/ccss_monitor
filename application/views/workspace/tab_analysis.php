@@ -8,8 +8,8 @@
 <div id="tab2" class="tab-panel hidden" ng-controller="SettingsController">
     <div class="ui-layout-north ui-widget">
         <div class="toolbar ui-widget-content ui-state-active">
-            &nbsp;
             <a href="" class="button" ng-click="markFolderCompleted()">Mark folder as completed</a>
+            <a href="" class="button right" ng-click="help()">help</a>                       
         </div>
     </div>
  
@@ -277,7 +277,7 @@
         </div>
         
         <div class="ui-layout-south">
-            <div class="ui-widget-header ui-corner-top">Item Note</div>
+            <div class="ui-widget-header ui-corner-top">Review Item Note</div>
             <div class="ui-widget-content" style="padding:0px;">
                 
                 <div class="fixedPallette">                    

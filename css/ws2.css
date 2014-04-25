@@ -235,3 +235,62 @@ image.btn:hover { cursor:pointer; }
 }
 
 
+//--------------------------------------
+// Help System
+
+.lessonCol {
+    width:84%;    
+    float:right;
+    padding:0px;
+    min-height:100%;
+}
+
+.menusCol {
+    width:15%;
+    min-width:100px;
+    float:left;
+    padding:0px;
+    min-height:100%;
+}
+
+.lessonArea {
+    background-color:rgb(250,250,250);
+    color:black;
+    padding:1em;
+    border:1px dotted green;
+}
+.lessonArea:after {
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+#lessons { 
+    width:99%;
+    border-collapse: collapse;
+}
+
+#lessons td { padding:0.5em; vertical-align:top; }
+
+.imageArea { float:left; margin:0em 1em 1em 0em; padding-right:1em; }
+.imageAreaRight { float:right; margin:0em 0em 1em 1em; padding-left:1em; }
+
+
+.inset { margin-left: 2.0em; }
+
+.noted { background-color:rgba(255,255,0,0.20); padding:0.25em; font-weight:bold;} 
+
+.golden { background-color:rgba(255,255,0,0.20); padding:0.25em; }
+
+.azure { background-color:rgba(0,0,255,0.20); padding:0.25em; }
+
+.greenish { background-color:rgba(0,255,0,0.20); padding:0.25em; }
+
+.pinkish { background-color:rgba(255,0,0,0.20); padding:0.25em; }
+
+
+
+

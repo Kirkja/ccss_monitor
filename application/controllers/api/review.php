@@ -2,21 +2,26 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-
+/**
+ * Functionality for use in the review items and notes panel
+ */
 class Review extends CI_Controller {
 
     /**
      * 
      */
     public function index() {
-        // Automatically exit. Non one needs to access the root
+        // Automatically exit. No one needs to access the root
         //
         exit();
     }
     
-    
+    /**
+     *  Return a JSON strin with any review items for the selected sample
+     */
     public function getReviewData() {
         
+        // Fence out any invalid users
         $activeID = GSAuth::Fence();        
         if (!$activeID) {             
             header('Content-Type: application/json');
@@ -25,14 +30,16 @@ class Review extends CI_Controller {
         }
         //-------------------------
         
+        // Retrieve the POST data off the buffer
         $raw = file_get_contents("php://input");
         $tmp = json_decode($raw);
                   
+        // Reject the process unless all the required values are preent
         if (!isset($tmp->blockID))     { exit(); }        
         if (!isset($tmp->sampleID))    { exit(); }                
         if (!isset($tmp->imageID))     { exit(); }                
 
-        // Create the correct JSON payloads
+        // Create the correct JSON payload from the SQL results
         $out = array('data' => 
             $this->getReviews(
                     $activeID, 
@@ -50,6 +57,10 @@ class Review extends CI_Controller {
     }
     
     
+    
+    /*
+     * Delete the selected SCR row from the review items
+     */
     public function delSCR() {
         
         $activeID = GSAuth::Fence();        

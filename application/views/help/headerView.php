@@ -1,0 +1,4 @@
+<?php
+// views/help/headerView
+
+?>
