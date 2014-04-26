@@ -221,7 +221,7 @@ class Standards extends CI_Controller {
                 FROM bank_standards
                 WHERE MATCH(Key0,Tier_1,Tier_2,Tier_3,Tier_4,Tier_5,Tier_6, Tier_7,Tier_8) AGAINST ('{$terms}' IN BOOLEAN MODE)
                 AND catalogID IN ({$catalogList})
-                ORDER BY score DESC, gradelevel DESC";
+                ORDER BY gradelevel ASC, score DESC";
         
                 $query = $this->db->query($sql);
         

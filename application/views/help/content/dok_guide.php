@@ -12,6 +12,7 @@
     <p>In the bullet list below are the descriptors for Depth of knowledge.  Use these as guides in determining the DOK level of a review item.</p>
 
     <ul>
+        <li><b>DOK-0 (Non-Cognitive):</b> No academic rigor involved.</li>
         <li><b>DOK-1 (Recall):</b> Recall or recognition of a fact, information, concept, or procedure.</li>
         <li><b>DOK-2 (Basic):</b> Basic application of skill or concept – use information, conceptual knowledge, follow or select appropriate procedures, with two or more decision points along the way, routine problems, organize or display data.</li>
         <li><b>DOK-3 (Strategic):</b> Strategic thinking – requires reasoning, developing a plan or sequence of steps to approach the problem, requires some decision making and justification, abstract and complex with often more than one answer.</li>

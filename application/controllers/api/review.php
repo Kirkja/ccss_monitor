@@ -175,6 +175,49 @@ class Review extends CI_Controller {
     }
     
     
+
+    
+   public function addSpecial() {
+       
+        $activeID = GSAuth::Fence();        
+        if (!$activeID) { exit(); }
+        //-------------------------
+                
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);        
+                
+        if (!isset($tmp->blockID))     { exit(); }
+        if (!isset($tmp->sampleID))    { exit(); }
+        if (!isset($tmp->imageID))     { exit(); }
+        if (!isset($tmp->stdKey))      { exit(); }
+ 
+        $this->createSpecial(
+                $activeID, 
+                $tmp->blockID, 
+                $tmp->sampleID, 
+                $tmp->imageID, 
+                $tmp->stdKey);
+        
+        $out = array('data' => 
+            $this->getReviews(
+                    $activeID, 
+                    $tmp->blockID, 
+                    $tmp->sampleID, 
+                    $tmp->imageID)
+        );
+
+        // Set the correct JSON response header
+        header('Content-Type: application/json');
+        echo json_encode($out);
+        
+        //  DEBUG ONLY
+        //echo "<pre>" . print_r($out, true) . "</pre>";        
+    }
+        
+    
+    
+    
+    
     public function updateSCR() {
         
         $activeID = GSAuth::Fence();        
@@ -417,6 +460,9 @@ class Review extends CI_Controller {
         if (!empty($sql)) {
             $this->db->query($sql);
         }
+        else {
+            return "error";
+        }
         
         return "saved"; //$sql;
     }
@@ -494,6 +540,14 @@ class Review extends CI_Controller {
      * @return boolean
      */
     private function testStandard($stdKey) {
+        
+        $acceptable = array(
+            'NIKS'
+        );
+        
+        if (in_array($stdKey, $acceptable)) {
+            return true;
+        }
         
         $sql ="SELECT * 
                 FROM bank_standards AS CCSS
@@ -701,11 +755,11 @@ class Review extends CI_Controller {
             $sql = "INSERT INTO review_data 
                 (id,accountID, projectID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
                 VALUES 
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','?','text'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'standard','no standard','button'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'standard','','button'),
                 (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},3,NOW(),'dok','','select'),
                 (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},4,NOW(),'blm','','select'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','?','text')
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
                 ";
                 
             $this->db->query($sql);
@@ -734,18 +788,45 @@ class Review extends CI_Controller {
             $sql = "INSERT INTO review_data 
                 (id,accountID, projectID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
                 VALUES 
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','?','text'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
                 (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'standard','{$std}','button'),
                 (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},3,NOW(),'dok','','select'),
                 (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},4,NOW(),'blm','','select'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','?','text')
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
                 ";
                 
             $this->db->query($sql);
         }        
     }
     
-       
+    private function createSpecial(         
+            $activeID, 
+            $blockID, 
+            $sampleID, 
+            $imageID,
+            $std
+        ) {
+          
+        $accountID  = 1;
+        $projectID  = 1;
+        
+        $resp = $this->getNextRDID($activeID, $blockID, $sampleID, $imageID);
+        
+        $resp->gid = $resp->gid == null ? 1 : $resp->gid;
+        
+        if ($resp->gid > 0) {
+            $resp->gid += 1;
+            $sql = "INSERT INTO review_data 
+                (id,accountID, projectID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
+                VALUES 
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'special','{$std}','select'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
+                ";
+                
+            $this->db->query($sql);
+        }        
+    }
     
     
     

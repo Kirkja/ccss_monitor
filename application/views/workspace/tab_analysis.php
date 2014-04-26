@@ -9,6 +9,11 @@
     <div class="ui-layout-north ui-widget">
         <div class="toolbar ui-widget-content ui-state-active">
             <a href="" class="button" ng-click="markFolderCompleted()">Mark folder as completed</a>
+            
+            <a href="" class="button" ng-click="markNIKS()">Mark as NIKS</a>
+            
+            <a href="" class="button" ng-click="markSpecial('CNA')">Mark as special</a>
+            
             <a href="" class="button right" ng-click="help()">help</a>                       
         </div>
     </div>
@@ -242,13 +247,19 @@
                                     <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
                                         {{i}}
                                     </option>
-                                </select>
+                                </select>                                                              
 
                                 <select class="rdCRdd"  ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
                                     <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue == i}}">
                                         {{i}}
                                     </option>
                                 </select>
+                                
+                                <select class="rdSPCdd" ng-switch-when="special" name="{{cell.dataName}}-{{cell.recordID}}">
+                                    <option ng-repeat="i in spcArray" ng-selected="{{cell.dataValue == i}}">
+                                        {{i}}
+                                    </option>
+                                </select>                                  
                                    
                                 <input type="text"
                                        class="rdStd"                                         

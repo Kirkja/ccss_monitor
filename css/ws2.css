@@ -55,6 +55,8 @@ table.reviewFormTable td div.reviewInput { text-align:left;}
 .rdBox { width:35px; }
 
 .rdCRdd { width:65px; }
+
+.rdSPCdd { width:100%; }
 .rdStd {  }
 
 .fixedPallette  { min-height:55px; background-color:rgb(200,200,200); margin-bottom:0px; padding:5px; font-size:12px;}
