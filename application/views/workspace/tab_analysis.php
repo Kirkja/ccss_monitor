@@ -14,7 +14,8 @@
             
             <a href="" class="button" ng-click="markSpecial('CNA')">Mark as special</a>
             
-            <a href="" class="button right" ng-click="help()">help</a>                       
+            <a href="" class="button right" ng-click="help()">help</a> 
+             <a href="" class="button right" ng-click="debug()">debug</a> 
         </div>
     </div>
  
@@ -74,7 +75,9 @@
                         alt="Click to add standard" 
                         title="Click to add standard">{{item.key}}
                     </button> 
-                    <span class="stdDesc" ng-bind-html="item.desc"></span>                    
+                    <span class="stdDesc" ng-bind-html="item.desc"></span> 
+                    
+
                 </div>
                 
             </div>
@@ -139,7 +142,11 @@
                 <span class="lift">Open Work</span>
             </div>
             <div class="ui-widget-content">
-                <span class="loading">{{loadingOpenworkMessage}}</span>
+                <div ng-show="loadingOpenworkMessage">
+                    <span class="loading">{{loadingOpenworkMessage}}</span>
+                    <img src="<?php echo base_url(); ?>css/images/loading-icon.gif" />
+                </div>
+                                
                 <treecontrol class="tree-classic" 
                              tree-model="openworkTree" 
                              node-children="children" 
@@ -165,7 +172,10 @@
                 <span class="lift">Completed Work</span>
             </div>
             <div class="ui-widget-content">
-                <span class="loading">{{loadingClosedworkMessage}}</span>
+                <div ng-show="loadingClosedworkMessage">
+                    <span class="loading">{{loadingClosedworkMessage}}</span>
+                    <img src="<?php echo base_url(); ?>css/images/loading-icon.gif" />
+                </div>
                 <treecontrol class="tree-classic" 
                              tree-model="closedworkTree" 
                              node-children="children" 
@@ -225,7 +235,10 @@
                 </div>                
                 
                 <div id="reviewDataZone">
-  
+                  <div ng-show="loadingRDFMessage">
+                    <span class="loading">{{loadingRDFMessage}}</span>
+                    <img src="<?php echo base_url(); ?>css/images/loading-icon.gif" />
+                </div>
                 <table class="reviewFormTable"  
                        ng-repeat="(key, value) in rdf2" 
                        ng-class-odd="'trOdd'" 
@@ -290,26 +303,23 @@
         <div class="ui-layout-south">
             <div class="ui-widget-header ui-corner-top">Review Item Note</div>
             <div class="ui-widget-content" style="padding:0px;">
-                
-                <div class="fixedPallette">                    
-                    <a href="" class="button delete" ng-click="delNote()">Delete</a>
-                    <a href="" class="button save right" ng-click="saveNote()">Save</a> 
-                    <div class="palletteInfo">
-                        <span>{{noteStamp}}</span>                            
-                    </div>                                        
+                <div ng-hide="currentGroupingID" style="padding:1em 2em;">
+                    The note feature activates when you click either the  
+                    <img class="inline" src="<?php echo base_url(); ?>css/images/no_notes.png"/> 
+                    or <img class="inline" src="<?php echo base_url(); ?>css/images/yes_notes.png"/> icon on a review item in the above panel.
+                </div>
+                <div ng-show="currentGroupingID">
+                    <div class="fixedPallette">                    
+                        <a href="" class="button delete" ng-click="delNote()">Delete</a>
+                        <a href="" class="button save right" ng-click="saveNote()">Save</a> 
+                        <div class="palletteInfo">
+                            <span>{{noteStamp}}</span>                            
+                        </div>                                        
+                    </div>
+
+                    <textarea id="reviewNote" ng-model="currentNote"></textarea>
                 </div>
                 
-                <textarea id="reviewNote" ng-model="currentNote"></textarea>
-                
-                <p>The numbers below are just for debugging purposes</p>
-                <p>AID: {{user.activeID}}</p>
-                <p>BID: {{currentBlockID}}</p>
-                <p>SID: {{currentSampleID}}</p>
-                <p>IID: {{currentImageID}}</p>
-                <p>CID: {{currentCatalogID}}</p>  
-                <p>GID: {{currentGroupingID}}</p> 
-                <p>NID: {{currentNoteID}}</p> 
-                <p>STD: {{std}}</p> 
                 
             </div>
         </div>

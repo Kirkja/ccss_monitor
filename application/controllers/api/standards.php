@@ -52,7 +52,7 @@ class Standards extends CI_Controller {
         if (!$activeID) { exit(); }
         //-------------------------
         
-        $data   = array();
+        //$data   = array();
         $raw    = file_get_contents("php://input");
         $tmp    = json_decode($raw);
         
@@ -60,7 +60,7 @@ class Standards extends CI_Controller {
 
         // Create the correct JSON payloads
         $out = array('data' => 
-            $this->extractCatalog($tmp->cid)
+            $this->extractCatalog($tmp->cid, $activeID)
         );
 
         // Set the correct JSON response header
@@ -141,8 +141,10 @@ class Standards extends CI_Controller {
      * @param type $activeID
      * @param type $catalogID
      */
-    private function extractCatalog($catalogID) {
-                        
+    private function extractCatalog($catalogID, $activeID) {
+       
+        
+        /*                
         $sql = "SELECT 
                 CCSS.id
               , CONCAT(CCSS.state,'_',CCSS.key0) AS standardKey
@@ -155,6 +157,36 @@ class Standards extends CI_Controller {
                 WHERE CCSS.Tier_5 <> ''
                 AND catalogID = {$catalogID}
                 ORDER BY CCSS.gradelevel, CONCAT(CCSS.state,'_',CCSS.key0)";
+        */
+        
+        $sql = "SELECT 
+                CCSS.id
+                , CONCAT(CCSS.state,'_',CCSS.key0) AS standardKey
+                , CASE
+                    WHEN CCSS.Tier_8 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6, ' --- ', CCSS.Tier_7, ' ++ ', CCSS.Tier_8)  
+                    WHEN CCSS.Tier_7 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6, ' --- ', CCSS.Tier_7)  
+                    WHEN CCSS.Tier_6 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6) 
+                    ELSE CCSS.Tier_5
+                END AS standardText,
+                SN.id AS noteID
+                FROM bank_standards AS CCSS
+                LEFT JOIN standard_note AS SN ON (
+                      SN.standardID = CCSS.id
+                  AND SN.active = 'y'
+                )
+                LEFT JOIN login AS LI ON (
+                    LI.userID = SN.createdBY
+                AND LI.id = {$activeID}
+                )
+                WHERE CCSS.Tier_5 <> ''
+                AND CCSS.catalogID = {$catalogID}
+                ORDER BY CCSS.gradelevel, CONCAT(CCSS.state,'_',CCSS.key0)";
+        
+        
+        
+        
+        
+        
         
         $query = $this->db->query($sql);
         
@@ -165,7 +197,8 @@ class Standards extends CI_Controller {
             {
                 $tmp[] = array(
                     'key'   => $row->standardKey,
-                    'desc'  => $row->standardText
+                    'desc'  => $row->standardText,
+                    'noteID'=> $row->noteID
                 );                
             }
         }
