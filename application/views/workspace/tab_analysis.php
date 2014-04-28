@@ -8,14 +8,12 @@
 <div id="tab2" class="tab-panel hidden" ng-controller="SettingsController">
     <div class="ui-layout-north ui-widget">
         <div class="toolbar ui-widget-content ui-state-active">
-            <a href="" class="button" ng-click="markFolderCompleted()">Mark folder as completed</a>
-            
-            <a href="" class="button" ng-click="markNIKS()">Mark as NIKS</a>
-            
+            <a href="" class="button" ng-click="markFolderCompleted()">Mark folder as completed</a>            
+            <a href="" class="button" ng-click="markNIKS()">Mark as NIKS</a>            
             <a href="" class="button" ng-click="markSpecial('CNA')">Mark as special</a>
             
             <a href="" class="button right" ng-click="help()">help</a> 
-             <a href="" class="button right" ng-click="debug()">debug</a> 
+            <a href="" class="button right" ng-click="debug()">debug</a> 
         </div>
     </div>
  
@@ -27,6 +25,8 @@
             <li class="tab1"><a href="#simpleTab1b">Sample</a></li>
             <li class="tab2"><a href="#simpleTab2b">Standards</a></li>
             <li class="tab3"><a href="#simpleTab3b">Search</a></li>
+            
+            
         </ul>
     
         <div class="ui-widget-content" style="border-top:0;padding:0px;">
@@ -125,6 +125,12 @@
                 </div>
                 
             </div>
+            
+
+            
+            
+            
+            
         </div>
     </div>
 
