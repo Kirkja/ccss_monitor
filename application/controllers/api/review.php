@@ -294,33 +294,115 @@ class Review extends CI_Controller {
     
     
     public function saveNote() {
+        
+        $activeID = GSAuth::Fence();  
+        
+        $t = array();
+        
+        if (!$activeID) { 
+            $t['status'] = 'active failed';
+            header('Content-Type: application/json');
+            echo json_encode(array('data' => $t));             
+        }
+        else {
+            $raw = file_get_contents("php://input");
+            $tmp = json_decode($raw);  
+            
+            $userID = GSAuth::getUserID($activeID);
+                    
+            if ($userID < 0)                { $t[] = 'user failed'; }
+            if (!isset($tmp->blockID))      { $t[] = 'block failed'; }
+            if (!isset($tmp->sampleID))     { $t[] = 'sample failed'; }
+            if (!isset($tmp->imageID))      { $t[] = 'image failed'; }
+            if (!isset($tmp->groupingID))   { $t[] = 'group failed'; }
+            if (!isset($tmp->noteID))       { $t[] = 'note failed'; }
+            if (!isset($tmp->noteText))     { $t[] = 'text failed'; }
+            if (!isset($tmp->mode))         { $t[] = 'mode failed'; }            
 
-        $activeID = GSAuth::Fence();        
-        if (!$activeID) { exit(); }
+            if (count($t) > 0) {
+                header('Content-Type: application/json');
+                echo json_encode(array('data' => $t)); 
+                exit();
+            }
+           
+            if ($tmp->mode == "add") {
+                $t = $this->addNote(
+                     $userID
+                    ,$tmp->blockID
+                    ,$tmp->sampleID
+                    ,$tmp->imageID
+                    ,$tmp->groupingID
+                    ,$tmp->noteID
+                    ,$tmp->noteText);
+            }
+            else if ($tmp->mode == "update") {
+                $t = $this->updateNote(                    
+                     $tmp->noteID
+                    ,$tmp->noteText);
+            }            
+            
+            header('Content-Type: application/json');
+            echo json_encode(array('data' => $t)); 
+        }
+    }
+    
+    
+    public function xsaveNote() {
+                        
+        $t = array();
+        
+        $activeID = GSAuth::Fence(); 
+                
+        if (!$activeID) { 
+            $t['status'] = 'active failed';
+            header('Content-Type: application/json');
+            echo json_encode(array('data' => $t));           
+            exit();             
+        }
         //-------------------------
         
-        $raw = file_get_contents("php://input");
-        $tmp = json_decode($raw);         
         
-        if (!isset($tmp->blockID))      { exit(); }
-        if (!isset($tmp->sampleID))     { exit(); }
-        if (!isset($tmp->imageID))      { exit(); }
-        if (!isset($tmp->groupingID))   { exit(); }
-        if (!isset($tmp->noteID))       { exit(); }
-        if (!isset($tmp->noteText))     { exit(); }
-               
-        $blockID    = $tmp->blockID;
-        $sampleID   = $tmp->sampleID;
-        $imageID    = $tmp->imageID;        
-        $groupingID = $tmp->groupingID; 
-        $noteID     = $tmp->noteID; 
-        $noteText   = $tmp->noteText; 
-                        
-        $out = array('data' => 
-            $this->updateNote($activeID,
-                    $blockID,$sampleID,$imageID,
-                    $groupingID,$noteID,$noteText)
-        );
+        $raw = file_get_contents("php://input");
+        $tmp = json_decode($raw);  
+        
+        $userID = GSAuth::getUserID($activeID);
+        
+        if ($userID < 0)                { $t[] = 'user failed'; }
+        if (!isset($tmp->blockID))      { $t[] = 'block failed'; }
+        if (!isset($tmp->sampleID))     { $t[] = 'sample failed'; }
+        if (!isset($tmp->imageID))      { $t[] = 'image failed'; }
+        if (!isset($tmp->groupingID))   { $t[] = 'group failed'; }
+        if (!isset($tmp->noteID))       { $t[] = 'note failed'; }
+        if (!isset($tmp->noteText))     { $t[] = 'text failed'; }
+        if (!isset($tmp->mode))         { $t[] = 'mode failed'; }
+                 
+        if (size($t) > 0) {
+            header('Content-Type: application/json');
+            echo json_encode($out = array('data' => $t));
+            exit();
+        }
+        
+        $x = array('status' => 'failed');
+       
+        /*
+        if ($tmp->mode == "add") {
+            $x = $this->addNote(
+                     $userID
+                    ,$tmp->blockID
+                    ,$tmp->sampleID
+                    ,$tmp->imageID
+                    ,$tmp->groupingID
+                    ,$tmp->noteID
+                    ,$tmp->noteText);
+        }
+        else if ($tmp->mode == "update") {
+            $x = $this->updateNote(                    
+                $tmp->noteID
+                ,$tmp->noteText);
+        }
+        */
+        
+        $out = array('data' => $x);
 
         // Set the correct JSON response header
         header('Content-Type: application/json');
@@ -424,47 +506,55 @@ class Review extends CI_Controller {
         $this->db->query($sql);
     }
     
-    
-    
-    private function updateNote(
-            $activeID,
+    private function addNote(
+            $userID,
             $blockID,
             $sampleID,
             $imageID,
             $groupingID,
             $noteID,
+            $noteText) 
+    {
+         $sql = "INSERT INTO review_note  
+                (id, blockID, sampleID, imageID, groupingID, 
+                createdBY, createdON, note, active)
+                VALUES (                       
+                    UUID_SHORT(),                        
+                    {$blockID},                      
+                    {$sampleID},                      
+                    {$imageID},                      
+                    {$groupingID},                       
+                    {$userID},                       
+                    NOW(),                        
+                    '{$noteText}',                        
+                    'y'
+                )";
+        
+        
+        $a = $this->db->query($sql);
+        
+        return array (
+            'status'    => $a
+        );
+             
+    }
+    
+    
+    
+    private function updateNote(            
+            $noteID,
             $noteText) {
-        
-        $sql = "";
-        
-        if ($noteID > 0) {
-            $sql = "UPDATE review_note
+               
+        $sql = "UPDATE review_note
                     SET note = '{$noteText}'
                     WHERE id = {$noteID}
                     LIMIT 1";
-        }
-        else {
-            $sql = "INSERT INTO review_note
-                    SELECT 
-                    UUID_SHORT(),
-                    {$blockID},
-                    {$sampleID},
-                    {$imageID},
-                    {$groupingID},
-                    LI.userID, NOW(),'{$noteText}' ,'y'
-                    FROM review_note AS RN
-                    LEFT JOIN login AS LI ON LI.userID = RN.createdBY
-                    WHERE LI.id = {$activeID} LIMIT 1";           
-        }
+                    
+        $a = $this->db->query($sql);
         
-        if (!empty($sql)) {
-            $this->db->query($sql);
-        }
-        else {
-            return "error";
-        }
-        
-        return "saved"; //$sql;
+        return array (
+            'status'    => $a
+        );
     }
     
     

@@ -91,6 +91,18 @@ class GSAuth {
         return $user;        
     }     
     
+    public function getUserID($activeID) {
+       
+        $sql = "SELECT * FROM login WHERE id = {$activeID} LIMIT 1";
+        $query = $this->db->query($sql);
+       
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            return $row->userID;
+        }
+        
+        return -1;
+    }
 
     
     /**

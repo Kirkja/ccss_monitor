@@ -313,7 +313,8 @@
                         <a href="" class="button delete" ng-click="delNote()">Delete</a>
                         <a href="" class="button save right" ng-click="saveNote()">Save</a> 
                         <div class="palletteInfo">
-                            <span>{{noteStamp}}</span>                            
+                            <span>{{noteStamp}}</span> 
+                            <span class="right">{{noteStatus}}</span>
                         </div>                                        
                     </div>
 
