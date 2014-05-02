@@ -144,20 +144,6 @@ class Standards extends CI_Controller {
     private function extractCatalog($catalogID, $activeID) {
        
         
-        /*                
-        $sql = "SELECT 
-                CCSS.id
-              , CONCAT(CCSS.state,'_',CCSS.key0) AS standardKey
-              , CASE
-                    WHEN CCSS.Tier_7 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6, ' --- ', CCSS.Tier_7)  
-                    WHEN CCSS.Tier_6 <> '' THEN CONCAT(CCSS.Tier_5, ' -- ', CCSS.Tier_6) 
-                    ELSE CCSS.Tier_5
-                END AS standardText
-                FROM bank_standards AS CCSS
-                WHERE CCSS.Tier_5 <> ''
-                AND catalogID = {$catalogID}
-                ORDER BY CCSS.gradelevel, CONCAT(CCSS.state,'_',CCSS.key0)";
-        */
         
         $sql = "SELECT 
                 CCSS.id
@@ -246,6 +232,7 @@ class Standards extends CI_Controller {
                   id
                 , CONCAT(state,'_',key0) AS standardKey                
                 , CASE
+                    WHEN Tier_8 <> '' THEN CONCAT(Tier_5, ' -- ', Tier_6, ' -- ', Tier_7, ' ++ ', Tier_8)
                     WHEN Tier_7 <> '' THEN CONCAT(Tier_5, ' -- ', Tier_6, ' -- ', Tier_7)
                     WHEN Tier_6 <> '' THEN CONCAT(Tier_5, ' -- ', Tier_6) 
                     ELSE Tier_5
