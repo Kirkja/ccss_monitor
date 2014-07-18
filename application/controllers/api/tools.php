@@ -307,11 +307,47 @@ class Tools extends CI_Controller {
     //
 
     private function randomBLM() {
-        return "BLM-". rand(1,6);
+        $tmp = array();
+        
+        $tmp[] = 'BLM-1';
+        $tmp[] = 'BLM-1';
+        $tmp[] = 'BLM-1';
+        $tmp[] = 'BLM-1';
+        $tmp[] = 'BLM-1';
+        $tmp[] = 'BLM-1';
+        $tmp[] = 'BLM-1';
+        $tmp[] = 'BLM-2';
+        $tmp[] = 'BLM-2';
+        $tmp[] = 'BLM-2';
+        $tmp[] = 'BLM-3';
+        $tmp[] = 'BLM-3';
+        $tmp[] = 'BLM-4';
+        $tmp[] = 'BLM-4';
+        $tmp[] = 'BLM-5';
+        
+        //return "BLM-". rand(1,6);
+        return $tmp[rand(0, sizeof($tmp))];
     }
 
     private function randomDOK() {
-        return "DOK-". rand(1,4);
+        $tmp[] = 'DOK-1';
+        $tmp[] = 'DOK-1';
+        $tmp[] = 'DOK-1';
+        $tmp[] = 'DOK-1';
+        $tmp[] = 'DOK-1';
+        $tmp[] = 'DOK-1';
+        $tmp[] = 'DOK-1';
+        $tmp[] = 'DOK-2';
+        $tmp[] = 'DOK-2';
+        $tmp[] = 'DOK-2';
+        $tmp[] = 'DOK-2';
+        $tmp[] = 'DOK-3';
+        $tmp[] = 'DOK-3';
+        $tmp[] = 'DOK-3';
+        $tmp[] = 'DOK-4';
+        
+        //return "DOK-". rand(1,4);
+        return $tmp[rand(0, sizeof($tmp))];
     }    
     
     private function randomStandard($catalogID, $hits, $gradeLevel) {
@@ -320,7 +356,7 @@ class Tools extends CI_Controller {
         $spread = 3;
         
         $minGL = $gl - $spread;
-        $maxGL = $gl + $spread;
+        $maxGL = $gl + $spread -1;
                 
         $sql = "SELECT CONCAT(state,'_',key0) as std, 
                 gradeLevel
