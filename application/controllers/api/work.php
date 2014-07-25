@@ -82,12 +82,14 @@ class Work extends CI_Controller {
                             WHEN 'F' THEN  BB.baseValue * 0.25
                             ELSE BB.baseValue                           
                             END AS cashValue
-                          , BI.alphaCode 
+                          , BI.alphaCode
+                          , MSC.collectorID
                             FROM map_sample_block AS MSB
                             JOIN map_image_sample AS MIS ON MIS.sampleID = MSB.sampleID
                             JOIN bank_image AS BI ON BI.id = MIS.imageID
                             JOIN bank_sample AS BS ON BS.id = MSB.sampleID
                             JOIN bank_block AS BB ON BB.id = MSB.blockID
+                            JOIN map_sample_collector AS MSC ON MSC.sampleID = MSB.sampleID
                             WHERE MSB.active= 'y'
                             AND MIS.active = 'y'
                             AND BS.active = 'y'
@@ -110,6 +112,7 @@ class Work extends CI_Controller {
                         $c['blockID']       = $block->blockID;
                         $c['blockName']     = $block->label;
                         $c['alphaCode']     = $blockB->alphaCode;
+                        $c['collectorID']   = $blockB->collectorID;
                         
                         // test is there is a review, then mark as completed
                         // just place the date completed

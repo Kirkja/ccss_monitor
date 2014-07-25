@@ -112,12 +112,15 @@ class Review extends CI_Controller {
         if (!isset($tmp->sampleID))    { exit(); }                
         if (!isset($tmp->imageID))     { exit(); }
  
+        // insert an empty record for this review
         $this->createSCR(
                 $activeID, 
                 $tmp->blockID, 
                 $tmp->sampleID, 
-                $tmp->imageID);
+                $tmp->imageID,
+                $tmp->collectorID);
         
+        // return this newly created record
         $out = array('data' => 
             $this->getReviews(
                 $activeID, 
@@ -156,7 +159,8 @@ class Review extends CI_Controller {
                 $tmp->blockID, 
                 $tmp->sampleID, 
                 $tmp->imageID, 
-                $tmp->stdKey);
+                $tmp->stdKey,
+                $tmp->collectorID);
         
         $out = array('data' => 
             $this->getReviews(
@@ -196,7 +200,8 @@ class Review extends CI_Controller {
                 $tmp->blockID, 
                 $tmp->sampleID, 
                 $tmp->imageID, 
-                $tmp->stdKey);
+                $tmp->stdKey,
+                $tmp->collectorID);
         
         $out = array('data' => 
             $this->getReviews(
@@ -830,8 +835,9 @@ class Review extends CI_Controller {
             $activeID, 
             $blockID, 
             $sampleID, 
-            $imageID
-        ) {
+            $imageID,
+            $collectorID)
+    {
           
         $accountID  = 1;
         $projectID  = 1;
@@ -843,13 +849,13 @@ class Review extends CI_Controller {
         if ($resp->gid > 0) {
             $resp->gid += 1;
             $sql = "INSERT INTO review_data 
-                (id,accountID, projectID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
+                (id,accountID, projectID, collectorID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
                 VALUES 
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'standard','','button'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},3,NOW(),'dok','','select'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},4,NOW(),'blm','','select'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'standard','','button'),
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},3,NOW(),'dok','','select'),
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},4,NOW(),'blm','','select'),
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
                 ";
                 
             $this->db->query($sql);
@@ -859,11 +865,12 @@ class Review extends CI_Controller {
     
     
     private function createFilledSCR(            
-            $activeID, 
+            $activeID,             
             $blockID, 
             $sampleID, 
             $imageID,
-            $std
+            $std,
+            $collectorID
         ) {
           
         $accountID  = 1;
@@ -876,13 +883,13 @@ class Review extends CI_Controller {
         if ($resp->gid > 0) {
             $resp->gid += 1;
             $sql = "INSERT INTO review_data 
-                (id,accountID, projectID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
+                (id,accountID, projectID, collectorID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
                 VALUES 
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'standard','{$std}','button'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},3,NOW(),'dok','','select'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},4,NOW(),'blm','','select'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'standard','{$std}','button'),
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},3,NOW(),'dok','','select'),
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},4,NOW(),'blm','','select'),
+                (UUID_SHORT(), {$accountID},{$projectID},{$collectorID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
                 ";
                 
             $this->db->query($sql);
@@ -894,7 +901,8 @@ class Review extends CI_Controller {
             $blockID, 
             $sampleID, 
             $imageID,
-            $std
+            $std,
+            $collectorID
         ) {
           
         $accountID  = 1;
@@ -907,11 +915,11 @@ class Review extends CI_Controller {
         if ($resp->gid > 0) {
             $resp->gid += 1;
             $sql = "INSERT INTO review_data 
-                (id,accountID, projectID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
+                (id,accountID, projectID, collectorID, blockID, sampleID, imageID, groupingID, createdBY, groupingOrder, createdON, dataName,dataValue,dataType)
                 VALUES 
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'special','{$std}','select'),
-                (UUID_SHORT(), {$accountID},{$projectID}, {$blockID},{$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
+                (UUID_SHORT(), {$accountID},{$projectID}, {$collectorID}, {$blockID}, {$sampleID},{$imageID},{$resp->gid}, {$resp->userID},1,NOW(),'id','','text'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$collectorID}, {$blockID}, {$sampleID},{$imageID},{$resp->gid}, {$resp->userID},2,NOW(),'special','{$std}','select'),
+                (UUID_SHORT(), {$accountID},{$projectID}, {$collectorID}, {$blockID}, {$sampleID},{$imageID},{$resp->gid}, {$resp->userID},5,NOW(),'counter','','text')
                 ";
                 
             $this->db->query($sql);
