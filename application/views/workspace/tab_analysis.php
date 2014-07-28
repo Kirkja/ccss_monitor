@@ -24,9 +24,7 @@
         <ul>
             <li class="tab1"><a href="#simpleTab1b">Sample</a></li>
             <li class="tab2"><a href="#simpleTab2b">Standards</a></li>
-            <li class="tab3"><a href="#simpleTab3b">Search</a></li>
-            
-            
+            <li class="tab3"><a href="#simpleTab3b">Search</a></li>                       
         </ul>
     
         <div class="ui-widget-content" style="border-top:0;padding:0px;">
@@ -77,7 +75,6 @@
                     </button> 
                     <span class="stdDesc" ng-bind-html="item.desc"></span> 
                     
-
                 </div>
                 
             </div>
@@ -122,18 +119,10 @@
                         <span ng-bind-html="item.key">/span>
                     </button> 
                     <span class="stdDesc" ng-bind-html="item.desc"></span>                    
-                </div>
-                
-            </div>
-            
-
-            
-            
-            
-            
+                </div>                
+            </div>  
         </div>
     </div>
-
 
 
     
@@ -245,7 +234,7 @@
                     <span class="loading">{{loadingRDFMessage}}</span>
                     <img src="<?php echo base_url(); ?>css/images/loading-icon.gif" />
                 </div>
-                <table class="reviewFormTable"  
+                <table class="reviewFormTable" 
                        ng-repeat="(key, value) in rdf2" 
                        ng-class-odd="'trOdd'" 
                        ng-class-even="'trEven'"
@@ -255,7 +244,7 @@
                             <input class="rdSelector" type="checkbox" name="{{key}}" />
                         </td>
                         
-                        <td ng-repeat="cell in value['cell']">
+                        <td ng-repeat="cell in value['cell']" >
                             <div ng-switch="cell.dataName">
                                 
                                 <input class="rdBox" ng-switch-when="id" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}" />                                                             
@@ -263,19 +252,19 @@
                                 <input class="rdBox" ng-switch-when="counter" name="{{cell.dataName}}-{{cell.recordID}}" type="text" size="4" maxlength="4" value="{{cell.dataValue}}"/>
 
                                 <select class="rdCRdd" ng-switch-when="dok" name="{{cell.dataName}}-{{cell.recordID}}">
-                                    <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue == i}}">
+                                    <option ng-repeat="i in dokArray" ng-selected="{{cell.dataValue === i}}">
                                         {{i}}
                                     </option>
                                 </select>                                                              
 
                                 <select class="rdCRdd"  ng-switch-when="blm" name="{{cell.dataName}}-{{cell.recordID}}">
-                                    <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue == i}}">
+                                    <option ng-repeat="i in blmArray" ng-selected="{{cell.dataValue === i}}">
                                         {{i}}
                                     </option>
                                 </select>
                                 
                                 <select class="rdSPCdd" ng-switch-when="special" name="{{cell.dataName}}-{{cell.recordID}}">
-                                    <option ng-repeat="i in spcArray" ng-selected="{{cell.dataValue == i}}">
+                                    <option ng-repeat="i in spcArray" ng-selected="{{cell.dataValue === i}}">
                                         {{i}}
                                     </option>
                                 </select>                                  
